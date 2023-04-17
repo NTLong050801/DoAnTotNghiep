@@ -14,11 +14,14 @@ class ProfileController extends Controller
     /**
      * Display the user's profile form.
      */
+    public function index(Request $request): View
+    {
+        return view('pages.profile.index');
+    }
+
     public function edit(Request $request): View
     {
-        return view('profile.edit', [
-            'user' => $request->user(),
-        ]);
+        return view('pages.profile.edit');
     }
 
     /**
@@ -34,7 +37,7 @@ class ProfileController extends Controller
 
         $request->user()->save();
 
-        return Redirect::route('profile.edit')->with('status', 'profile-updated');
+        return Redirect::route('profile.edit')->with('success', 'Sửa thông tin thành công !!');
     }
 
     /**
@@ -56,5 +59,9 @@ class ProfileController extends Controller
         $request->session()->regenerateToken();
 
         return Redirect::to('/');
+    }
+
+    public function changePassword(){
+        return \view('pages.profile.change-password');
     }
 }

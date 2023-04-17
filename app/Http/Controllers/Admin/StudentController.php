@@ -5,11 +5,17 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Major;
 use App\Models\User;
+use App\Repositories\Admin\UsersRepositoryEloquent;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
 class StudentController extends Controller
 {
+    protected $repository;
+
+    public function __construct(UsersRepositoryEloquent $repository){
+        $this->repository = $repository;
+    }
     /**
      * Display a listing of the resource.
      */
@@ -17,7 +23,7 @@ class StudentController extends Controller
     {
         //
         $majors= Major::all();
-        $students = User::with('majors')->where("role",0)->paginate(15);
+        $students = User::with('majors')->where("role",0)->paginate(1);
         $title = "Danh sách sinh viên";
         return view('admin.student.index',compact('title','majors','students'));
     }
@@ -68,6 +74,13 @@ class StudentController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
+    public function search(Request $request){
+        $majors= Major::all();
+       $students =  $this->repository->findByField('identifier',$request->search);
+        $title = "Danh sách sinh viên";
+        return view('admin.student.index',compact('title','majors','students'));
+    }
+
     public function edit(string $id)
     {
         //

@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class User extends Authenticatable
 {
@@ -49,5 +50,15 @@ class User extends Authenticatable
     public function majors():HasMany
     {
         return $this->hasMany(Major::class,'id','major_id');
+    }
+
+
+    protected function avatar(): Attribute
+    {
+        return Attribute::make(
+            get: function () {
+                return (new \Laravolt\Avatar\Avatar)->create($this->name)->toBase64();
+            }
+        );
     }
 }
