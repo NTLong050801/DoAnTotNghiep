@@ -12,12 +12,15 @@ class MajorController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         //
-        $majors = Major::all();
-        $title = "Danh sách các khoa";
-        return view('admin.major.list',compact('majors','title'));
+        if($request->filled('search')){
+            $majors = Major::search($request->search)->paginate(10)->withQueryString();
+        }else{
+            $majors = Major::search('')->paginate(10);;
+        }
+        return view('pages.admin.major.list',compact('majors'));
     }
 
     /**
@@ -26,8 +29,7 @@ class MajorController extends Controller
     public function create()
     {
         //
-    $title = "Thêm mới khoa";
-        return view('admin.major.create',compact('title'));
+        return view('pages.admin.major.create');
     }
 
     /**
