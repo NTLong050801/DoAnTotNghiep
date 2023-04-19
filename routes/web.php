@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\MajorController;
 use App\Http\Controllers\Admin\StudentController;
+use App\Http\Controllers\Admin\TeacherController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\WebhooksController;
 use App\Http\Middleware\VerifyCsrfToken;
@@ -26,11 +27,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/changePassword',[ProfileController::class,'changePassword'])->name('changePassword');
 });
 
-Route::prefix('/teacher')->group(function (){
-    Route::get('/',function (){
-        return view('teacher.index');
-    });
+
+Route::get('/',function (){
+    return redirect()->route('login');
 });
+
 Route::prefix('/admin')->group(function (){
     Route::get('/dashboard',function (){
         return view('pages.admin.index');
@@ -55,12 +56,25 @@ Route::prefix('/admin')->group(function (){
         Route::get('{id}/destroy',[StudentController::class,'destroy'])->name('student.destroy');
     });
 
+    Route::prefix('teachers')->group(function (){
+        Route::get('index',[TeacherController::class,'index'])->name('teachers.index');
+        Route::get('search',[TeacherController::class,'search'])->name('teachers.search');
+        Route::get('create',[TeacherController::class,'create'])->name('teachers.create');
+        Route::get('export',[TeacherController::class,'export'])->name('teacher.export');
+        Route::post('store',[TeacherController::class,'store'])->name('teachers.store');
+        Route::get('{teacher}/edit',[TeacherController::class,'edit'])->name('teachers.edit');
+        Route::post('{teacher}/update',[TeacherController::class,'update'])->name('teachers.update');
+        Route::get('{teacher}/destroy',[TeacherController::class,'destroy'])->name('teachers.destroy');
+    });
+
 });
 
 Route::webhooks('webhook-receiving-url');
 
 Route::get('/hooks/slack',[WebhooksController::class,'index']);
 Route::post('/hooks/slack', [WebhooksController::class, 'send'])->withoutMiddleware(VerifyCsrfToken::class)->name('slack.store');
-
+Route::get('/table',function (){
+    return view('pages.table.index');
+});
 
 require __DIR__ . '/auth.php';

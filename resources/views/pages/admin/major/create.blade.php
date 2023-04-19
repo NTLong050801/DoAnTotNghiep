@@ -1,4 +1,4 @@
-@extends('admin.home')
+@extends('layouts.main')
 @section('content')
         <div class="container">
             <form method="post" class="m-20" action="{{route('major.store')}}">
