@@ -70,7 +70,7 @@
                     <!--begin:Menu item-->
                     <div class="menu-item">
                         <!--begin:Menu link-->
-                        <a class="menu-link" href="#">
+                        <a class="menu-link" href="{{route('major.index')}}">
                             <span class="menu-icon"><i class="fa-solid fa-address-book"></i></span>
                             <span class="menu-title">Quản lý khoa</span>
                         </a>
@@ -82,7 +82,7 @@
                     <!--begin:Menu item-->
                     <div class="menu-item">
                         <!--begin:Menu link-->
-                        <a class="menu-link" href="#">
+                        <a class="menu-link" href="{{route('teachers.index')}}">
                             <span class="menu-icon"><i class="fa-sharp fa-regular fa-people-roof"></i></span>
                             <span class="menu-title">Quản lý giảng viên</span>
                         </a>
