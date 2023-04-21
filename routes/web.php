@@ -60,7 +60,8 @@ Route::prefix('/admin')->group(function (){
         Route::get('index',[TeacherController::class,'index'])->name('teachers.index');
         Route::get('search',[TeacherController::class,'search'])->name('teachers.search');
         Route::get('create',[TeacherController::class,'create'])->name('teachers.create');
-        Route::get('export',[TeacherController::class,'export'])->name('teacher.export');
+        Route::get('export/{type}',[TeacherController::class,'export'])->name('teachers.export');
+        Route::post('import',[TeacherController::class,'import'])->name('teachers.import');
         Route::post('store',[TeacherController::class,'store'])->name('teachers.store');
         Route::get('{teacher}/edit',[TeacherController::class,'edit'])->name('teachers.edit');
         Route::post('{teacher}/update',[TeacherController::class,'update'])->name('teachers.update');
