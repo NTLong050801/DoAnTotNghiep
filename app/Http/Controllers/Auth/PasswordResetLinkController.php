@@ -20,8 +20,7 @@ class PasswordResetLinkController extends Controller
      */
     public function create(): View
     {
-
-        return view('authentication.layouts.reset-password');
+        return view('pages.auth.forgot-password');
     }
 
     /**
@@ -34,30 +33,10 @@ class PasswordResetLinkController extends Controller
         $request->validate([
             'email' => ['required', 'email', 'email:users'],
         ]);
-
-        // We will send the password reset link to this user. Once we have attempted
-        // to send the link, we will examine the response then see the message we
-        // need to show to the user. Finally, we'll send out a proper response.
-        $status = Password::sendResetLink(
-            $request->only('email')
-        );
         $user = User::where('email', $request->email)->first();
-//        dd($user->email);
-//        $user->update([
-//            'remember_token' => Str::random(60),
-//        ]);
-        $user->remember_token= Str::random(60);
-        $user->save();
-        Mail::to($user->email)->send(new resetPassword($user));
-        Session::flash('success', "Vui lòng kiểm tra email ");
-        return redirect()->back();
-
-        return abort(404);
-
-//        return $status == Password::RESET_LINK_SENT
-//                    ? back()->with('status', __($status))
-//                    : back()->withInput($request->only('email'))
-//                            ->withErrors(['email' => __($status)]);
-
+        if (! empty($user)) {
+            Password::sendResetLink(['email' => $user->email]);
+        }
+        return back()->with('status', "Vui lòng kiếm tra email của bạn!");
     }
 }

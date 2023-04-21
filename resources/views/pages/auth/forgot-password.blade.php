@@ -8,10 +8,10 @@
         <!--begin::Heading-->
         <div class="text-center mb-10">
             <!--begin::Title-->
-            <h1 class="text-dark fw-bolder mb-3">Forgot Password?</h1>
+            <h1 class="text-dark fw-bolder mb-3">Quên mật khẩu?</h1>
             <!--end::Title-->
             <!--begin::Link-->
-            <div class="text-gray-500 fw-semibold fs-6">Enter your username to reset your password.</div>
+            <div class="text-gray-500 fw-semibold fs-6">Nhập email của bạn để lấy lại mật khẩu.</div>
             <!--end::Link-->
         </div>
         <!--end::Heading-->
@@ -21,7 +21,7 @@
         <!--begin::Input group=-->
         <div class="fv-row mb-8">
             <!--begin::Email-->
-            <input type="text" placeholder="Username" name="username" autocomplete="off"
+            <input type="text" placeholder="Email" name="email" autocomplete="off"
                    class="form-control bg-transparent" required/>
             <!--end::Email-->
         </div>
@@ -29,10 +29,10 @@
         <div class="d-flex flex-wrap justify-content-center pb-lg-0">
             <button type="submit" id="kt_password_reset_submit" class="btn btn-danger me-4">
                 <!--begin::Indicator label-->
-                <span class="indicator-label">Submit</span>
+                <span class="indicator-label">Gửi</span>
                 <!--end::Indicator label-->
             </button>
-            <a href="{{route('login')}}" class="btn btn-light">Cancel</a>
+            <a href="{{route('login')}}" class="btn btn-light">Hủy</a>
         </div>
         <!--end::Actions-->
     </form>

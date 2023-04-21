@@ -7,7 +7,7 @@
         <!--begin::Heading-->
         <div class="text-center mb-11">
             <!--begin::Title-->
-            <h1 class="text-dark fw-bolder mb-3">Sign In</h1>
+            <h1 class="text-dark fw-bolder mb-3">Đăng nhập</h1>
             <!--end::Title-->
         </div>
         <!--end::Heading-->
@@ -25,7 +25,7 @@
         <!--begin::Input group=-->
         <div class="fv-row mb-3">
             <!--begin::Password-->
-            <input type="password" placeholder="Password" name="password" autocomplete="off"
+            <input type="password" placeholder="Mật khẩu" name="password" autocomplete="off"
                    class="form-control bg-transparent" required/>
             <!--end::Password-->
         </div>
@@ -34,7 +34,7 @@
         <div class="d-flex flex-stack flex-wrap gap-3 fs-base fw-semibold mb-8">
             <div></div>
             <!--begin::Link-->
-            <a href="{{route('password.request')}}" class="link-danger">Forgot Password ?</a>
+            <a href="{{route('password.request')}}" class="link-danger">Quên mật khẩu ?</a>
             <!--end::Link-->
         </div>
         <!--end::Wrapper-->
@@ -42,7 +42,7 @@
         <div class="d-grid mb-10">
             <button type="submit" id="kt_sign_in_submit" class="btn btn-danger">
                 <!--begin::Indicator label-->
-                <span class="indicator-label">Sign In</span>
+                <span class="indicator-label">Đăng nhập</span>
                 <!--end::Indicator label-->
             </button>
         </div>
