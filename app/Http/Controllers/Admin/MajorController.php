@@ -14,12 +14,11 @@ class MajorController extends Controller
      */
     public function index(Request $request)
     {
-        //
-        if($request->filled('search')){
-            $majors = Major::search($request->search)->paginate(10)->withQueryString();
-        }else{
-            $majors = Major::search('')->paginate(10);;
+        $query = Major::query()->withCount('users');
+        if(request('search')){
+            $query = $query->where('name','like','%'.$request->search.'%')->withCount('users');
         }
+        $majors = $query->paginate('10');
         return view('pages.admin.major.list',compact('majors'));
     }
 
