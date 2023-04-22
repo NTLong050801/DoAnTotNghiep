@@ -32,9 +32,9 @@
                                 @if(auth()->user()->role==2)
                                     Admin
                                 @elseif(auth()->user()->role==1)
-                                    Teacher
+                                    Giảng viên
                                 @else
-                                    Student
+                                    Sinh viên
                                 @endif
                             </div>
                             <!--begin::Badge-->
@@ -47,7 +47,7 @@
                     <div class="d-flex flex-stack fs-4 py-3">
                         <div class="fw-bold rotate collapsible" data-bs-toggle="collapse"
                              href="#kt_user_view_details" role="button" aria-expanded="false"
-                             aria-controls="kt_user_view_details">Details
+                             aria-controls="kt_user_view_details">Thông tin chi tiết
                             <span class="ms-2 rotate-180">
                                 <!--begin::Svg Icon | path: icons/duotune/arrows/arr072.svg-->
                                 <span class="svg-icon svg-icon-3">
@@ -57,7 +57,7 @@
                             </span>
                         </div>
                         <span>
-                            <a href="{{route('profile.edit')}}" class="btn btn-sm btn-light-primary" >Edit</a>
+                            <a href="{{route('profile.edit')}}" class="btn btn-sm btn-light-primary" >Sửa</a>
                         </span>
                     </div>
                     <!--end::Details toggle-->
@@ -93,7 +93,7 @@
                 <li class="nav-item">
                     <a class="nav-link text-active-primary pb-4 active" data-kt-countup-tabs="true"
                        data-bs-toggle="tab"
-                       href="#kt_user_view_overview_security">Security</a>
+                       href="#kt_user_view_overview_security">Bảo mật</a>
                 </li>
                 <!--end:::Tab item-->
             </ul>
@@ -109,7 +109,7 @@
                         <div class="card-header border-0">
                             <!--begin::Card title-->
                             <div class="card-title">
-                                <h2>Profile</h2>
+                                <h2>Hồ sơ</h2>
                             </div>
                             <!--end::Card title-->
                         </div>
@@ -147,8 +147,8 @@
                     </div>
                     <!--end::Card-->
                     <!--begin::Card-->
+                    @if(auth()->user()->role == 2)
                     <div class="card pt-4 mb-6 mb-xl-9">
-                       @if(auth()->user()->role == 2)
                             <!--begin::Card header-->
                             <div class="card-header border-0">
                                 <!--begin::Card title-->
@@ -198,8 +198,8 @@
                                 <!--end::Card toolbar-->
                             </div>
                             <!--end::Card header-->
-                       @endif
                     </div>
+                    @endif
                     <!--end::Card-->
                 </div>
                 <!--end:::Tab pane-->

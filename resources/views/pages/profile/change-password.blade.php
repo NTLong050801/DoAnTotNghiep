@@ -51,11 +51,11 @@
                 <!--begin::Actions-->
                 <div class="text-center pt-15">
                     <a href="{{route('profile.index')}}">
-                        <button type="button" class="btn btn-light me-3" data-kt-users-modal-action="cancel">Back
+                        <button type="button" class="btn btn-light me-3" data-kt-users-modal-action="cancel">Trở về
                         </button>
                     </a>
                     <button type="submit" class="btn btn-primary" data-kt-users-modal-action="submit">
-                        <span class="indicator-label">Submit</span>
+                        <span class="indicator-label">Đổi mật khẩu</span>
                     </button>
                 </div>
                 <!--end::Actions-->
