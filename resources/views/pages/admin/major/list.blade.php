@@ -36,7 +36,7 @@
                 <tr>
                     <th scope="row">{{(($majors->currentPage())-1)*10+$key+1}}</th>
                     <td>{{$major->name}}</td>
-                    <td></td>
+                    <td>{{$major->users_count}}</td>
                     <td>
                         <a href="{{route('major.edit',$major->id)}}">
                             <button class="btn btn-sm btn-warning"><i class="fa-solid fa-pen-to-square"></i></button>
