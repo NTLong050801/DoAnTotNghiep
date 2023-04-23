@@ -19,4 +19,8 @@ class Major extends Model
             'name' => $this->name,
         ];
     }
+    public function users()
+    {
+        return $this->hasMany(User::class);
+    }
 }

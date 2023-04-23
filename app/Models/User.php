@@ -70,4 +70,9 @@ class User extends Authenticatable
             'email' => $this->email,
         ];
     }
+
+    public function exams()
+    {
+        return $this->hasMany(Exam::class);
+    }
 }
