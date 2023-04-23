@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Teachers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Exam;
 use Illuminate\Http\Request;
 
 class ExamController extends Controller
@@ -12,7 +13,10 @@ class ExamController extends Controller
      */
     public function index()
     {
-        return view('pages.teachers.exams.index');
+        $query = Exam::query();
+        $query = $query->where('user_id',auth()->id())->orderBy('id','desc');
+        $exams = $query->paginate('10');
+        return view('pages.teachers.exams.index',compact('exams'));
     }
 
     /**
@@ -20,7 +24,7 @@ class ExamController extends Controller
      */
     public function create()
     {
-        //
+        return view('pages.teachers.exams.create');
     }
 
     /**
@@ -28,7 +32,21 @@ class ExamController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => ['string','required','max:255'],
+            'minute_time' => 'integer|min:0|required',
+            'number_question' => 'integer|nullable',
+            'date_start' => 'date|nullable',
+            'date_end' => 'date|nullable',
+            'note' => 'string|nullable',
+            'password' => 'string|nullable',
+        ]);
+        if(request('random')){
+            $request['random'] = true;
+        }
+        $request['user_id'] = auth()->id();
+        Exam::create($request->all());
+        return redirect()->route('teachers.exams.index');
     }
 
     /**
@@ -42,17 +60,30 @@ class ExamController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Exam $exam)
     {
-        //
+        return view('pages.teachers.exams.edit',compact('exam'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Exam $exam)
     {
-        //
+        $request->validate([
+            'name' => ['string','required','max:255'],
+            'minute_time' => 'integer|min:0|required',
+            'number_question' => 'integer|nullable',
+            'date_start' => 'date|nullable',
+            'date_end' => 'date|nullable',
+            'note' => 'string|nullable',
+            'password' => 'string|nullable',
+        ]);
+        if(request('random')){
+            $request['random'] = true;
+        }
+        $exam->update($request->all());
+        return redirect()->route('teachers.exams.index');
     }
 
     /**

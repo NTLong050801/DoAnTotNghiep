@@ -19,5 +19,6 @@ class Exam extends Model
         'password',
         'status',
         'random',
+        'user_id',
     ];
 }

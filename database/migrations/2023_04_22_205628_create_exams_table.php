@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('exams', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('minute_time');
+            $table->integer('minute_time');
             $table->integer('number_question')->nullable();
             $table->date('date_start')->nullable();
             $table->date('date_end')->nullable();
