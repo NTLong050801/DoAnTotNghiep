@@ -5,14 +5,14 @@
         <!--begin::Copyright-->
         <div class="text-dark order-2 order-md-1">
             <span class="text-muted fw-semibold me-1">© {{date('Y')}}</span>
-            <a href="https://migroup.asia" target="_blank" class="text-gray-800 text-hover-primary">MiStudio</a>
+            <a href="#" target="_blank" class="text-gray-800 text-hover-primary">Nguyễn Thành Long</a>
         </div>
         <!--end::Copyright-->
 
         <!--begin::Menu-->
         <ul class="menu menu-gray-600 menu-hover-primary fw-semibold order-1">
             <li class="menu-item">
-                <a href="https://migroup.asia" target="_blank" class="menu-link px-2">Về chúng tôi</a>
+                <a href="#" target="_blank" class="menu-link px-2">Về chúng tôi</a>
             </li>
 
             <li class="menu-item">

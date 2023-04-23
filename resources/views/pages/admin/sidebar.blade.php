@@ -60,7 +60,7 @@
                 <div class="menu-block">
                     <div class="menu-item">
                         <!--begin:Menu link-->
-                        <a class="menu-link" href="#">
+                        <a class="menu-link" href="{{route('admin.index')}}">
                             <span class="menu-icon"><i class="bi bi-grid-1x2-fill"></i></span>
                             <span class="menu-title">Tổng quan</span>
                         </a>

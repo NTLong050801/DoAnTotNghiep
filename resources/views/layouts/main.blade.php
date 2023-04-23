@@ -53,6 +53,9 @@
             @if(auth()->user()->role==2)
                 @include('pages.admin.sidebar')
             @endif
+            @if(auth()->user()->role==1)
+                @include('pages.teachers.sidebar')
+            @endif
 {{--            @include('layouts.partials.main.sidebar')--}}
             <!--end::Sidebar-->
             <!--begin::Main-->
