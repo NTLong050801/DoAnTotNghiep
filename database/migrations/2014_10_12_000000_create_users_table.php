@@ -35,6 +35,12 @@ return new class extends Migration
             'password' => Hash::make('admin'),
             'role' => '2',
         ]);
+        \App\Models\User::create([
+            'name' => 'teacher',
+            'email' => 'teacher@gmail.com',
+            'password' => Hash::make('admin'),
+            'role' => '1',
+        ]);
     }
 
     /**

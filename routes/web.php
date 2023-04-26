@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\StudentController;
 use App\Http\Controllers\Admin\TeacherController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Teachers\ExamController;
+use App\Http\Controllers\Teachers\QuestionController;
 use App\Http\Controllers\WebhooksController;
 use App\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Support\Facades\Route;
@@ -81,7 +82,18 @@ Route::prefix('/teachers')->group(function (){
         Route::post('/create',[ExamController::class,'store'])->name('teachers.exams.store');
         Route::get('/{exam}/edit',[ExamController::class,'edit'])->name('teachers.exams.edit');
         Route::post('/{exam}/update',[ExamController::class,'update'])->name('teachers.exams.update');
+        Route::get('/{exam}/destroy',[ExamController::class,'destroy'])->name('teachers.exams.destroy');
+    });
 
+    Route::prefix('questions')->group(function (){
+       Route::get('/',[QuestionController::class,'index'])->name('teachers.questions.index');
+       Route::get('/create',[QuestionController::class,'create'])->name('teachers.questions.create');
+       Route::post('/store',[QuestionController::class,'store'])->name('teachers.questions.store');
+       Route::get('/{question}/edit',[QuestionController::class,'edit'])->name('teachers.questions.edit');
+       Route::post('/{question}/update',[QuestionController::class,'update'])->name('teachers.questions.update');
+       Route::get('/{question}/destroy',[QuestionController::class,'destroy'])->name('teachers.questions.destroy');
+       Route::post('import',[QuestionController::class,'import'])->name('teachers.questions.import');
+       Route::post('/deleteSelected',[QuestionController::class,'deleteSelected']);
     });
 });
 Route::webhooks('webhook-receiving-url');
