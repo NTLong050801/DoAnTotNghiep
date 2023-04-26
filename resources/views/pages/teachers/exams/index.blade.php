@@ -1,7 +1,7 @@
 @extends('layouts.main')
 @section('content')
     <!--begin::Form-->
-    <form action="#">
+    <form action="#" method="get">
         <!--begin::Card-->
         <div class="card mb-7">
             <!--begin::Card body-->
@@ -16,7 +16,7 @@
                             <img src="{{asset('assets/media/icons/duotune/general/gen021.svg')}}" alt="">
                         </span>
                         <!--end::Svg Icon-->
-                        <input type="text" class="form-control form-control-solid ps-10" name="search" value=""
+                        <input type="text" class="form-control form-control-solid ps-10" name="keyword" value="{{request('keyword')}}"
                                placeholder="Search">
                     </div>
                     <!--end::Input group-->
@@ -199,7 +199,7 @@
                                     <button type="button" class="btn btn-warning btn-active-light-primary my-1">Sửa
                                     </button>
                                 </a>
-                                <a href="#"
+                                <a href="{{route('teachers.exams.destroy',$exam)}}"
                                    class="btn btn-danger btn-active-primary my-1 me-2">Xóa bài thi</a>
                             </div>
                             <!--end::Card footer-->
@@ -317,7 +317,7 @@
                                                         <!--end::Menu item-->
                                                         <!--begin::Menu item-->
                                                         <div class="menu-item px-3">
-                                                            <a href="#" class="menu-link px-3" data-kt-users-table-filter="delete_row">Xóa</a>
+                                                            <a href="{{route('teachers.exams.destroy',$exam)}}" class="menu-link px-3" data-kt-users-table-filter="delete_row">Xóa</a>
                                                         </div>
                                                         <!--end::Menu item-->
                                                     </div>
