@@ -79,7 +79,7 @@
                     <!--begin:Menu item-->
                     <div class="menu-item">
                         <!--begin:Menu link-->
-                        <a class="menu-link" href="#">
+                        <a class="menu-link" href="{{route('teachers.questions.index')}}">
                             <span class="menu-icon"><i class="fa-solid fa-building-columns"></i></span>
                             <span class="menu-title">Ngân hàng câu hỏi</span>
                         </a>
