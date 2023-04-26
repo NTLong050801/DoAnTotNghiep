@@ -11,10 +11,13 @@ class ExamController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         $query = Exam::query();
         $query = $query->where('user_id',auth()->id())->orderBy('id','desc');
+        if (\request('keyword')){
+            $query = $query->where('name','like','%'.$request->keyword.'%');
+        }
         $exams = $query->paginate('10');
         return view('pages.teachers.exams.index',compact('exams'));
     }
@@ -81,6 +84,8 @@ class ExamController extends Controller
         ]);
         if(request('random')){
             $request['random'] = true;
+        }else{
+            $request['random'] = false;
         }
         $exam->update($request->all());
         return redirect()->route('teachers.exams.index');
@@ -89,8 +94,9 @@ class ExamController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Exam $exam)
     {
-        //
+        $exam->delete();
+        return redirect()->route('teachers.exams.index');
     }
 }
