@@ -38,7 +38,7 @@
                         </div>
                         <div class="fv-row mb-4">
                             <div class="form-check mt-10">
-                                <input @if($exam->random == 1 ) checked @endif  class="form-check-input" type="checkbox"  name="random" id="random">
+                                <input @if($exam->random == 1 ) checked @endif value="{{$exam->random}}"  class="form-check-input" type="checkbox"  name="random" id="random">
                                 <label class="fs-5 fw-bold form-label mb-2"
                                        for="random">
                                     <span class="fw-semibold fs-6 mb-2"><b>Trộn đề</b></span>
