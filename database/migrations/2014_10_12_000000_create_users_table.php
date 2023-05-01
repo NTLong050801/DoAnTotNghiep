@@ -40,6 +40,14 @@ return new class extends Migration
             'email' => 'teacher@gmail.com',
             'password' => Hash::make('admin'),
             'role' => '1',
+            'major' => '1',
+        ]);
+        \App\Models\User::create([
+            'name' => 'teacher1',
+            'email' => 'teacher1@gmail.com',
+            'password' => Hash::make('admin'),
+            'role' => '1',
+            'major' => '1',
         ]);
     }
 
