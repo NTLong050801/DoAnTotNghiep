@@ -193,7 +193,7 @@
                             <!--end::Card body-->
                             <!--begin::Card footer-->
                             <div class="card-footer flex-wrap pt-0">
-                                <a href="#"
+                                <a href="{{route('teachers.exams.show',$exam)}}"
                                    class="btn btn-info btn-active-primary my-1 me-2">Chi tiết</a>
                                 <a href="{{route('teachers.exams.edit',$exam)}}">
                                     <button type="button" class="btn btn-warning btn-active-light-primary my-1">Sửa

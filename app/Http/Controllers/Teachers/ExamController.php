@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Teachers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Exam;
+use App\Models\ExamsQuestions;
+use App\Models\Question;
 use Illuminate\Http\Request;
 
 class ExamController extends Controller
@@ -55,9 +57,14 @@ class ExamController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Exam $exam)
     {
-        //
+        $examsQuestions = ExamsQuestions::where('exam_id',$exam->id)->pluck('question_id');
+        $questions = Question::where('user_id',auth()->id())
+            ->whereNotIn('id',$examsQuestions)
+            ->get();
+        $examsQuestions = Question::whereIn('id',$examsQuestions)->get();
+        return view('pages.teachers.exams.show',compact('exam','questions','examsQuestions'));
     }
 
     /**
@@ -98,5 +105,20 @@ class ExamController extends Controller
     {
         $exam->delete();
         return redirect()->route('teachers.exams.index');
+    }
+
+    public function addQuestion(string $exam_id , Request $request){
+        $examsQuestions = ExamsQuestions::where('exam_id',$exam_id)->pluck('question_id');
+        $questions = Question::where('user_id',auth()->id())
+            ->whereNotIn('id',$examsQuestions)
+            ->where('name','LIKE','%'.$request->search.'%')
+            ->get();
+        return view('pages.teachers.ajax.add-question',compact('questions'));
+    }
+
+    public function myQuestion(string $exam_id){
+        $examsQuestions = ExamsQuestions::where('exam_id',$exam_id)->pluck('question_id');
+        $examsQuestions = Question::whereIn('id',$examsQuestions)->orderBy('id','desc')->get();
+        return view('pages.teachers.ajax.my-question',compact('examsQuestions'));
     }
 }

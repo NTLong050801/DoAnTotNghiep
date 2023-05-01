@@ -15,7 +15,7 @@
                     </span>
                         <!--end::Svg Icon-->
                         <input type="text" data-kt-customer-table-filter="search"
-                               class="form-control form-control-solid w-450px ps-15 bg-secondary"
+                               class="form-control form-control-solid w-350px ps-15 bg-secondary"
                                placeholder="Nhập câu hỏi" name="search" value="{{request()->get('search')}}">
                         <button type="submit" class="btn btn-sm btn-success s-15">Tìm kiếm</button>
                     </div>
@@ -27,6 +27,7 @@
             <div class="card-toolbar">
                 <!--begin::Toolbar-->
                 <div id="toolbar" class="d-flex justify-content-end" data-kt-customer-table-toolbar="base">
+                    <a href="{{route('teachers.questions.review')}}"><button class="btn btn-danger btn-sm me-5">Tham khảo câu hỏi</button></a>
                     <!--begin::Export-->
                     <button type="button" class="btn btn-light-primary me-3" data-bs-toggle="modal"
                             data-bs-target="#kt_questions_import_modal">
@@ -109,15 +110,11 @@
                             </th>
                             <th class="min-w-125px sorting" tabindex="0" aria-controls="kt_customers_table"
                                 aria-label="Name: activate to sort column ascending"
-                                style="width: 162.125px;">Câu hỏi
+                                style="width: 162.125px;">Câu hỏi @if($count > 0) <span class="text-danger">({{$count}})</span> @endif
                             </th>
                             <th class="min-w-125px sorting" tabindex="0" aria-controls="kt_customers_table"
                                 aria-label="Ans: activate to sort column ascending"
                                 style="width: 200.712px;">Đáp án
-                            </th>
-                            <th class="min-w-125px sorting" tabindex="0" aria-controls="kt_customers_table"
-                                aria-label="Name: activate to sort column ascending"
-                                style="width: 100.125px;">Ảnh mô tả
                             </th>
                             <th class="min-w-30px sorting" tabindex="0" aria-controls="kt_customers_table"
                                 aria-label="Company: activate to sort column ascending"
@@ -147,6 +144,11 @@
                                 <td>
                                     <a href="#"
                                        class="text-gray-800 text-hover-primary mb-1">{{$question->name}}</a>
+                                   <div class="text-center mt-5">
+                                       <a target="_blank" href="{{asset('storage/'.$question->image)}}"><img
+                                               src="{{asset('storage/'.$question->image)}}" style="width: 100px"
+                                               alt=""></a>
+                                   </div>
                                 </td>
                                 <td class="bg-dark">
                                     @foreach(json_decode($question->options) as $key=>$option)
@@ -162,11 +164,6 @@
                                     @endforeach
                                 </td>
                                 <!--end::Name=-->
-                                <td>
-                                    <a target="_blank" href="{{asset('storage/'.$question->image)}}"><img
-                                            src="{{asset('storage/'.$question->image)}}" style="width: 100px"
-                                            alt=""></a>
-                                </td>
                                 <td>
                                     {{$question->note}}
                                 </td>

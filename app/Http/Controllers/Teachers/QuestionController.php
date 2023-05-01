@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Teachers;
 use App\Http\Controllers\Controller;
 use App\Imports\QuestionsImport;
 use App\Models\Question;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Excel;
@@ -17,14 +18,17 @@ class QuestionController extends Controller
     {
         $this->excel = $excel;
     }
+
     public function index(Request $request)
     {
         $query = Question::query();
-        if(\request('search')){
-            $query = $query->where('name','LIKE','%'.$request->search.'%');
+        if (\request('search')) {
+            $query = $query->where('name', 'LIKE', '%' . $request->search . '%');
         }
-        $questions = $query->where('user_id',auth()->id())->orderBy('id','desc')->paginate('20');
-        return view('pages.teachers.questions.index',compact('questions'));
+        $questions = $query->where('user_id', auth()->id())->orderBy('id', 'desc')->paginate('20');
+        $count = $query->count();
+//        $questions = $query;
+        return view('pages.teachers.questions.index', compact('questions', 'count'));
     }
 
     public function create()
@@ -46,14 +50,17 @@ class QuestionController extends Controller
             'image' => $path,
             'user_id' => auth()->id(),
         ]);
+        toastr('Thêm câu hỏi thành công !!');
         return redirect()->route('teachers.questions.index');
     }
 
-    public function edit(Question $question){
-        return view('pages.teachers.questions.edit',compact('question'));
+    public function edit(Question $question)
+    {
+        return view('pages.teachers.questions.edit', compact('question'));
     }
 
-    public function update(Request $request , Question $question){
+    public function update(Request $request, Question $question)
+    {
         $path = '';
         if ($request->hasFile('file')) {
             $path = Storage::disk('public')->put('questions', $request->file);
@@ -64,7 +71,8 @@ class QuestionController extends Controller
         return redirect()->route('teachers.questions.index');
     }
 
-    public function deleteSelected(Request $request){
+    public function deleteSelected(Request $request)
+    {
         $array_id = $request->input('deteleSelected');
 
         $questions = Question::whereIn('id', $array_id)->get();
@@ -75,14 +83,79 @@ class QuestionController extends Controller
         return response()->json(['message' => 'Users deleted successfully.']);
     }
 
-    public function destroy(Question $question){
+    public function destroy(Question $question)
+    {
         $question->delete();
         return redirect()->route('teachers.questions.index');
     }
 
-    public function import(Request $request){
+    public function import(Request $request)
+    {
         $file = $request->file('file');
         $this->excel->import(new QuestionsImport, $file);
         return redirect()->route('teachers.questions.index')->with('success', "Nhập thành công !!!");
+    }
+
+    public function review(Request $request)
+    {
+        $query = Question::query();
+        $users = User::where('major_id', auth()->user()->major_id)
+            ->where('role', 1)
+            ->where('id', '!=', auth()->id())
+            ->get();
+        $listQuestions = [];
+
+        foreach ($users as $user) {
+            if (\request('search')) {
+                $query = $query->where('name', 'LIKE', '%' . $request->search . '%');
+                $userQuestions = $query->where('user_id',$user->id)->get();
+            }else{
+                $userQuestions = $user->questions ;
+            }
+            foreach ($userQuestions as $userQuestion) {
+                $exits = Question::where('name', $userQuestion->name)
+                    ->where('user_id', auth()->id())->exists();
+                if (!$exits) {
+                    array_push($listQuestions, $userQuestion);
+                }
+            }
+        }
+        return view('pages.teachers.questions.review', compact('listQuestions'));
+    }
+
+    public function add(Question $question, Request $request)
+    {
+        $exits = Question::where('name', $question->name)
+            ->where('user_id', auth()->id())->exists();
+        if ($exits) {
+            toastr()->error('Câu hỏi đã tồn tại trong kho', 'Lỗi!');
+        } else {
+            Question::create([
+                'name' => $question->name,
+                'ans' => $question->ans,
+                'options' => $question->options,
+                'image' => $question->image,
+                'user_id' => auth()->id(),
+            ]);
+            toastr('Thêm câu hỏi thành công !!');
+        }
+        return redirect()->route('teachers.questions.review');
+    }
+
+    public function addSelected(Request $request){
+        $array_id = $request->input('addSelected');
+
+        $questions = Question::whereIn('id', $array_id)->get();
+
+        foreach ($questions as $question) {
+            Question::create([
+                'name' => $question->name,
+                'ans' => $question->ans,
+                'options' => $question->options,
+                'image' => $question->image,
+                'user_id' => auth()->id(),
+            ]);
+        }
+        return json_encode('ok');
     }
 }
