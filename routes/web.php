@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\MajorController;
 use App\Http\Controllers\Admin\StudentController;
 use App\Http\Controllers\Admin\TeacherController;
+use App\Http\Controllers\ClassesController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Teachers\ExamController;
 use App\Http\Controllers\Teachers\ExamsQuestionsController;
@@ -111,6 +112,26 @@ Route::prefix('/teachers')->group(function () {
         Route::get('/',[ExamsQuestionsController::class,'store']);
         Route::get('/{id_question}/destroy',[ExamsQuestionsController::class,'destroy']);
     });
+
+    Route::prefix('classes')->group(function (){
+        Route::get('/', [ClassesController::class, 'index'])->name('teachers.classes.index');
+        Route::get('search', [ClassesController::class, 'search'])->name('teachers.classes.search');
+        Route::get('create', [ClassesController::class, 'create'])->name('teachers.classes.create');
+
+        Route::get('export/{type}', [ClassesController::class, 'export'])->name('teachers.classes.export');
+        Route::post('import', [ClassesController::class, 'import'])->name('teachers.classes.students-import');
+        Route::post('store', [ClassesController::class, 'store'])->name('teachers.classes.store');
+        Route::get('/{class}/show',[ClassesController::class,'show'])->name('teachers.classes.show');
+        Route::get('{class}/edit', [ClassesController::class, 'edit'])->name('teachers.classes.edit');
+        Route::post('{class}/update', [ClassesController::class, 'update'])->name('teachers.classes.update');
+        Route::get('{class}/destroy', [ClassesController::class, 'destroy'])->name('teachers.classes.destroy');
+
+        Route::get('{class_id}/classes-students',[ClassesController::class,'classes_students'])->name('teachers.classes.classes-students');
+        Route::get('/{user_id}/detail-student',[ClassesController::class,'detail_student'])->name('teachers.classes.detail-students');
+        Route::post('/createStudent',[ClassesController::class,'createStudent'])->name('teachers.classes.createStudent');
+        Route::get('/deleteStudent/{id_student}/{id_class}',[ClassesController::class,'deleteStudent'])->name('teachers.classes.deleteStudent');
+
+    });
 });
 Route::webhooks('webhook-receiving-url');
 
@@ -122,5 +143,7 @@ Route::get('/table', function () {
 Route::get('/full-screen',function (){
    return view('full-screen');
 });
-
+Route::get('/test',function (){
+    return view('test');
+});
 require __DIR__ . '/auth.php';
