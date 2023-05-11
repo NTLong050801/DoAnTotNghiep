@@ -69,7 +69,7 @@
                 <td class="col-1">{{$key+1}}</td>
                 <td class="col-3">{{$teacher->name}}</td>
                 <td class="col-2">{{$teacher->email}}</td>
-                <td class="col-2">{{$teacher->majors[0]->name}}</td>
+                <td class="col-2">{{$teacher->majors[0]->name ?? ''}}</td>
                 <td class="col-2">{{$teacher->updated_at}}</td>
                 <td class="col-2">
                     <a href="{{route('teachers.edit',$teacher)}}">

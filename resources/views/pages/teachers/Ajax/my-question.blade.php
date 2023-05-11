@@ -12,7 +12,7 @@
         <!--end::Checkbox-->
         <!--begin::ID-->
         <td>
-            <b>{{$question->name}}</b>
+            <b>{{$loop->iteration}}.{{$question->name}}</b>
             <div class="row bg-dark mt-5 p-5">
                 @foreach(json_decode($question->options) as $key=>$option)
                     <div class="form-check col-sm-6 mt-2">

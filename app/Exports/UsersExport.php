@@ -33,7 +33,7 @@ class UsersExport implements FromCollection, ShouldAutoSize, WithMapping, WithHe
             $row->id,
             $row->name,
             $row->email,
-            $row->majors[0]->name,
+            $row->majors[0]->name ?? '',
         ];
     }
 

@@ -90,6 +90,18 @@
                     <!--begin:Menu item-->
                     <div class="menu-item">
                         <!--begin:Menu link-->
+                        <a class="menu-link" href="{{route('teachers.classes.index')}}">
+                            <span class="menu-icon"><i class="fa-solid fa-people-group"></i></span>
+                            <span class="menu-title">Quản lý lớp học</span>
+                        </a>
+                        <!--end:Menu link-->
+                    </div>
+                    <!--end:Menu item-->
+                </div>
+                <div class="menu-block">
+                    <!--begin:Menu item-->
+                    <div class="menu-item">
+                        <!--begin:Menu link-->
                         <a class="menu-link" href="#">
                             <span class="menu-icon"><i class="fa-solid fa-users-gear"></i></span>
                             <span class="menu-title">Quản lý sinh viên</span>
