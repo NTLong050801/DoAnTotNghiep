@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\StudentController;
 use App\Http\Controllers\Admin\TeacherController;
 use App\Http\Controllers\ClassesController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Students\ExamsController;
 use App\Http\Controllers\Teachers\ExamController;
 use App\Http\Controllers\Teachers\ExamsQuestionsController;
 use App\Http\Controllers\Teachers\QuestionController;
@@ -88,6 +89,10 @@ Route::prefix('/teachers')->group(function () {
         Route::get('/{exam}/show',[ExamController::class,'show'])->name('teachers.exams.show');
         Route::get('/{exam}/addQuestion',[ExamController::class,'addQuestion'])->name('teachers.exams.addQuestion');
         Route::get('/{exam}/myQuestion',[ExamController::class,'myQuestion'])->name('teachers.exams.myQuestion');
+        Route::get('/{exam}/studentInClass',[ExamController::class,'studentInClass'])->name('teachers.exams.studentInClass');
+
+        Route::get('/{exam}/addClass/{class}',[ExamController::class,'addClass'])->name('teachers.exams.addClass');
+        Route::post('/{exam}/addStudent',[ExamController::class,'addStudent'])->name('teachers.exams.addStudent');
 
     });
 
@@ -131,6 +136,19 @@ Route::prefix('/teachers')->group(function () {
         Route::post('/createStudent',[ClassesController::class,'createStudent'])->name('teachers.classes.createStudent');
         Route::get('/deleteStudent/{id_student}/{id_class}',[ClassesController::class,'deleteStudent'])->name('teachers.classes.deleteStudent');
 
+    });
+});
+
+Route::prefix('/students')->group(function (){
+    Route::get('/', function () {
+        return view('pages.students.index');
+    })->name('students.dashboard');
+    Route::prefix('exams')->group(function (){
+       Route::get('/',[ExamsController::class,'index'])->name('students.exams.index');
+       Route::get('/{exam}/start',[ExamsController::class,'start'])->name('students.exams.start');
+       Route::get('/{exam}/doExam',[ExamsController::class,'doExam'])->name('students.exams.doExam');
+       Route::post('/checkPassword',[ExamsController::class,'checkPassword'])->name('students.exams.checkPassword');
+       Route::post('/checkResult',[ExamsController::class,'checkResult'])->name('students.exams.checkResult');
     });
 });
 Route::webhooks('webhook-receiving-url');

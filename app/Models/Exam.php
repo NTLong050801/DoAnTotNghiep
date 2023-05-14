@@ -20,4 +20,7 @@ class Exam extends Model
         'random',
         'user_id',
     ];
+    public function user(){
+        return $this->belongsToMany(User::class, 'exams_students', 'exam_id', 'id_user');
+    }
 }
