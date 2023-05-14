@@ -43,7 +43,7 @@ class ClassStudentsImport implements ToCollection, WithHeadingRow,SkipsOnError
                     'email' => $row['email'],
                     'password' => Hash::make($row['email']),
                     'role' => 0,
-                    'major' => $major->id,
+                    'major_id' => $major->id,
                 ]);
             }
             $StudentInClass = ClassesStudents::where('class_id', $this->class_id)->where('user_id', $account->id)->first();

@@ -33,7 +33,7 @@ class AuthenticatedSessionController extends Controller
         } else if ($role == 1) {
             return redirect()->route('teachers.dashboard');
         } else {
-            return redirect()->route('student.home');
+            return redirect()->route('students.dashboard');
         }
 
     }

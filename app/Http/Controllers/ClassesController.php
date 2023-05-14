@@ -110,7 +110,7 @@ class ClassesController extends Controller
                 'email' => $request->input('email'),
                 'password' => Hash::make($request->input('email')),
                 'role' => 0,
-                'major' => $request->input('major'),
+                'major_id' => $request->input('major'),
             ]);
         }
         $StudentInClass = ClassesStudents::where('class_id', $request->input('class_id'))->where('user_id', $account->id)->first();

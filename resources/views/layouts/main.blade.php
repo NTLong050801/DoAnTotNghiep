@@ -56,6 +56,9 @@
             @if(auth()->user()->role==1)
                 @include('pages.teachers.sidebar')
             @endif
+            @if(auth()->user()->role==0)
+                @include('pages.students.sidebar')
+            @endif
 {{--            @include('layouts.partials.main.sidebar')--}}
             <!--end::Sidebar-->
             <!--begin::Main-->
@@ -109,6 +112,16 @@
 <script src="{{asset('assets/js/scripts.bundle.js')}}"></script>
 <!--end::Global Javascript Bundle-->
 <!--begin::Vendors Javascript(used for this page only)-->
+<script>
+    // Add an event listener to each link
+    const currentUrl = window.location.href;
+    $('.menu-block .menu-item .menu-link').removeClass('active');
+    $('.menu-block .menu-item .menu-link').each(function (){
+        if($(this).attr('href') == currentUrl){
+            $(this).addClass('active')
+        }
+    })
+</script>
 @yield('javascript')
 <!--end::Vendors Javascript-->
 <!--end::Javascript-->

@@ -3,10 +3,17 @@
 namespace App\Http\Controllers\Teachers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Classes;
+use App\Models\ClassesStudents;
 use App\Models\Exam;
 use App\Models\ExamsQuestions;
+use App\Models\ExamsStudents;
+use App\Models\Major;
 use App\Models\Question;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 class ExamController extends Controller
 {
@@ -64,7 +71,9 @@ class ExamController extends Controller
             ->whereNotIn('id',$examsQuestions)
             ->get();
         $examsQuestions = Question::whereIn('id',$examsQuestions)->get();
-        return view('pages.teachers.exams.show',compact('exam','questions','examsQuestions'));
+        $classes = Classes::where('teacher_id',auth()->id())->get();
+        $majors = Major::all();
+        return view('pages.teachers.exams.show',compact('exam','questions','examsQuestions','classes','majors'));
     }
 
     /**
@@ -120,5 +129,57 @@ class ExamController extends Controller
         $examsQuestions = ExamsQuestions::where('exam_id',$exam_id)->pluck('question_id');
         $examsQuestions = Question::whereIn('id',$examsQuestions)->orderBy('id','desc')->get();
         return view('pages.teachers.ajax.my-question',compact('examsQuestions'));
+    }
+
+    public function addClass(Request $request){
+        $class_student = ClassesStudents::where('class_id',$request->input('class_id'))->get();
+        foreach ($class_student as $student){
+            //check sv có trong đề thi chưa
+            if(!ExamsStudents::where('id_user',$student->user_id)->where('exam_id',$request->input('exam_id'))->first()){
+                ExamsStudents::create([
+                    'exam_id' => $request->input('exam_id'),
+                    'id_user' => $student->user_id,
+                ]);
+            }
+        }
+    }
+
+    public function addStudent(Request $request){
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|max:255',
+            'email' => 'required|email',
+            'identifier' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'errors' => $validator->errors()
+            ], 422);
+        }
+        $major = $request->input('major');
+        $account = User::where('email', $request->input('email'))->first();
+        if (!$account) {
+            $account = User::create([
+                'name' => $request->input('name'),
+                'identifier' => $request->input('identifier'),
+                'email' => $request->input('email'),
+                'password' => Hash::make($request->input('email')),
+                'role' => 0,
+                'major_id' =>  $major,
+            ]);
+        }
+        if(!ExamsStudents::where('id_user',$account->id)->where('exam_id',$request->input('exam_id'))->first()){
+            ExamsStudents::create([
+                'exam_id' => $request->input('exam_id'),
+                'id_user' => $account->id,
+            ]);
+        }
+        return json_encode([
+            'success' => "Thêm thành công",
+        ]);
+    }
+    public function studentInClass(Request $request){
+        $students = ExamsStudents::where('exam_id',$request->input('exam_id'))->get();
+        return view('pages.teachers.ajax.exams-students-list',compact('students'));
     }
 }

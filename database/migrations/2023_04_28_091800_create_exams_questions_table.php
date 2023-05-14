@@ -22,7 +22,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('exam_id')->constrained('exams')->cascadeOnDelete();
             $table->foreignId('id_user')->constrained('users')->cascadeOnDelete();
-            $table->date('time_started')->nullable();
+            $table->timestamp	('time_started')->nullable();
             $table->longText('questions')->nullable();
             $table->longText('answers')->nullable();
             $table->float('result')->nullable();
