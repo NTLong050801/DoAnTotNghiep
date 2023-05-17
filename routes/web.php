@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\TeacherController;
 use App\Http\Controllers\ClassesController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Students\ExamsController;
+use App\Http\Controllers\Students\ResultsContrller;
 use App\Http\Controllers\Teachers\ExamController;
 use App\Http\Controllers\Teachers\ExamsQuestionsController;
 use App\Http\Controllers\Teachers\QuestionController;
@@ -86,13 +87,19 @@ Route::prefix('/teachers')->group(function () {
         Route::get('/{exam}/edit', [ExamController::class, 'edit'])->name('teachers.exams.edit');
         Route::post('/{exam}/update', [ExamController::class, 'update'])->name('teachers.exams.update');
         Route::get('/{exam}/destroy', [ExamController::class, 'destroy'])->name('teachers.exams.destroy');
-        Route::get('/{exam}/show',[ExamController::class,'show'])->name('teachers.exams.show');
-        Route::get('/{exam}/addQuestion',[ExamController::class,'addQuestion'])->name('teachers.exams.addQuestion');
-        Route::get('/{exam}/myQuestion',[ExamController::class,'myQuestion'])->name('teachers.exams.myQuestion');
-        Route::get('/{exam}/studentInClass',[ExamController::class,'studentInClass'])->name('teachers.exams.studentInClass');
+        Route::get('/{exam}/show', [ExamController::class, 'show'])->name('teachers.exams.show');
+        Route::get('/{exam}/addQuestion', [ExamController::class, 'addQuestion'])->name('teachers.exams.addQuestion');
+        Route::get('/{exam}/myQuestion', [ExamController::class, 'myQuestion'])->name('teachers.exams.myQuestion');
+        Route::get('/{exam}/studentInClass/{keyword}', [ExamController::class, 'studentInClass'])->name('teachers.exams.studentInClass');
+        Route::get('/{exam_id}/deleteStudent/{user_id}', [ExamController::class, 'deleteStudent'])->name('teachers.exams.deleteStudent');
+        Route::get('/{exam_id}/resetExam/{user_id}', [ExamController::class, 'resetExam'])->name('teachers.exams.resetExam');
+        Route::get('/{exam_id}/resultExam/{user_id}', [ExamController::class, 'resultExam'])->name('teachers.exams.resultExam');
 
-        Route::get('/{exam}/addClass/{class}',[ExamController::class,'addClass'])->name('teachers.exams.addClass');
-        Route::post('/{exam}/addStudent',[ExamController::class,'addStudent'])->name('teachers.exams.addStudent');
+        Route::get('/{exam}/{status}/active',[ExamController::class,'active'])->name('teachers.exams.active');
+        Route::get('/{exam_id}/{password}/newPassword',[ExamController::class,'newPassword'])->name('teachers.exams.newPassword');
+
+        Route::get('/{exam}/addClass/{class}', [ExamController::class, 'addClass'])->name('teachers.exams.addClass');
+        Route::post('/{exam}/addStudent', [ExamController::class, 'addStudent'])->name('teachers.exams.addStudent');
 
     });
 
@@ -108,17 +115,17 @@ Route::prefix('/teachers')->group(function () {
         Route::prefix('review')->group(function () {
             Route::get('/', [QuestionController::class, 'review'])->name('teachers.questions.review');
             Route::get('/{question}/add', [QuestionController::class, 'add'])->name('teachers.questions.add');
-            Route::post('/addSelected',[QuestionController::class,'addSelected']);
+            Route::post('/addSelected', [QuestionController::class, 'addSelected']);
 
         });
     });
 
-    Route::prefix('exams-questions')->group(function (){
-        Route::get('/',[ExamsQuestionsController::class,'store']);
-        Route::get('/{id_question}/destroy',[ExamsQuestionsController::class,'destroy']);
+    Route::prefix('exams-questions')->group(function () {
+        Route::get('/', [ExamsQuestionsController::class, 'store']);
+        Route::get('/{id_question}/destroy', [ExamsQuestionsController::class, 'destroy']);
     });
 
-    Route::prefix('classes')->group(function (){
+    Route::prefix('classes')->group(function () {
         Route::get('/', [ClassesController::class, 'index'])->name('teachers.classes.index');
         Route::get('search', [ClassesController::class, 'search'])->name('teachers.classes.search');
         Route::get('create', [ClassesController::class, 'create'])->name('teachers.classes.create');
@@ -126,29 +133,35 @@ Route::prefix('/teachers')->group(function () {
         Route::get('export/{type}', [ClassesController::class, 'export'])->name('teachers.classes.export');
         Route::post('import', [ClassesController::class, 'import'])->name('teachers.classes.students-import');
         Route::post('store', [ClassesController::class, 'store'])->name('teachers.classes.store');
-        Route::get('/{class}/show',[ClassesController::class,'show'])->name('teachers.classes.show');
+        Route::get('/{class}/show', [ClassesController::class, 'show'])->name('teachers.classes.show');
         Route::get('{class}/edit', [ClassesController::class, 'edit'])->name('teachers.classes.edit');
         Route::post('{class}/update', [ClassesController::class, 'update'])->name('teachers.classes.update');
         Route::get('{class}/destroy', [ClassesController::class, 'destroy'])->name('teachers.classes.destroy');
 
-        Route::get('{class_id}/classes-students',[ClassesController::class,'classes_students'])->name('teachers.classes.classes-students');
-        Route::get('/{user_id}/detail-student',[ClassesController::class,'detail_student'])->name('teachers.classes.detail-students');
-        Route::post('/createStudent',[ClassesController::class,'createStudent'])->name('teachers.classes.createStudent');
-        Route::get('/deleteStudent/{id_student}/{id_class}',[ClassesController::class,'deleteStudent'])->name('teachers.classes.deleteStudent');
+        Route::get('{class_id}/classes-students', [ClassesController::class, 'classes_students'])->name('teachers.classes.classes-students');
+        Route::get('/{user_id}/detail-student', [ClassesController::class, 'detail_student'])->name('teachers.classes.detail-students');
+        Route::post('/createStudent', [ClassesController::class, 'createStudent'])->name('teachers.classes.createStudent');
+        Route::get('/deleteStudent/{id_student}/{id_class}', [ClassesController::class, 'deleteStudent'])->name('teachers.classes.deleteStudent');
 
     });
 });
 
-Route::prefix('/students')->group(function (){
+Route::prefix('/students')->group(function () {
     Route::get('/', function () {
         return view('pages.students.index');
     })->name('students.dashboard');
-    Route::prefix('exams')->group(function (){
-       Route::get('/',[ExamsController::class,'index'])->name('students.exams.index');
-       Route::get('/{exam}/start',[ExamsController::class,'start'])->name('students.exams.start');
-       Route::get('/{exam}/doExam',[ExamsController::class,'doExam'])->name('students.exams.doExam');
-       Route::post('/checkPassword',[ExamsController::class,'checkPassword'])->name('students.exams.checkPassword');
-       Route::post('/checkResult',[ExamsController::class,'checkResult'])->name('students.exams.checkResult');
+    Route::prefix('exams')->group(function () {
+        Route::get('/', [ExamsController::class, 'index'])->name('students.exams.index');
+        Route::get('/{exam}/start', [ExamsController::class, 'start'])->name('students.exams.start');
+        Route::get('/{exam}/doExam', [ExamsController::class, 'doExam'])->name('students.exams.doExam');
+        Route::post('/checkPassword', [ExamsController::class, 'checkPassword'])->name('students.exams.checkPassword');
+        Route::post('/checkResult', [ExamsController::class, 'checkResult'])->name('students.exams.checkResult');
+        Route::post('/updateWarning', [ExamsController::class, 'updateWarning'])->name('students.exams.updateWarning');
+        Route::get('/{exam_id}/result', [ExamsController::class, 'result'])->name('students.exams.result');
+    });
+
+    Route::prefix('results')->group(function (){
+       Route::get('/',[ResultsContrller::class,'index'])->name('students.results.index');
     });
 });
 Route::webhooks('webhook-receiving-url');
@@ -158,10 +171,10 @@ Route::post('/hooks/slack', [WebhooksController::class, 'send'])->withoutMiddlew
 Route::get('/table', function () {
     return view('pages.table.index');
 });
-Route::get('/full-screen',function (){
-   return view('full-screen');
+Route::get('/full-screen', function () {
+    return view('full-screen');
 });
-Route::get('/test',function (){
+Route::get('/test', function () {
     return view('test');
 });
 require __DIR__ . '/auth.php';

@@ -26,9 +26,15 @@
                         <!--end::Header-->
                         <div class="card-body d-flex flex-column justify-content-end ">
                             <div class="text-center">
-                                <button class="btn btn-sm btn-danger do-exam" exam_id="{{$examsStudent->exam_id }}">
-                                    Thi
-                                </button>
+                                @if($examsStudent->exam->status == '1')
+                                    <button class="btn btn-sm btn-danger do-exam" exam_id="{{$examsStudent->exam_id}}">
+                                        Thi
+                                    </button>
+                                @else
+                                    <button class="btn btn-sm btn-danger disabled">
+                                        Chưa mở
+                                    </button>
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -136,6 +142,7 @@
                             _token: csrfToken,
                         },
                         success: function (res) {
+                            console.log(res)
                             if (res == 'fail') {
                                 html = '<div class="alert alert-danger">' + 'Mật khẩu không chính xác , vui lòng thử lại' + '</div>'
                                 $('#error_password').html(html)

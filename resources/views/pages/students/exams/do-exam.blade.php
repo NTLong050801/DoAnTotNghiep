@@ -143,7 +143,7 @@
                 <!--end::Pos order-->
             </div>
             <!--end::Sidebar-->
-            <input type="hidden" name="exam_id" value="{{$examStudent->exam_id}}">
+            <input type="hidden" name="exam_id" id="exam_id" value="{{$examStudent->exam_id}}">
         </form>
     </div>
 @endsection
@@ -155,6 +155,15 @@
             var activeTab = tabs.filter('.active');
             var activeTabIndex = tabs.index(activeTab);
             var numTabs = tabs.length;
+            exam_id = $('#exam_id').val()
+            var csrfToken = $('input[name="_token"]').val();
+            var totalSeconds = $('#time_end').val()
+            form = document.getElementById('form_do_exam');
+            // set up the countdown timer
+            var countdown = document.getElementById('countdown');
+            var tab = 0;
+            var status_warning = '1';
+            var submit = 0;
             $('.link-questions').click(function () {
                 activeTab = tabs.filter('.active');
                 activeTabIndex = tabs.index(activeTab);
@@ -215,152 +224,202 @@
                     // Add your code here to handle the radio button being unchecked
                 }
             });
-        });
-        // get the total seconds from the PHP variable
-        var totalSeconds = $('#time_end').val()
 
-        // set up the countdown timer
-        var countdown = document.getElementById('countdown');
-        var interval = setInterval(function () {
-            // calculate the remaining minutes and seconds
-            var minutes = Math.floor(totalSeconds / 60);
-            var seconds = totalSeconds % 60;
+            // get the total seconds from the PHP variable
 
-            // format the remaining time as MM:SS
-            var formattedTime = ('0' + minutes).slice(-2) + ':' + ('0' + seconds).slice(-2);
+            var interval = setInterval(function () {
+                // calculate the remaining minutes and seconds
+                var minutes = Math.floor(totalSeconds / 60);
+                var seconds = totalSeconds % 60;
 
-            // update the countdown timer in the DOM
-            countdown.innerHTML = formattedTime;
+                // format the remaining time as MM:SS
+                var formattedTime = ('0' + minutes).slice(-2) + ':' + ('0' + seconds).slice(-2);
 
-            // decrement the total seconds by one
-            totalSeconds--;
+                // update the countdown timer in the DOM
+                countdown.innerHTML = formattedTime;
 
-            if (totalSeconds == 180) {
-                Swal.fire({
-                    text: "Thời gian làm bài còn 3 phút !",
-                    icon: "warning",
-                    buttonsStyling: false,
-                    confirmButtonText: "Ok!",
-                    timer: 3000,
-                    customClass: {
-                        confirmButton: "btn btn-primary"
+                // decrement the total seconds by one
+                totalSeconds--;
+
+                if (totalSeconds == 180) {
+                    Swal.fire({
+                        text: "Thời gian làm bài còn 3 phút !",
+                        icon: "warning",
+                        buttonsStyling: false,
+                        confirmButtonText: "Ok!",
+                        timer: 3000,
+                        customClass: {
+                            confirmButton: "btn btn-primary"
+                        }
+                    });
+                }
+                // stop the timer when it reaches zero
+
+                if (totalSeconds < 0) {
+                    clearInterval(interval);
+                    if (document.fullscreenElement) {
+                        document.exitFullscreen();
                     }
-                });
-            }
-            // stop the timer when it reaches zero
+                    submitExam()
+                    countdown.innerHTML = 'Time\'s up!';
+                    Swal.fire({
+                        text: "Nộp bài thành công",
+                        icon: "success",
+                        buttonsStyling: false,
+                        confirmButtonText: "Đã hiểu",
+                        customClass: {
+                            confirmButton: "btn btn-success"
+                        }
+                    })
+                }
+            }, 1000);
+            $('#btn_submit').click(function (e) {
+                e.preventDefault();
+                if (document.fullscreenElement) {
+                    if (document.fullscreenElement) {
+                        document.exitFullscreen();
+                    }
+                    status_warning = 0;
+                    Swal.fire({
+                        text: "Bạn chắc chắn muốn kết thúc bài thi ?",
+                        icon: "warning",
+                        showCancelButton: true,
+                        buttonsStyling: false,
+                        confirmButtonText: "Đồng ý",
+                        cancelButtonText: "Không, hủy",
+                        customClass: {
+                            confirmButton: "btn fw-bold btn-danger",
+                            cancelButton: "btn fw-bold btn-active-light-primary"
+                        }
+                    }).then(function (result) {
+                        if (result.isConfirmed) {
+                            submitExam()
+                            status_warning = 1;
+                        }
+                    })
+                }
 
-            if (totalSeconds < 0) {
-                clearInterval(interval);
-                submitExam()
-                countdown.innerHTML = 'Time\'s up!';
-                Swal.fire({
-                    text: "Nộp bài thành công",
-                    icon: "success",
-                    buttonsStyling: false,
-                    confirmButtonText: "Đã hiểu",
-                    time: 3000,
-                    customClass: {
-                        confirmButton: "btn btn-success"
+            })
+
+            function submitExam() {
+                formData = new FormData(form);
+                $.ajax({
+                    url: '/students/exams/checkResult',
+                    type: 'post',
+                    data: formData,
+                    dataType: 'json',
+                    processData: false,
+                    contentType: false,
+                    success: function (response) {
+                        submit = 1
+                        window.location.href = "/students/exams/" + exam_id + "/result";
                     }
                 })
             }
-        }, 1000);
-        $('#btn_submit').click(function (e) {
-            e.preventDefault();
-            Swal.fire({
-                text: "Bạn chắc chắn muốn kết thúc bài thi ?",
-                icon: "warning",
-                showCancelButton: true,
-                buttonsStyling: false,
-                confirmButtonText: "Đồng ý",
-                cancelButtonText: "Không, hủy",
-                customClass: {
-                    confirmButton: "btn fw-bold btn-danger",
-                    cancelButton: "btn fw-bold btn-active-light-primary"
-                }
-            }).then(function (result) {
-                if (result.isConfirmed) {
-                    submitExam()
-                }
-            })
 
-        })
-
-        function submitExam() {
-            form = document.getElementById('form_do_exam');
-            formData = new FormData(form);
-            $.ajax({
-                url: '/students/exams/checkResult',
-                type: 'post',
-                data: formData,
-                dataType: 'json',
-                processData: false,
-                contentType: false,
-                success: function (response) {
-
-                }
-            })
-        }
-
-        const fullScreenElement = document.querySelector("#fullscreen-div");
-        var tab = 0;
-        var status_warning = '1';
-
-        function fullscreenchanged(event) {
-            if (document.fullscreenElement) {
-                $('#form_do_exam').removeClass('d-none')
-                $('#form_do_exam').addClass('d-block')
-                $('#toggle-fullscreen').addClass('d-none');
-            } else {
-                $('#form_do_exam').removeClass('d-block')
-                $('#form_do_exam').addClass('d-none')
-                $('#toggle-fullscreen').removeClass('d-none')
-            }
-        }
-
-        document.addEventListener("visibilitychange", function () {
-            if (document.hidden) {
-                // The user switched to another tab or minimized the window
-                $('#form_do_exam').removeClass('d-block')
-                $('#form_do_exam').addClass('d-none')
-                $('#toggle-fullscreen').removeClass('d-none')
-                document.exitFullscreen();
-                status_warning = 0
-                tab += 1;
-                Swal.fire({
-                    text: "Vui lòng không chuyển trang !! Cảnh báo lần " + tab,
-                    icon: "warning",
-                    buttonsStyling: false,
-                    confirmButtonText: "Đã hiểu",
-                    customClass: {
-                        confirmButton: "btn btn-warning"
+            function updateWarning() {
+                $.ajax({
+                    url:"/students/exams/updateWarning",
+                    method:"POST",
+                    data:{
+                        exam_id:exam_id,
+                        tab: tab,
+                        _token: csrfToken,
                     }
-                }).then(() => {
-                    $('#toggle-fullscreen').addClass('d-block');
-                    status_warning = 1
-                });
+                })
             }
-        });
-        document.addEventListener("fullscreenchange", fullscreenchanged);
-        document.getElementById("toggle-fullscreen").addEventListener("click", () => {
-            fullScreenElement.requestFullscreen();
-        });
-        document.addEventListener("fullscreenchange", function () {
-            if (!document.fullscreenElement && status_warning == 1) {
-                tab += 1;
-                Swal.fire({
-                    text: "Vào chế độ toàn màn hình !! Cảnh báo lần " + tab,
-                    icon: "warning",
-                    buttonsStyling: false,
-                    confirmButtonText: "Đã hiểu",
-                    customClass: {
-                        confirmButton: "btn btn-warning"
+
+            const fullScreenElement = document.querySelector("#fullscreen-div");
+            function fullscreenchanged(event) {
+                if (document.fullscreenElement) {
+                    $('#form_do_exam').removeClass('d-none')
+                    $('#form_do_exam').addClass('d-block')
+                    $('#toggle-fullscreen').addClass('d-none');
+                } else {
+                    $('#form_do_exam').removeClass('d-block')
+                    $('#form_do_exam').addClass('d-none')
+                    $('#toggle-fullscreen').removeClass('d-none')
+                }
+            }
+
+            // window.addEventListener('blur', function () {
+            //     // The user switched to another tab or minimized the window
+            //     $('#form_do_exam').removeClass('d-block')
+            //     $('#form_do_exam').addClass('d-none')
+            //     $('#toggle-fullscreen').removeClass('d-none')
+            //     if (document.fullscreenElement) {
+            //         document.exitFullscreen();
+            //     }
+            //     status_warning = 0
+            //     tab += 1;
+            //     updateWarning()
+            //     Swal.fire({
+            //         text: "Vui lòng không chuyển trang !! Cảnh báo lần " + tab,
+            //         icon: "warning",
+            //         buttonsStyling: false,
+            //         confirmButtonText: "Đã hiểu",
+            //         customClass: {
+            //             confirmButton: "btn btn-warning"
+            //         }
+            //     }).then(() => {
+            //         $('#toggle-fullscreen').addClass('d-block');
+            //         status_warning = 1
+            //     });
+            // });
+            document.addEventListener("visibilitychange", function () {
+                if(submit == 0)
+                {
+                    if (document.hidden) {
+                        // The user switched to another tab or minimized the window
+                        $('#form_do_exam').removeClass('d-block')
+                        $('#form_do_exam').addClass('d-none')
+                        $('#toggle-fullscreen').removeClass('d-none')
+                        if (document.fullscreenElement) {
+                            document.exitFullscreen();
+                        }
+                        status_warning = 0
+                        tab += 1;
+                        updateWarning()
+                        Swal.fire({
+                            text: "Vui lòng không chuyển trang !! Cảnh báo lần " + tab,
+                            icon: "warning",
+                            buttonsStyling: false,
+                            confirmButtonText: "Đã hiểu",
+                            customClass: {
+                                confirmButton: "btn btn-warning"
+                            }
+                        }).then(() => {
+                            $('#toggle-fullscreen').addClass('d-block');
+                            status_warning = 1
+                        });
+                    } else {
+                        console.log("Tab is visible");
                     }
-                }).then(() => {
-                    $('#toggle-fullscreen').addClass('d-block');
-                    status_warning = 1
-                });
-            }
+                }
+
+            });
+            document.addEventListener("fullscreenchange", fullscreenchanged);
+            document.getElementById("toggle-fullscreen").addEventListener("click", () => {
+                fullScreenElement.requestFullscreen();
+            });
+            document.addEventListener("fullscreenchange", function () {
+                if (!document.fullscreenElement && status_warning == 1 && submit ==0) {
+                    tab += 1;
+                    updateWarning()
+                    Swal.fire({
+                        text: "Vào chế độ toàn màn hình !! Cảnh báo lần " + tab,
+                        icon: "warning",
+                        buttonsStyling: false,
+                        confirmButtonText: "Đã hiểu",
+                        customClass: {
+                            confirmButton: "btn btn-warning"
+                        }
+                    }).then(() => {
+                        $('#toggle-fullscreen').addClass('d-block');
+                        status_warning = 1
+                    });
+                }
+            });
         });
     </script>
 @endsection

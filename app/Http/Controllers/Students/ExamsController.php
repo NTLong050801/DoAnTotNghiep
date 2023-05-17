@@ -59,9 +59,10 @@ class ExamsController extends Controller
     {
         $examStudent = ExamsStudents::where('id_user', auth()->id())
             ->where('exam_id',$request->exam)->first();
-        if (!$examStudent->isActive) {
+        if (!$examStudent->isActive || !is_null($examStudent->result)) {
             return redirect()->route('students.exams.index');
         }
+    
         $listQuestion = collect();
 
         foreach (json_decode($examStudent->questions,true) as $q) {
@@ -94,7 +95,7 @@ class ExamsController extends Controller
         if ($random) {
             $listQuestions->inRandomOrder();
         }
-        if (isset($numberQuestion)) {
+        if (isset($numberQuestion) && $numberQuestion != 0) {
             $listQuestions->limit($numberQuestion);
         }
         $listQuestions->get();
@@ -138,5 +139,20 @@ class ExamsController extends Controller
         return json_encode([
             'success' => 'ok'
         ]);
+    }
+
+    public function updateWarning(Request $request){
+        $examStudent = ExamsStudents::where('id_user', auth()->id())
+            ->where('exam_id',$request->input('exam_id'))->first();
+        $examStudent->update([
+            'warning' => $request->input('tab'),
+        ]);
+    }
+
+    public function result(Request $request){
+        $examStudent = ExamsStudents::where('id_user', auth()->id())
+            ->where('exam_id',$request->exam_id)->first();
+        return view('pages.students.exams.result',compact('examStudent'));
+
     }
 }
