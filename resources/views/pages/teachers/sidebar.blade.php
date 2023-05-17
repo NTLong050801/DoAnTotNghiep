@@ -66,27 +66,6 @@
                         </a>
                         <!--end:Menu link-->
                     </div>
-                    <!--end:Menu item-->
-                    <!--begin:Menu item-->
-                    <div class="menu-item">
-                        <!--begin:Menu link-->
-                        <a class="menu-link" href="{{route('teachers.exams.index')}}">
-                            <span class="menu-icon"><i class="fa-solid fa-address-book"></i></span>
-                            <span class="menu-title">Quản lý đề thi</span>
-                        </a>
-                        <!--end:Menu link-->
-                    </div>
-                    <!--begin:Menu item-->
-                    <div class="menu-item">
-                        <!--begin:Menu link-->
-                        <a class="menu-link" href="{{route('teachers.questions.index')}}">
-                            <span class="menu-icon"><i class="fa-solid fa-building-columns"></i></span>
-                            <span class="menu-title">Ngân hàng câu hỏi</span>
-                        </a>
-                        <!--end:Menu link-->
-                    </div>
-                </div>
-                <div class="menu-block">
                     <!--begin:Menu item-->
                     <div class="menu-item">
                         <!--begin:Menu link-->
@@ -97,6 +76,27 @@
                         <!--end:Menu link-->
                     </div>
                     <!--end:Menu item-->
+                    <div class="menu-item">
+                        <!--begin:Menu link-->
+                        <a class="menu-link" href="{{route('teachers.questions.index')}}">
+                            <span class="menu-icon"><i class="fa-solid fa-building-columns"></i></span>
+                            <span class="menu-title">Ngân hàng câu hỏi</span>
+                        </a>
+                        <!--end:Menu link-->
+                    </div>
+                    <!--begin:Menu item-->
+                    <div class="menu-item">
+                        <!--begin:Menu link-->
+                        <a class="menu-link" href="{{route('teachers.exams.index')}}">
+                            <span class="menu-icon"><i class="fa-solid fa-address-book"></i></span>
+                            <span class="menu-title">Quản lý đề thi</span>
+                        </a>
+                        <!--end:Menu link-->
+                    </div>
+                    <!--begin:Menu item-->
+                </div>
+                <div class="menu-block">
+
                 </div>
                 <div class="menu-block">
                     <!--begin:Menu item-->
