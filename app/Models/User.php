@@ -84,6 +84,11 @@ class User extends Authenticatable
         return $this->belongsToMany(Classes::class, 'classes_student', 'user_id', 'class_id');
     }
     public function exames(){
-        return $this->belongsToMany(Exam::class, 'classes_student', 'id_user', 'exam_id');
+        return $this->belongsToMany(Exam::class, 'exams_student', 'id_user', 'exam_id');
+    }
+
+    public static function result(string $exam_id , string $user_id){
+        return ExamsStudents::where('exam_id',$exam_id)
+            ->where('id_user',$user_id)->first();
     }
 }

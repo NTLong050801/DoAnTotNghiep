@@ -80,36 +80,12 @@
                     <!--begin:Menu item-->
                     <div class="menu-item">
                         <!--begin:Menu link-->
-                        <a class="menu-link" href="#">
+                        <a class="menu-link" href="{{route('students.results.index')}}">
                             <span class="menu-icon"><i class="fa-solid fa-building-columns"></i></span>
-                            <span class="menu-title">Ngân hàng câu hỏi</span>
+                            <span class="menu-title">Kết quả</span>
                         </a>
                         <!--end:Menu link-->
                     </div>
-                </div>
-                <div class="menu-block">
-                    <!--begin:Menu item-->
-                    <div class="menu-item">
-                        <!--begin:Menu link-->
-                        <a class="menu-link" href="#">
-                            <span class="menu-icon"><i class="fa-solid fa-people-group"></i></span>
-                            <span class="menu-title">Quản lý lớp học</span>
-                        </a>
-                        <!--end:Menu link-->
-                    </div>
-                    <!--end:Menu item-->
-                </div>
-                <div class="menu-block">
-                    <!--begin:Menu item-->
-                    <div class="menu-item">
-                        <!--begin:Menu link-->
-                        <a class="menu-link" href="#">
-                            <span class="menu-icon"><i class="fa-solid fa-users-gear"></i></span>
-                            <span class="menu-title">Quản lý sinh viên</span>
-                        </a>
-                        <!--end:Menu link-->
-                    </div>
-                    <!--end:Menu item-->
                 </div>
             </div>
             <!--end::Menu-->
