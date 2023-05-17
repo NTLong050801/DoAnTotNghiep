@@ -357,7 +357,7 @@
                         <!--begin::Card title-->
                         <div class="card-title">
                             <h2 class="d-flex align-items-center">Thí sinh
-                                <span class="text-gray-600 fs-6 ms-1">(14)</span></h2>
+                                <span class="text-gray-600 fs-6 ms-1">({{count($exam->user)}})</span></h2>
                         </div>
                         <!--end::Card title-->
                         <!--begin::Card toolbar-->
@@ -374,7 +374,8 @@
                             </span>
                                 <!--end::Svg Icon-->
                                 <input type="text" data-kt-roles-table-filter="search"
-                                       class="form-control form-control-solid w-250px ps-15" placeholder="Search Users">
+                                       class="form-control form-control-solid w-250px ps-15" id="search_students"
+                                       placeholder="Search Users">
                             </div>
                             <div class="modal fade " tabindex="-1" id="modal_add_student">
                                 <div class="modal-dialog modal-lg">
@@ -495,6 +496,9 @@
                                             rowspan="1" colspan="1" aria-label="User: activate to sort column ascending"
                                             style="width: 289.038px;">Mail
                                         </th>
+                                        <th>T/gian bắt đầu</th>
+                                        <th>Số cảnh báo</th>
+                                        <th>Trạng thái</th>
                                         <th class="text-end min-w-100px sorting_disabled" rowspan="1" colspan="1"
                                             aria-label="Actions" style="width: 136.175px;">Actions
                                         </th>
@@ -528,7 +532,48 @@
                 <!--end::Card-->
             </div>
         </div>
+        <!-- Modal -->
+        <div class="modal fade" id="modal_result" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Kết quả bài thi</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <table class="table border table-auto fs-2">
+                            <thead>
+                            <tr class="text-center fs-2x">
+                                <th colspan="2">Bài thi kt toan 1</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>Họ tên :</td>
+                                <td id="nameStudent">4 phút</td>
+                            </tr>
 
+                            <tr>
+                                <td>Cảnh báo :</td>
+                                <td id="result_warning"></td>
+                            </tr>
+                            <tr>
+                                <td>Đúng :</td>
+                                <td class="text-danger" id="check_result">0/4</td>
+                            </tr>
+                            <tr>
+                                <td>Điểm :</td>
+                                <td class="text-danger" id="point_result">0</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
         <input type="hidden" id="exam_id" exam_id="{{$exam->id}}">
         <!--end::Content-->
     </div>
@@ -618,6 +663,15 @@
                 }
             })
         })
+        $('#search_students').keyup(function () {
+            keyword = $(this).val()
+            if (keyword != '') {
+                StudentInClass(keyword)
+            } else {
+                StudentInClass('')
+            }
+
+        })
 
         function myQuestion() {
             $.ajax({
@@ -628,19 +682,24 @@
                 }
             })
         }
-        function StudentInClass(){
+
+        StudentInClass()
+
+        //setInterval(StudentInClass, 10000);
+        function StudentInClass(keyword) {
             $.ajax({
-                url: '/teachers/exams/' + exam_id + '/studentInClass',
+                url: '/teachers/exams/' + exam_id + '/studentInClass/' + keyword,
                 type: "GET",
-                data:{
-                    exam_id:exam_id
+                data: {
+                    exam_id: exam_id,
+                    keyword: keyword,
                 },
                 success: function (res) {
-                     $('#tbody_list_student').html(res)
-
+                    $('#tbody_list_student').html(res)
                 }
             })
         }
+
         $('#submit_class').click(function (e) {
             e.preventDefault();
             class_id = $('#all_class').val()
@@ -652,18 +711,17 @@
                     exam_id: exam_id
                 },
                 success: function (res) {
-                    console.log(res)
                     Swal.fire({
                         text: "Thêm thành công !!",
                         icon: "success",
                         buttonsStyling: false,
-                        confirmButtonText: "Ok, got it!",
+                        confirmButtonText: "Ok!",
                         customClass: {
                             confirmButton: "btn btn-primary"
                         }
                     }).then(function (result) {
                         if (result.isConfirmed) {
-
+                            StudentInClass()
                         }
                     });
                 }
@@ -675,15 +733,14 @@
             formData = new FormData(form);
             console.log(formData)
             $.ajax({
-                url:'/teachers/exams/'+exam_id+'/addStudent',
-                type:'POST',
+                url: '/teachers/exams/' + exam_id + '/addStudent',
+                type: 'POST',
                 data: formData,
                 dataType: 'json',
                 processData: false,
                 contentType: false,
-                success:function(response){
+                success: function (response) {
                     // Do something with the success value
-                    console.log(response)
                     Swal.fire({
                         text: "Thêm thành công !!",
                         icon: "success",
@@ -694,25 +751,133 @@
                         }
                     }).then(function (result) {
                         if (result.isConfirmed) {
-
+                            StudentInClass()
                             //$('#exampleModal').hide()
                         }
                     });
                 },
-                error: function(response) {
+                error: function (response) {
                     if (response.status == 422) {
                         var errors = response.responseJSON.errors;
                         // Loop through the error messages and display them
                         errorhtml = '<div class="alert alert-danger"><ul>'
-                        $.each(errors, function(key, value) {
-                            errorhtml+= '<li>'+value[0] + '</li>';
+                        $.each(errors, function (key, value) {
+                            errorhtml += '<li>' + value[0] + '</li>';
                         });
-                        errorhtml+=  '</ul> </div>'
+                        errorhtml += '</ul> </div>'
                         $('#error').html(errorhtml)
                     }
                 }
             })
         })
+
+        $(document).on('click', '.delete_student', function () {
+            user_id = $(this).parent().data('user_id');
+            Swal.fire({
+                text: "Xóa sinh viên khỏi đề thi ?",
+                icon: "warning",
+                buttonsStyling: false,
+                showCancelButton: true,
+                confirmButtonText: "Ok,Xóa!",
+                cancelButtonText: 'Hủy',
+                customClass: {
+                    confirmButton: "btn btn-primary",
+                    cancelButton: 'btn btn-danger'
+                }
+            }).then(function (result) {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: "/teachers/exams/" + exam_id + "/deleteStudent/" + user_id,
+                        method: "GET",
+                        data: {
+                            exam_id: exam_id,
+                            user_id: user_id,
+                        },
+                        success: function (res) {
+                            Swal.fire({
+                                text: "Xóa thành công!",
+                                icon: "success",
+                                buttonsStyling: false,
+                                confirmButtonText: "Ok !!",
+                                timer: 3000,
+                                customClass: {
+                                    confirmButton: "btn btn-primary"
+                                }
+                            }).then(() => {
+                                StudentInClass()
+                            });
+                        }
+                    })
+                }
+            });
+        })
+        $(document).on('click', '.reset_exam', function () {
+            user_id = $(this).parent().data('user_id');
+            Swal.fire({
+                text: "Reset bài thi này ?",
+                icon: "warning",
+                buttonsStyling: false,
+                showCancelButton: true,
+                confirmButtonText: "Ok,reset!",
+                cancelButtonText: 'Hủy',
+                customClass: {
+                    confirmButton: "btn btn-primary",
+                    cancelButton: 'btn btn-danger'
+                }
+            }).then(function (result) {
+                if (result.isConfirmed) {
+                    $.ajax({
+                            url: "/teachers/exams/" + exam_id + "/resetExam/" + user_id,
+                            method: "GET",
+                            data: {
+                                exam_id: exam_id,
+                                user_id: user_id,
+                            },
+                            success: function (res) {
+                            Swal.fire({
+                                text: "Reset thành công!",
+                                icon: "success",
+                                buttonsStyling: false,
+                                confirmButtonText: "Ok !!",
+                                timer: 3000,
+                                customClass: {
+                                    confirmButton: "btn btn-primary"
+                                }
+                            }).then(() => {
+                                StudentInClass()
+                            });
+                        }
+                    })
+                }
+            });
+        })
+        $(document).on('click', '.show_result', function () {
+            user_id = $(this).data('user_id')
+            nameStudent = $(this).parent().parent().children().first().html();
+            $('#modal_result').modal('show')
+            $.ajax({
+                url: "/teachers/exams/" + exam_id + "/resultExam/" + user_id,
+                method: "GET",
+                data: {
+                    exam_id: exam_id,
+                    user_id: user_id,
+                },
+                success: function (res) {
+
+                    var stringArray = res['questions'];
+                    var array = JSON.parse(stringArray);
+                    var count = array.length;
+                    $('#check_result').html(res['result']+'/'+count)
+                    $('#nameStudent').html(nameStudent)
+                    $('#result_warning').html(res['warning'])
+                    $('#point_result').html(res['result']*10/count)
+
+                }
+            })
+        })
     </script>
 @endsection
+<script>
+
+</script>
 

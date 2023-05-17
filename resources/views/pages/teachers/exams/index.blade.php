@@ -16,7 +16,8 @@
                             <img src="{{asset('assets/media/icons/duotune/general/gen021.svg')}}" alt="">
                         </span>
                         <!--end::Svg Icon-->
-                        <input type="text" class="form-control form-control-solid ps-10" name="keyword" value="{{request('keyword')}}"
+                        <input type="text" class="form-control form-control-solid ps-10" name="keyword"
+                               value="{{request('keyword')}}"
                                placeholder="Search">
                     </div>
                     <!--end::Input group-->
@@ -165,42 +166,123 @@
                             <!--begin::Card body-->
                             <div class="card-body pt-1">
                                 <!--begin::Users-->
-                                <div class="fw-bold text-gray-600 mb-5">Tổng số thí sinh: <b>5</b></div>
+                                <div class="fw-bold text-gray-600 mb-5">Tổng số thí sinh: <b>{{count($exam->user)}}</b>
+                                </div>
                                 <!--end::Users-->
                                 <!--begin::Permissions-->
                                 <div class="d-flex flex-column text-gray-600">
                                     <div class="d-flex align-items-center py-2">
-                                        <span class="bullet bg-primary me-3"></span>Thời gian làm bài: <b>{{$exam->minute_time}}</b>
+                                        <span class="bullet bg-primary me-3"></span>Thời gian làm bài:
+                                        <b>{{$exam->minute_time}}</b>
                                     </div>
                                     <div class="d-flex align-items-center py-2">
-                                        <span class="bullet bg-primary me-3"></span>Số câu hỏi: <b>{{$exam->number_question}}</b>
+                                        <span class="bullet bg-primary me-3"></span>Số câu hỏi:
+                                        <b>{{$exam->number_question}}</b>
                                     </div>
                                     <div class="d-flex align-items-center py-2">
-                                        <span class="bullet bg-primary me-3"></span>Trộn đề: <b>@if($exam->random) Có @else Không @endif</b>
+                                        <span class="bullet bg-primary me-3"></span>Ngày bắt đầu
+                                        thi: {{\Carbon\Carbon::parse($exam->date_start)->format('d/m/Y')}}
                                     </div>
                                     <div class="d-flex align-items-center py-2">
-                                        <span class="bullet bg-primary me-3"></span>Ngày bắt đầu thi: {{\Carbon\Carbon::parse($exam->date_start)->format('d/m/Y')}}
+                                        <span class="bullet bg-primary me-3"></span>Ngày kết thúc
+                                        thi: {{\Carbon\Carbon::parse($exam->date_end)->format('d/m/Y')}}
                                     </div>
                                     <div class="d-flex align-items-center py-2">
-                                        <span class="bullet bg-primary me-3"></span>Ngày kết thúc thi: {{\Carbon\Carbon::parse($exam->date_end)->format('d/m/Y')}}
+                                        <span class="bullet bg-primary me-3"></span>Mật khẩu: <b
+                                            class="now_password ms-5" exam_id="{{$exam->id}}">{{$exam->password}}</b>
+                                        <button class="ms-5 btn btn-sm btn-secondary btn_copy "><i class="fa-solid fa-copy"></i></button>
                                     </div>
                                     <div class="d-flex align-items-center py-2">
-                                        <span class="bullet bg-primary me-3"></span>Mật khẩu:{{$exam->password}}
+                                        <span class="bullet bg-primary me-3"></span>Trạng thái: <b class="text-danger">
+                                            @if($exam->status == '1')
+                                                Đã kích hoạt
+                                            @else
+                                                Chưa kích hoạt
+                                            @endif</b>
                                     </div>
                                 </div>
                                 <!--end::Permissions-->
                             </div>
                             <!--end::Card body-->
                             <!--begin::Card footer-->
-                            <div class="card-footer flex-wrap pt-0">
+                            <div class="card-footer flex-wrap pt-0 align-self-center">
                                 <a href="{{route('teachers.exams.show',$exam)}}"
-                                   class="btn btn-info btn-active-primary my-1 me-2">Chi tiết</a>
-                                <a href="{{route('teachers.exams.edit',$exam)}}">
-                                    <button type="button" class="btn btn-warning btn-active-light-primary my-1">Sửa
-                                    </button>
+                                   class="btn btn-sm btn-info btn-active-primary my-1 me-2"
+                                   data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse"
+                                   data-bs-placement="bottom" title="Chi tiết"
+                                ><i
+                                        class="fa-sharp fa-solid fa-circle-info"></i>
                                 </a>
-                                <a href="{{route('teachers.exams.destroy',$exam)}}"
-                                   class="btn btn-danger btn-active-primary my-1 me-2">Xóa bài thi</a>
+                                @if($exam->status == '0')
+                                    <a href="{{route('teachers.exams.active',[$exam,1])}}">
+                                        <button exam_id="{{$exam->id}}"
+                                                class="btn btn-sm btn-success my-1 me-2 activeStatus"
+                                                data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse"
+                                                data-bs-placement="bottom" title="Kích hoạt bài thi"
+                                        >
+                                            <i class="fa-solid fa-lock"></i>
+                                        </button>
+                                    </a>
+                                @else
+                                    <a href="{{route('teachers.exams.active',[$exam,0])}}">
+                                        <button class="btn btn-sm btn-success my-1 me-2 cancelStatus"
+                                                data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse"
+                                                data-bs-placement="bottom" title="Hủy kích hoạt"
+                                        >
+                                            <i class="fa-solid fa-lock-open"></i>
+                                        </button>
+                                    </a>
+                                @endif
+                                <button class="btn btn-sm btn-danger
+                                btn-sm btn-active-light-primary my-1 me-2 newPassword" name_exam="{{$exam->name}}"
+                                        id_exam="{{$exam->id}}"
+                                        data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse"
+                                        data-bs-placement="bottom" title="Tạo mật khẩu ngẫu nhiên"
+                                >
+                                    <i class="fa-solid fa-key"></i>
+                                </button>
+                                <button class="btn btn-sm btn-primary
+                                btn-sm btn-active-light-primary my-1 me-2 newPassword"
+                                        id_exam="{{$exam->id}}"
+                                        data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse"
+                                        data-bs-placement="bottom" title="Thống kê"
+                                >
+                                    <i class="fa-solid fa-chart-simple"></i>
+                                </button>
+                                <span class="text-end">
+                                    <a href="#"
+                                       class="btn btn-sm btn-secondary btn-center"
+                                       data-kt-menu-trigger="click" data-kt-menu-placement="right-start">
+                                        <i class="fa-solid fa-bars"></i></a>
+                                    <!--begin::Menu-->
+                                    <div
+                                        class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4"
+                                        data-kt-menu="true">
+                                        <!--begin::Menu item-->
+                                        <div class="menu-item text-center px-3">
+                                            <a href="{{route('teachers.exams.edit',$exam)}}">
+                                                <button type="button"
+                                                        class="btn btn-sm btn-warning btn-active-light-primary  me-2 my-1"
+                                                        data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse"
+                                                        data-bs-placement="right" title="Sửa bài thi"
+                                                >
+                                                    <i class="fa-solid fa-pen-to-square"></i>
+                                                </button>
+                                            </a>
+                                        </div>
+                                        <!--end::Menu item-->
+                                        <!--begin::Menu item-->
+                                        <div class="menu-item text-center px-3">
+                                            <a href="{{route('teachers.exams.destroy',$exam)}}"
+                                               class="btn btn-sm btn-dark btn-active-primary my-1 me-2"
+                                               data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse"
+                                               data-bs-placement="right" title="Xóa bài thi"
+                                            ><i class="fa-sharp fa-solid fa-trash"></i></a>
+                                        </div>
+                                        <!--end::Menu item-->
+                                    </div>
+                                    <!--end::Menu-->
+                                </span>
                             </div>
                             <!--end::Card footer-->
                         </div>
@@ -208,12 +290,43 @@
                     <!--end::Col-->
                 @endforeach
             </div>
+            <div class="modal" tabindex="-1" id="modal_new_password">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Modal title</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="card card-bordered">
+                                <div class="card-body">
+                                    <!--begin::Input group-->
+                                    <div class="input-group">
+                                        <!--begin::Input-->
+                                        <input id="new_password_random" readonly type="text" class="form-control"
+                                               placeholder="name@example.com" value="name@example.com"/>
+                                        <!--end::Input-->
+
+                                        <!--begin::Button-->
+                                        <button class="btn btn-light-primary" id="copyButton">
+                                            Copy
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Đóng</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <!--end::Row-->
             <!--begin::Pagination-->
             <div class="d-flex flex-stack flex-wrap pt-10">
                 <!--begin::Pages-->
                 <ul class="pagination">
-                        {{$exams->links()}}
+                    {{$exams->links()}}
                 </ul>
                 <!--end::Pages-->
             </div>
@@ -221,7 +334,7 @@
         </div>
         <!--end::Tab pane-->
         <!--begin::Tab pane-->
-        <div id="kt_project_users_table_pane" class="tab-pane fade" role="tabpanel">
+        <div id="kt_project_users_table_pane " class="tab-pane fade " role="tabpanel">
             <!--begin::Card-->
             <div class="card card-flush">
                 <!--begin::Card body-->
@@ -279,52 +392,66 @@
                                     <!--end::Head-->
                                     <!--begin::Body-->
                                     <tbody class="fs-6">
-                                        @foreach($exams as $exam)
-                                            <tr class="odd">
-                                                <td>
-                                                    <!--begin::User-->
-                                                    <div class="d-flex align-items-center">
-                                                        <!--begin::Info-->
-                                                        <div class="d-flex flex-column justify-content-center">
-                                                            <a href="" class="mb-1 text-gray-800 text-hover-primary">{{$exam->name}}</a>
-                                                            <div class="fw-semibold fs-6 text-gray-400">smith@kpmg.com</div>
-                                                        </div>
-                                                        <!--end::Info-->
+                                    @foreach($exams as $exam)
+                                        <tr class="odd">
+                                            <td>
+                                                <!--begin::User-->
+                                                <div class="d-flex align-items-center">
+                                                    <!--begin::Info-->
+                                                    <div class="d-flex flex-column justify-content-center">
+                                                        <a href=""
+                                                           class="mb-1 text-gray-800 text-hover-primary">{{$exam->name}}</a>
+                                                        <div class="fw-semibold fs-6 text-gray-400">smith@kpmg.com</div>
                                                     </div>
-                                                    <!--end::User-->
-                                                </td>
-                                                <td><span>{{$exam->minute_time}}</span></td>
-                                                <td><span>{{$exam->number_question}}</span></td>
-                                                <td>
-                                                    <span class="badge badge-light-primary fw-bold px-4 py-3">{{$exam->random ? 'Có' : 'Không'}}</span>
-                                                </td>
-                                                <td>12313 thí sinh</td>
-                                                <td><span>{{\Carbon\Carbon::parse($exam->date_start)->format('d/m/Y')}}</span></td>
-                                                <td><span>{{$exam->status}}</span></td>
-                                                <td class="text-end">
-                                                    <a href="#" class="btn btn-light btn-active-light-primary btn-sm show menu-dropdown" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
-                                                        <!--begin::Svg Icon | path: icons/duotune/arrows/arr072.svg-->
-                                                        <span class="svg-icon svg-icon-5 m-0">
-															<img src="{{asset('assets/media/icons/duotune/arrows/arr072.svg')}}" alt="">
+                                                    <!--end::Info-->
+                                                </div>
+                                                <!--end::User-->
+                                            </td>
+                                            <td><span>{{$exam->minute_time}}</span></td>
+                                            <td><span>{{$exam->number_question}}</span></td>
+                                            <td>
+                                                <span
+                                                    class="badge badge-light-primary fw-bold px-4 py-3">{{$exam->random ? 'Có' : 'Không'}}</span>
+                                            </td>
+                                            <td>12313 thí sinh</td>
+                                            <td>
+                                                <span>{{\Carbon\Carbon::parse($exam->date_start)->format('d/m/Y')}}</span>
+                                            </td>
+                                            <td><span>{{$exam->status}}</span></td>
+                                            <td class="text-end">
+                                                <a href="#"
+                                                   class="btn btn-light btn-active-light-primary btn-sm show menu-dropdown"
+                                                   data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
+                                                    <!--begin::Svg Icon | path: icons/duotune/arrows/arr072.svg-->
+                                                    <span class="svg-icon svg-icon-5 m-0">
+															<img
+                                                                src="{{asset('assets/media/icons/duotune/arrows/arr072.svg')}}"
+                                                                alt="">
 															</span>
-                                                        <!--end::Svg Icon--></a>
-                                                    <!--begin::Menu-->
-                                                    <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4 show" data-kt-menu="true" data-popper-placement="top-end" style="z-index: 107; position: fixed; inset: auto 0px 0px auto; margin: 0px; transform: translate3d(-59.2px, -88px, 0px);">
-                                                        <!--begin::Menu item-->
-                                                        <div class="menu-item px-3">
-                                                            <a href="{{route('teachers.exams.edit',$exam)}}" class="menu-link px-3">Sửa</a>
-                                                        </div>
-                                                        <!--end::Menu item-->
-                                                        <!--begin::Menu item-->
-                                                        <div class="menu-item px-3">
-                                                            <a href="{{route('teachers.exams.destroy',$exam)}}" class="menu-link px-3" data-kt-users-table-filter="delete_row">Xóa</a>
-                                                        </div>
-                                                        <!--end::Menu item-->
+                                                    <!--end::Svg Icon--></a>
+                                                <!--begin::Menu-->
+                                                <div
+                                                    class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4 show"
+                                                    data-kt-menu="true" data-popper-placement="top-end"
+                                                    style="z-index: 107; position: fixed; inset: auto 0px 0px auto; margin: 0px; transform: translate3d(-59.2px, -88px, 0px);">
+                                                    <!--begin::Menu item-->
+                                                    <div class="menu-item px-3">
+                                                        <a href="{{route('teachers.exams.edit',$exam)}}"
+                                                           class="menu-link px-3">Sửa</a>
                                                     </div>
-                                                    <!--end::Menu-->
-                                                </td>
-                                            </tr>
-                                        @endforeach
+                                                    <!--end::Menu item-->
+                                                    <!--begin::Menu item-->
+                                                    <div class="menu-item px-3">
+                                                        <a href="{{route('teachers.exams.destroy',$exam)}}"
+                                                           class="menu-link px-3"
+                                                           data-kt-users-table-filter="delete_row">Xóa</a>
+                                                    </div>
+                                                    <!--end::Menu item-->
+                                                </div>
+                                                <!--end::Menu-->
+                                            </td>
+                                        </tr>
+                                    @endforeach
                                     </tbody>
                                     <!--end::Body-->
                                 </table>
@@ -352,4 +479,77 @@
         <!--end::Tab pane-->
     </div>
     <!--end::Tab Content-->
+@endsection
+@section('javascript')
+    <script>
+        document.getElementById("copyButton").addEventListener("click", function () {
+            var input = document.getElementById("new_password_random");
+            input.select();
+            input.setSelectionRange(0, 99999); // For mobile devices
+
+            document.execCommand("copy");
+            $('#copyButton').html('Copied!!')
+            setTimeout(function () {
+                $('#copyButton').html('Copy')
+            }, 3000)
+        });
+
+        $(".btn_copy").click(function() {
+            var textToCopy = $(this).prev().text();
+            var bElement = $(this).prev("b");
+            var tempInput = $("<textarea>");
+            tempInput.val(textToCopy);
+            $("body").append(tempInput);
+            tempInput.select();
+            document.execCommand("copy");
+            tempInput.remove();
+
+            $(this).addClass("btn-success");
+            bElement.addClass("text-success");
+            var button = $(this);
+            setTimeout(function() {
+                button.removeClass("btn-success");
+                bElement.removeClass("text-success");
+            }, 3000);
+        });
+
+        $('.newPassword').click(function () {
+            exam_id = $(this).attr('id_exam')
+            password = generatePassword();
+            name_exam = $(this).attr('name_exam');
+
+            $.ajax({
+                url: "/teachers/exams/" + exam_id + '/' + password + "/newPassword",
+                method: "get",
+                data: {
+                    exam_id: exam_id,
+                    password: password
+                },
+                success: function (res) {
+                    if (res == 'success') {
+                        $('#modal_new_password').modal('show')
+                        $('.modal-title').html(name_exam)
+                        $('#new_password_random').val(password)
+                        $('.now_password').each(function () {
+                            exam_id_get = $(this).attr('exam_id')
+                            console.log(exam_id_get)
+                            if (exam_id == exam_id_get) {
+                                $(this).html(password)
+                            }
+                        })
+                    }
+                }
+            })
+        })
+
+        function generatePassword() {
+            var length = 6,
+                charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789",
+                retVal = "";
+            for (var i = 0, n = charset.length; i < length; ++i) {
+                retVal += charset.charAt(Math.floor(Math.random() * n));
+            }
+            return retVal;
+        }
+    </script>
 @endsection
