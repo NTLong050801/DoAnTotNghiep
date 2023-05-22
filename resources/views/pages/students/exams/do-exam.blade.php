@@ -35,7 +35,7 @@
                                             <!--begin::Header-->
                                             <div class="card-header pt-5">
                                                 <h3 class="card-title fw-bold text-gray-800 fs-1qx">
-                                                    Câu {{$loop->iteration}}
+                                                    Câu {{$index=$loop->iteration}}
                                                     : {{$question->name}}</h3>
                                             </div>
                                             <!--end::Header-->
@@ -49,12 +49,13 @@
                                                 <!--begin::Info-->
                                                 <div class="mb-2">
                                                     <!--begin::Title-->
-                                                    <div class="text-start">
+                                                    <div class="text-start listAnswers">
                                                         @foreach(json_decode($question->options) as $key=>$option)
                                                             <div class="form-check mt-5 ">
                                                                 <input class="form-check-input" type="radio"
                                                                        name="{{$question->id}}"
                                                                        id="{{$question->id.$key}}" value="{{$key}}"
+                                                                       @if($key == $myAnswers[$index-1]) checked @endif
                                                                 >
                                                                 <label
                                                                     class="form-check-label fw-bold text-gray-800 cursor-pointer text-hover-primary"
@@ -63,7 +64,7 @@
                                                                 </label>
                                                             </div>
                                                         @endforeach
-                                                        <input type="radio" checked name="{{$question->id}}"
+                                                        <input type="radio"  @if(0 == $myAnswers[$index-1]) checked @endif  name="{{$question->id}}"
                                                                hidden="hidden" value="0">
                                                     </div>
                                                     <!--end::Title-->
@@ -117,7 +118,7 @@
                                 <!--begin::Item-->
                                 <li class="nav-item mb-3 me-0 col-2 indexQuestion" role="presentation">
                                     <!--begin::Nav link-->
-                                    <a class="nav-link link-questions nav-link-border-solid btn btn-outline btn-flex btn-active-color-primary
+                                    <a class="nav-link link-questions @if($myAnswers[$loop->index] != 0) bg-success text-white @endif nav-link-border-solid btn btn-outline btn-flex btn-active-color-primary
                                 flex-column flex-stack page-bg
                                 show
                                 @if($loop->iteration == '1') active start @endif
@@ -144,6 +145,8 @@
             </div>
             <!--end::Sidebar-->
             <input type="hidden" name="exam_id" id="exam_id" value="{{$examStudent->exam_id}}">
+            <input type="hidden" name="tab" id="tab_warning" value="{{$examStudent->warning}}">
+
         </form>
     </div>
 @endsection
@@ -161,7 +164,7 @@
             form = document.getElementById('form_do_exam');
             // set up the countdown timer
             var countdown = document.getElementById('countdown');
-            var tab = 0;
+            var tab = parseInt($('#tab_warning').val());
             var status_warning = '1';
             var submit = 0;
             $('.link-questions').click(function () {
@@ -169,6 +172,44 @@
                 activeTabIndex = tabs.index(activeTab);
                 updateButtons();
             })
+            $('.form-check .form-check-input').click(function () {
+                item = $(this).parent().parent()
+                var index = $('.listAnswers').index(item);
+                answer = $(this).val()
+                $.ajax({
+                    url: "/students/exams/" + exam_id + "/updateAnswers/" + index + "/" + answer,
+                    method: "GET",
+                    data: {
+                        exam_id: exam_id,
+                        index: index,
+                        answer: answer
+                    },
+                    success: function (res) {
+                        if (res == true) {
+                            submitExam()
+                            if (document.fullscreenElement) {
+                                if (document.fullscreenElement) {
+                                    document.exitFullscreen();
+                                }
+                                status_warning = 0;
+                                Swal.fire({
+                                    text: "Bài thi đã kết thúc !!",
+                                    icon: "warning",
+                                    buttonsStyling: false,
+                                    confirmButtonText: "Đồng ý",
+                                    timer: 3000,
+                                    customClass: {
+                                        confirmButton: "btn fw-bold btn-danger",
+                                    }
+                                }).then(function (result) {
+                                    submit = 1
+                                    window.location.href = "/students/exams/" + exam_id + "/result";
+                                })
+                            }
+                        }
+                    }
+                })
+            });
 
             // Show/hide back/next buttons based on active tab
             function updateButtons() {
@@ -224,7 +265,6 @@
                     // Add your code here to handle the radio button being unchecked
                 }
             });
-
             // get the total seconds from the PHP variable
 
             var interval = setInterval(function () {
@@ -319,10 +359,10 @@
 
             function updateWarning() {
                 $.ajax({
-                    url:"/students/exams/updateWarning",
-                    method:"POST",
-                    data:{
-                        exam_id:exam_id,
+                    url: "/students/exams/updateWarning",
+                    method: "POST",
+                    data: {
+                        exam_id: exam_id,
                         tab: tab,
                         _token: csrfToken,
                     }
@@ -330,6 +370,7 @@
             }
 
             const fullScreenElement = document.querySelector("#fullscreen-div");
+
             function fullscreenchanged(event) {
                 if (document.fullscreenElement) {
                     $('#form_do_exam').removeClass('d-none')
@@ -367,8 +408,7 @@
             //     });
             // });
             document.addEventListener("visibilitychange", function () {
-                if(submit == 0)
-                {
+                if (submit == 0) {
                     if (document.hidden) {
                         // The user switched to another tab or minimized the window
                         $('#form_do_exam').removeClass('d-block')
@@ -403,7 +443,7 @@
                 fullScreenElement.requestFullscreen();
             });
             document.addEventListener("fullscreenchange", function () {
-                if (!document.fullscreenElement && status_warning == 1 && submit ==0) {
+                if (!document.fullscreenElement && status_warning == 1 && submit == 0) {
                     tab += 1;
                     updateWarning()
                     Swal.fire({

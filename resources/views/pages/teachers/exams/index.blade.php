@@ -152,10 +152,10 @@
                 </div>
                 @foreach($exams as $exam)
                     <!--begin::Col-->
-                    <div class="col-md-6 col-xxl-4">
-                        <div class="card card-flush h-md-100">
+                    <div class="col-md-6 col-xxl-4 ">
+                        <div class="card card-flush h-md-100" @if($exam->is_end) style="background-color: #e9bbc7" @endif>
                             <!--begin::Card header-->
-                            <div class="card-header">
+                            <div class="card-header " >
                                 <!--begin::Card title-->
                                 <div class="card-title">
                                     <h2>{{$exam->name}}</h2>
@@ -184,16 +184,17 @@
                                         thi: {{\Carbon\Carbon::parse($exam->date_start)->format('d/m/Y')}}
                                     </div>
                                     <div class="d-flex align-items-center py-2">
-                                        <span class="bullet bg-primary me-3"></span>Ngày kết thúc
-                                        thi: {{\Carbon\Carbon::parse($exam->date_end)->format('d/m/Y')}}
-                                    </div>
-                                    <div class="d-flex align-items-center py-2">
-                                        <span class="bullet bg-primary me-3"></span>Mật khẩu: <b
+                                        <span class="bullet bg-primary me-3"></span>Mật khẩu: &nbsp <b
                                             class="now_password ms-5" exam_id="{{$exam->id}}">{{$exam->password}}</b>
-                                        <button class="ms-5 btn btn-sm btn-secondary btn_copy "><i class="fa-solid fa-copy"></i></button>
+                                        <button class="ms-5 btn btn-sm btn-secondary btn_copy "><i
+                                                class="fa-solid fa-copy"></i></button>
                                     </div>
                                     <div class="d-flex align-items-center py-2">
-                                        <span class="bullet bg-primary me-3"></span>Trạng thái: <b class="text-danger">
+                                        <span class="bullet bg-primary me-3"></span>Cho phép xem đáp
+                                        án: <b class="text-danger"> &nbsp {{$exam->is_see_answers ? "Có" : "Không"}}</b>
+                                    </div>
+                                    <div class="d-flex align-items-center py-2">
+                                        <span class="bullet bg-primary me-3"></span>Trạng thái: &nbsp <b class="text-danger">
                                             @if($exam->status == '1')
                                                 Đã kích hoạt
                                             @else
@@ -206,85 +207,89 @@
                             <!--end::Card body-->
                             <!--begin::Card footer-->
                             <div class="card-footer flex-wrap pt-0 align-self-center">
-                                <a href="{{route('teachers.exams.show',$exam)}}"
-                                   class="btn btn-sm btn-info btn-active-primary my-1 me-2"
-                                   data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse"
-                                   data-bs-placement="bottom" title="Chi tiết"
-                                ><i
-                                        class="fa-sharp fa-solid fa-circle-info"></i>
-                                </a>
-                                @if($exam->status == '0')
-                                    <a href="{{route('teachers.exams.active',[$exam,1])}}">
-                                        <button exam_id="{{$exam->id}}"
-                                                class="btn btn-sm btn-success my-1 me-2 activeStatus"
-                                                data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse"
-                                                data-bs-placement="bottom" title="Kích hoạt bài thi"
-                                        >
-                                            <i class="fa-solid fa-lock"></i>
-                                        </button>
+                                <div class=" flex-wrap text-center">
+                                    <a href="{{route('teachers.exams.show',$exam)}}"
+                                       class="btn btn-sm btn-info btn-active-primary my-1 me-2"
+                                       data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse"
+                                       data-bs-placement="bottom" title="Chi tiết">
+                                        <i class="fa-sharp fa-solid fa-circle-info"></i>
                                     </a>
-                                @else
-                                    <a href="{{route('teachers.exams.active',[$exam,0])}}">
-                                        <button class="btn btn-sm btn-success my-1 me-2 cancelStatus"
-                                                data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse"
-                                                data-bs-placement="bottom" title="Hủy kích hoạt"
-                                        >
-                                            <i class="fa-solid fa-lock-open"></i>
-                                        </button>
-                                    </a>
-                                @endif
-                                <button class="btn btn-sm btn-danger
+                                    @if($exam->status == '0')
+                                        <a href="{{route('teachers.exams.active',[$exam,1])}}">
+                                            <button exam_id="{{$exam->id}}"
+                                                    class="btn btn-sm btn-success my-1 me-2 activeStatus"
+                                                    data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse"
+                                                    data-bs-placement="bottom" title="Kích hoạt bài thi"
+                                            >
+                                                <i class="fa-solid fa-lock"></i>
+                                            </button>
+                                        </a>
+                                    @else
+                                        <a href="{{route('teachers.exams.active',[$exam,0])}}">
+                                            <button class="btn btn-sm btn-success my-1 me-2 cancelStatus"
+                                                    data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse"
+                                                    data-bs-placement="bottom" title="Hủy kích hoạt"
+                                            >
+                                                <i class="fa-solid fa-lock-open"></i>
+                                            </button>
+                                        </a>
+                                    @endif
+                                    <button class="btn btn-sm btn-danger
                                 btn-sm btn-active-light-primary my-1 me-2 newPassword" name_exam="{{$exam->name}}"
-                                        id_exam="{{$exam->id}}"
-                                        data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse"
-                                        data-bs-placement="bottom" title="Tạo mật khẩu ngẫu nhiên"
-                                >
-                                    <i class="fa-solid fa-key"></i>
-                                </button>
-                                <button class="btn btn-sm btn-primary
-                                btn-sm btn-active-light-primary my-1 me-2 newPassword"
-                                        id_exam="{{$exam->id}}"
-                                        data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse"
-                                        data-bs-placement="bottom" title="Thống kê"
-                                >
-                                    <i class="fa-solid fa-chart-simple"></i>
-                                </button>
-                                <span class="text-end">
-                                    <a href="#"
-                                       class="btn btn-sm btn-secondary btn-center"
-                                       data-kt-menu-trigger="click" data-kt-menu-placement="right-start">
-                                        <i class="fa-solid fa-bars"></i></a>
-                                    <!--begin::Menu-->
-                                    <div
-                                        class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4"
-                                        data-kt-menu="true">
-                                        <!--begin::Menu item-->
-                                        <div class="menu-item text-center px-3">
-                                            <a href="{{route('teachers.exams.edit',$exam)}}">
-                                                <button type="button"
-                                                        class="btn btn-sm btn-warning btn-active-light-primary  me-2 my-1"
-                                                        data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse"
-                                                        data-bs-placement="right" title="Sửa bài thi"
-                                                >
-                                                    <i class="fa-solid fa-pen-to-square"></i>
-                                                </button>
-                                            </a>
-                                        </div>
-                                        <!--end::Menu item-->
-                                        <!--begin::Menu item-->
-                                        <div class="menu-item text-center px-3">
-                                            <a href="{{route('teachers.exams.destroy',$exam)}}"
-                                               class="btn btn-sm btn-dark btn-active-primary my-1 me-2"
-                                               data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse"
-                                               data-bs-placement="right" title="Xóa bài thi"
-                                            ><i class="fa-sharp fa-solid fa-trash"></i></a>
-                                        </div>
-                                        <!--end::Menu item-->
-                                    </div>
-                                    <!--end::Menu-->
-                                </span>
+                                            id_exam="{{$exam->id}}"
+                                            data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse"
+                                            data-bs-placement="bottom" title="Tạo mật khẩu ngẫu nhiên"
+                                    >
+                                        <i class="fa-solid fa-key"></i>
+                                    </button>
+                                    <a href="#" exam_id="{{$exam->id}}"
+                                       class="btn btn-sm  btn-active-success my-1 me-2 is_see_answers"
+                                       data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse"
+                                       data-bs-placement="bottom"
+                                       title="{{$exam->is_see_answers ?"Không cho phép xem đáp án" :'Cho phép xem đáp án'}}"
+                                       style="background-color: #0b6a2a">
+                                        @if($exam->is_see_answers )
+                                            <i class="fa-regular fa-eye"></i>
+                                        @else
+                                            <i class="fa-regular fa-eye-slash"></i>
+                                        @endif
+                                    </a>
+                                </div>
+                                <div class=" flex-wrap text-center ">
+                                    <button class="btn btn-sm btn-primary
+                                btn-sm btn-active-light-primary my-1 me-2 chartExams"
+                                            id_exam="{{$exam->id}}" name_exam="{{$exam->name}}"
+                                            data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse"
+                                            data-bs-placement="bottom" title="Thống kê"
+                                    >
+                                        <i class="fa-solid fa-chart-simple"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-danger
+                                btn-sm btn-active-light-danger my-1 me-2 endExam"
+                                            id_exam="{{$exam->id}}" name_exam="{{$exam->name}}"
+                                            data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse"
+                                            data-bs-placement="bottom" title="Kết thúc"
+                                    >
+                                        <i class="fa-solid fa-power-off"></i>
+                                    </button>
+                                    <a href="{{route('teachers.exams.edit',$exam)}}">
+                                        <button type="button"
+                                                class="btn btn-sm btn-warning btn-active-light-primary  me-2 my-1"
+                                                data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse"
+                                                data-bs-placement="right" title="Sửa bài thi"
+                                        >
+                                            <i class="fa-solid fa-pen-to-square"></i>
+                                        </button>
+                                    </a>
+                                    <a href="{{route('teachers.exams.destroy',$exam)}}"
+                                       class="btn btn-sm btn-dark btn-active-primary my-1 me-2"
+                                       data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse"
+                                       data-bs-placement="right" title="Xóa bài thi"
+                                    ><i class="fa-sharp fa-solid fa-trash"></i></a>
+                                </div>
                             </div>
                             <!--end::Card footer-->
+
                         </div>
                     </div>
                     <!--end::Col-->
@@ -322,6 +327,44 @@
                 </div>
             </div>
             <!--end::Row-->
+            <!-- Modal -->
+            <div class="modal fade" id="modal_chart" tabindex="-1" aria-labelledby="exampleModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="title_chart">Modal title</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body " id="body_chart ">
+                            <ul class="nav nav-tabs nav-line-tabs nav-line-tabs-2x mb-5 fs-6 nav-stretch justify-content-end">
+                                <li class="nav-item">
+                                    <a class="nav-link active" data-bs-toggle="tab" href="#kt_tab_pane_4">Biểu đồ
+                                        thanh</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-bs-toggle="tab" href="#kt_tab_pane_5">Biểu đồ đường </a>
+                                </li>
+
+                            </ul>
+
+                            <div class="tab-content" id="myTabContent">
+                                <div class="tab-pane fade show active" id="kt_tab_pane_4" role="tabpanel">
+                                    <canvas id="myChart"></canvas>
+                                </div>
+                                <div class="tab-pane fade" id="kt_tab_pane_5" role="tabpanel">
+                                    <canvas id="myChart1"></canvas>
+                                </div>
+
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <!--begin::Pagination-->
             <div class="d-flex flex-stack flex-wrap pt-10">
                 <!--begin::Pages-->
@@ -481,6 +524,7 @@
     <!--end::Tab Content-->
 @endsection
 @section('javascript')
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         document.getElementById("copyButton").addEventListener("click", function () {
             var input = document.getElementById("new_password_random");
@@ -494,7 +538,7 @@
             }, 3000)
         });
 
-        $(".btn_copy").click(function() {
+        $(".btn_copy").click(function () {
             var textToCopy = $(this).prev().text();
             var bElement = $(this).prev("b");
             var tempInput = $("<textarea>");
@@ -507,7 +551,7 @@
             $(this).addClass("btn-success");
             bElement.addClass("text-success");
             var button = $(this);
-            setTimeout(function() {
+            setTimeout(function () {
                 button.removeClass("btn-success");
                 bElement.removeClass("text-success");
             }, 3000);
@@ -532,7 +576,6 @@
                         $('#new_password_random').val(password)
                         $('.now_password').each(function () {
                             exam_id_get = $(this).attr('exam_id')
-                            console.log(exam_id_get)
                             if (exam_id == exam_id_get) {
                                 $(this).html(password)
                             }
@@ -551,5 +594,105 @@
             }
             return retVal;
         }
+
+        $('.chartExams').click(function () {
+            exam_id = $(this).attr('id_exam')
+            name_exam = $(this).attr('name_exam')
+            $.ajax({
+                url: '/teachers/exams/' + exam_id + '/chart',
+                method: "GET",
+                data: {
+                    exam_id: exam_id
+                },
+                success: function (res) {
+                    $('#title_chart').html(name_exam)
+                    $('#modal_chart').modal('show')
+
+                    $('#kt_tab_pane_4 #myChart').remove()
+                    $('#kt_tab_pane_4').append('<canvas id="myChart" class="animated fadeIn" height="150"></canvas>')
+
+                    $('#kt_tab_pane_5 #myChart1').remove()
+                    $('#kt_tab_pane_5').append('<canvas id="myChart1" class="animated fadeIn" height="150"></canvas>')
+
+                    var ctx = document.getElementById('myChart');
+                    var type = 'bar'
+                    var label = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
+                    var nameLabel = 'Thi sinh'
+                    var data = res
+                    chartClass.ChartData(ctx, type, label, nameLabel, data)
+
+                    var ctx1 = document.getElementById('myChart1');
+                    var type1 = 'line'
+                    var label1 = res
+                    var data1 = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
+                    chartClass.ChartData(ctx1, type1, label, nameLabel, data)
+                }
+            })
+
+            chartClass = {
+                ChartData: function (ctx, type, label, nameLabel, data) {
+                    new Chart(ctx, {
+                        type: type,
+                        data: {
+                            labels: label,
+                            datasets: [{
+                                label: nameLabel,
+                                data: data,
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        }
+                    });
+                }
+            }
+
+        })
+        $('.is_see_answers').click(function () {
+            exam_id = $(this).attr('exam_id')
+            title = $(this).attr('aria-label')
+            Swal.fire({
+                text: title + '?',
+                icon: "warning",
+                buttonsStyling: false,
+                showCancelButton: true,
+                confirmButtonText: "Ok!",
+                cancelButtonText: 'Hủy',
+                customClass: {
+                    confirmButton: "btn btn-primary",
+                    cancelButton: 'btn btn-danger'
+                }
+            }).then(function (result) {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: "/teachers/exams/" + exam_id + "/isSeeAnswers",
+                        method: "GET",
+                        data: {
+                            exam_id: exam_id
+                        },
+                        success: function (res) {
+                            Swal.fire({
+                                text: title+ " thành công!",
+                                icon: "success",
+                                buttonsStyling: false,
+                                confirmButtonText: "Ok!",
+                                customClass: {
+                                    confirmButton: "btn btn-primary"
+                                }
+                            }).then(()=>{
+                                location.reload();
+                            });
+
+                        }
+                    })
+                }
+            });
+
+        })
     </script>
 @endsection

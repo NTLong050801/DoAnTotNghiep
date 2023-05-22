@@ -1,4 +1,4 @@
-@extends('admin.home')
+@extends('layouts.main')
 @section('content')
     <div class="container m-3 py-12 ">
         <button class="btn btn-sm btn-info ms-5">Import Excel</button>

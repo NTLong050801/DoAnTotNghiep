@@ -1,4 +1,4 @@
-@extends('admin.home')
+@extends('layouts.main')
 @section('content')
     <div class="container m-3 py-12 ">
         <a href="{{route('student.index')}}"><button class="btn btn-secondary btn-sm"><i class="fa-sharp fa-solid fa-arrow-left"></i></button></a>

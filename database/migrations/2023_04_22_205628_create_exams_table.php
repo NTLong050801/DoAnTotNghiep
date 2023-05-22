@@ -21,7 +21,9 @@ return new class extends Migration
             $table->text('note')->nullable();
             $table->string('password')->nullable();
             $table->string('status')->default(0);
-            $table->boolean('random')->default(false);
+            $table->boolean('random')->default(true);
+            $table->boolean('is_see_answers')->default(false);
+            $table->boolean('is_end')->default(false);
             $table->foreignId('user_id')->constrained('users');
             $table->timestamps();
         });

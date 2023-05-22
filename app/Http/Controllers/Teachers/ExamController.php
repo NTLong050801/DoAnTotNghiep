@@ -14,6 +14,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 
 class ExamController extends Controller
 {
@@ -187,13 +188,13 @@ class ExamController extends Controller
     {
         $exam_id = $request->input('exam_id');
         $exam = Exam::where('id', $request->input('exam_id'))->first();
-        if(!$request->input('keyword')){
+        if (!$request->input('keyword')) {
             $students = $exam->user()->get();
-        }else{
+        } else {
             $students = $exam->user()->where('name', 'LIKE', '%' . $request->input('keyword') . '%')->get();
 
         }
-        return view('pages.teachers.ajax.exams-students-list', compact('students','exam_id'));
+        return view('pages.teachers.ajax.exams-students-list', compact('students', 'exam_id'));
     }
 
     public function active(Request $request, Exam $exam)
@@ -219,11 +220,14 @@ class ExamController extends Controller
             return 'success';
         }
     }
-    public function deleteStudent(Request $request){
-        myExam($request->input('exam_id'),$request->input('user_id'))->delete();
+
+    public function deleteStudent(Request $request)
+    {
+        myExam($request->input('exam_id'), $request->input('user_id'))->delete();
     }
 
-    public function resetExam(Request $request){
+    public function resetExam(Request $request)
+    {
         $exam_id = $request->input('exam_id');
         $exam = Exam::where('id', $exam_id)->first();
         $numberQuestion = (integer)$exam->number_question;
@@ -238,7 +242,7 @@ class ExamController extends Controller
         }
         $listQuestions->get();
         $idQuestions = $listQuestions->pluck('question_id')->toArray();
-        myExam($exam_id,$request->input('user_id'))->update([
+        myExam($exam_id, $request->input('user_id'))->update([
             'isActive' => false,
             'questions' => $idQuestions,
             'time_started' => null,
@@ -248,7 +252,39 @@ class ExamController extends Controller
         ]);
     }
 
-    public function resultExam(Request $request){
-        return myExam($request->input('exam_id'),$request->input('user_id'));
+    public function resultExam(Request $request)
+    {
+        return myExam($request->input('exam_id'), $request->input('user_id'));
+    }
+
+    public function chart(Request $request)
+    {
+        $exam_id = $request->exam_id;
+        $arrdiem = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.0];
+        $students = ExamsStudents::where('exam_id', $exam_id)->get();
+        foreach ($students as $student) {
+            if ($student->questions != null){
+                $countQuestion = count(json_decode($student->questions));
+            }else{
+                $countQuestion = 1;
+            }
+            $value = round($student->result * 10 / $countQuestion);
+            $arrdiem[$value] += 1;
+        }
+        return $arrdiem;
+    }
+
+    public function isSeeAnswers(Request $request)
+    {
+        $exam = Exam::find($request->input('exam_id'));
+        $isSeeAnswers = !$exam->is_see_answers;
+        $check = $exam->update([
+            'is_see_answers' => $isSeeAnswers,
+        ]);
+        if ($check) {
+            echo 'success';
+        } else {
+            echo 'fail';
+        }
     }
 }

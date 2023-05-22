@@ -2,6 +2,7 @@
 
 namespace App\Imports;
 
+use App\Models\ClassesStudents;
 use App\Models\Major;
 use App\Models\User;
 use Illuminate\Support\Collection;
@@ -25,27 +26,27 @@ class TeacherImport implements ToCollection, WithHeadingRow, WithValidation,Skip
 
     public function collection(Collection $collection)
     {
-        $majors = Major::all();
-        foreach ($majors as $major) {
-            foreach ($collection as $row) {
-                if ($major->name ==  $row['khoa']) {
-                    User::create([
-                        'name' => $row['ho_va_ten'],
-                        'email' => $row['email'],
-                        'password' => Hash::make($row['email']),
-                        'role' => 1,
-                        'major_id' =>$major->id,
-                    ]);
-                }
-            }
-        }
 
+        foreach ($collection as $row) {
+            $account = User::where('email', $row['email'])->first();
+            if (!$account) {
+                $major = Major::where('name', $row['khoa'])->first();
+                $account = User::create([
+                    'name' => $row['ho_va_ten'],
+                    'email' => $row['email'],
+                    'password' => Hash::make($row['email']),
+                    'role' => 1,
+                    'major_id' => $major->id,
+                ]);
+            }
+
+        }
     }
 
     public function rules(): array
     {
         return [
-            '*.email' => ['email', 'unique:users,email'],
+
         ];
     }
 

@@ -26,7 +26,7 @@ return new class extends Migration
             $table->longText('questions')->nullable();
             $table->longText('answers')->nullable();
             $table->float('result')->nullable();
-            $table->text('warning')->nullable();
+            $table->text('warning')->default(0)->nullable();
             $table->boolean('isActive')->default(false);
             $table->timestamps();
         });

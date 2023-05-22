@@ -19,6 +19,8 @@ class Exam extends Model
         'status',
         'random',
         'user_id',
+        'is_see_answers',
+        'is_end',
     ];
     public function user(){
         return $this->belongsToMany(User::class, 'exams_students', 'exam_id', 'id_user');

@@ -43,10 +43,10 @@ return new class extends Migration
             'major' => '1',
         ]);
         \App\Models\User::create([
-            'name' => 'teacher1',
-            'email' => 'teacher1@gmail.com',
+            'name' => 'student',
+            'email' => 'student@gmail.com',
             'password' => Hash::make('admin'),
-            'role' => '1',
+            'role' => '0',
             'major' => '1',
         ]);
     }

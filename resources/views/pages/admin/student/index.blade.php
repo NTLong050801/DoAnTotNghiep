@@ -1,15 +1,6 @@
-@extends('admin.home')
+@extends('layouts.main')
 @section('content')
-    @if(Session::has('success'))
-        <div class="alert alert-success">
-            {{Session::get('success')}}
-        </div>
-    @endif
-    @if(Session::has('error'))
-        <div class="alert alert-success">
-            {{Session::get('error')}}
-        </div>
-    @endif
+    @include('pages.admin.alert')
     <form class="row m-3" method="get" action="{{route('student.search')}}">
         @csrf
         <input class="form-control mr-sm-2 col-10 me-5" name="search" type="search" style="width: 50%"

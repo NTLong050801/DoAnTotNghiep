@@ -64,7 +64,7 @@ class MajorController extends Controller
         //
         $major = Major::find($id);
         $title = "Sửa tên khoa  ".$major->name;
-        return view('admin.major.edit',compact('major','title'));
+        return view('pages.admin.major.edit',compact('major','title'));
     }
 
     /**

@@ -532,6 +532,7 @@
                 <!--end::Card-->
             </div>
         </div>
+
         <!-- Modal -->
         <div class="modal fade" id="modal_result" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
@@ -685,7 +686,7 @@
 
         StudentInClass()
 
-        //setInterval(StudentInClass, 10000);
+        setInterval(StudentInClass, 10000);
         function StudentInClass(keyword) {
             $.ajax({
                 url: '/teachers/exams/' + exam_id + '/studentInClass/' + keyword,

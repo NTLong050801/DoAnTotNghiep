@@ -45,10 +45,18 @@
             </tr>
             </tbody>
         </table>
-        <a href="{{route('students.results.index')}}">
-            <button class="btn btn-primary">Tới trang quản lý
-            </button>
-        </a>
+       <div class="d-flex justify-content-end m-5 p-5">
+          @if($examStudent->exam->is_see_answers)
+               <a href="{{route('students.results.answers',$examStudent->exam->id)}}">
+                   <button class="btn btn-sm btn-success">Xem đáp án
+                   </button>
+               </a>
+          @endif
+           <a href="{{route('students.results.index')}}" class="ms-5">
+               <button class="btn btn-sm btn-primary">Tới trang quản lý
+               </button>
+           </a>
+       </div>
     </div>
 
 @endsection

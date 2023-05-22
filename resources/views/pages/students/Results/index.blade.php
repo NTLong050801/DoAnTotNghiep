@@ -37,7 +37,7 @@
                             <th>Số câu đúng</th>
                             <th>Điểm</th>
                             <th class="text-end min-w-70px sorting_disabled" rowspan="1" colspan="1"
-                                aria-label="Actions" style="width: 128.625px;">Actions
+                                aria-label="Actions" style="width: 128.625px;">Hành động
                             </th>
                         </tr>
                         <!--end::Table row-->
@@ -56,7 +56,7 @@
                                 <!--begin::Action=-->
                                 <td class="text-end">
                                     <a href="#" class="btn btn-sm btn-light btn-active-light-primary"
-                                       data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
+                                       data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Chọn
                                         <!--begin::Svg Icon | path: icons/duotune/arrows/arr072.svg-->
                                         <span class="svg-icon svg-icon-5 m-0">
                                         <img src="{{asset('assets/media/icons/duotune/arrows/arr072.svg')}}" alt="">
@@ -67,10 +67,13 @@
                                         class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4"
                                         data-kt-menu="true">
                                         <!--begin::Menu item-->
-                                        <div class="menu-item px-3">
-                                            <a href="#"
-                                               class="menu-link px-3">View</a>
-                                        </div>
+
+                                        @if($examStudent->exam->is_see_answers)
+                                            <div class="menu-item px-3">
+                                                <a href="{{route('students.results.answers',$examStudent->exam->id)}}"
+                                                   class="menu-link px-3">Đáp án</a>
+                                            </div>
+                                        @endif
                                         <!--end::Menu item-->
                                         <!--begin::Menu item-->
                                         <div class="menu-item px-3">

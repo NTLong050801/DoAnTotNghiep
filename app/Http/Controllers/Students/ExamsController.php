@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Students;
 
+use App\Events\ActiveChanged;
 use App\Http\Controllers\Controller;
 use App\Models\Exam;
 use App\Models\ExamsQuestions;
@@ -48,6 +49,7 @@ class ExamsController extends Controller
             'isActive' => true,
             'questions' => $idQuestions,
             'time_started' => Carbon::now(),
+            'answers' => array_fill(0, count($idQuestions), 0),
         ]);
         if ($updateActive) {
             return 'success';
@@ -62,7 +64,7 @@ class ExamsController extends Controller
         if (!$examStudent->isActive || !is_null($examStudent->result)) {
             return redirect()->route('students.exams.index');
         }
-    
+
         $listQuestion = collect();
 
         foreach (json_decode($examStudent->questions,true) as $q) {
@@ -78,7 +80,8 @@ class ExamsController extends Controller
         $durationInSeconds = $endTime->diffInSeconds($startTime);
         $time_exam =$examStudent->exam->minute_time*60;
         $totalSeconds = $time_exam-$durationInSeconds ;
-        return view('pages.students.exams.do-exam',compact('listQuestion','examStudent','totalSeconds'));
+        $myAnswers = json_decode($examStudent->answers);
+        return view('pages.students.exams.do-exam',compact('listQuestion','examStudent','totalSeconds','myAnswers'));
     }
 
     public function checkPassword(Request $request)
@@ -106,6 +109,7 @@ class ExamsController extends Controller
             'isActive' => true,
             'questions' => $idQuestions,
             'time_started' => Carbon::now(),
+            'answers' => array_fill(0, count($idQuestions), 0),
         ]);
         if ($updateActive) {
             return 'success';
@@ -122,6 +126,9 @@ class ExamsController extends Controller
                 continue; // Skip the token
             }
             if ($key === 'exam_id'){
+                continue;
+            }
+            if ($key === 'tab'){
                 continue;
             }
             array_push($arrayAnswer,$value);
@@ -154,5 +161,31 @@ class ExamsController extends Controller
             ->where('exam_id',$request->exam_id)->first();
         return view('pages.students.exams.result',compact('examStudent'));
 
+    }
+
+    public function updateAnswers(Request $request){
+        $exam_id = $request->input('exam_id');
+        $answer = $request->input('answer');
+        $index = $request->input('index');
+        $myExam = ExamsStudents::where('exam_id',$exam_id)->where('id_user',auth()->id())->first();
+        $answers = json_decode($myExam->answers,true);
+        $answers[(integer)$index] = $answer;
+        $myExam->update([
+           'answers' => $answers
+        ]);
+        $isEnd = $myExam->exam->is_end;
+        if ($isEnd){
+            return true;
+        }
+        return  false;
+    }
+
+    public function test(Request $request){
+            // Xử lý cập nhật active
+            $active = $request->input('active');
+
+            event(new ActiveChanged(true));
+
+            return response()->json(['success' => true]);
     }
 }
