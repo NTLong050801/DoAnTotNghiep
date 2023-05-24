@@ -93,7 +93,14 @@
                         </a>
                         <!--end:Menu link-->
                     </div>
-                    <!--begin:Menu item-->
+                    <div class="menu-item">
+                        <!--begin:Menu link-->
+                        <a class="menu-link" href="{{route('teachers.results.index')}}">
+                            <span class="menu-icon"><i class="fa-solid fa-square-poll-horizontal"></i></span>
+                            <span class="menu-title">Kết quả</span>
+                        </a>
+                        <!--end:Menu link-->
+                    </div>
                 </div>
                 <div class="menu-block">
 

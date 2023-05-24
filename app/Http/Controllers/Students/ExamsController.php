@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Students;
 
 use App\Events\ActiveChanged;
+use App\Events\StartExamEvent;
 use App\Http\Controllers\Controller;
 use App\Models\Exam;
 use App\Models\ExamsQuestions;
@@ -51,6 +52,7 @@ class ExamsController extends Controller
             'time_started' => Carbon::now(),
             'answers' => array_fill(0, count($idQuestions), 0),
         ]);
+     //   StartExamEvent::dispatch($exam_id,$exam->user_id);
         if ($updateActive) {
             return 'success';
         }
@@ -111,7 +113,9 @@ class ExamsController extends Controller
             'time_started' => Carbon::now(),
             'answers' => array_fill(0, count($idQuestions), 0),
         ]);
+      //  StartExamEvent::dispatch($exam_id,$exam->user_id);
         if ($updateActive) {
+
             return 'success';
         }
     }
@@ -143,6 +147,7 @@ class ExamsController extends Controller
             'answers' => $arrayAnswer,
             'result' => $dem,
         ]);
+        //StartExamEvent::dispatch($exam_id,$examStudent->exam->user_id);
         return json_encode([
             'success' => 'ok'
         ]);

@@ -264,14 +264,27 @@
                                     >
                                         <i class="fa-solid fa-chart-simple"></i>
                                     </button>
-                                    <button class="btn btn-sm btn-danger
+                                    @if(!$exam->is_end)
+                                        <button class="btn btn-sm btn-danger
                                 btn-sm btn-active-light-danger my-1 me-2 endExam"
-                                            id_exam="{{$exam->id}}" name_exam="{{$exam->name}}"
-                                            data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse"
-                                            data-bs-placement="bottom" title="Kết thúc"
-                                    >
-                                        <i class="fa-solid fa-power-off"></i>
-                                    </button>
+                                                id_exam="{{$exam->id}}" name_exam="{{$exam->name}}"
+                                                data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse"
+                                                data-bs-placement="bottom" title="Kết thúc"
+                                        >
+                                            <i class="fa-solid fa-power-off"></i>
+                                        </button>
+                                    @else
+                                        <a href="{{route('teachers.results.index',$exam->id)}}">
+                                            <button class="btn btn-sm btn-success
+                                btn-sm btn-active-light-success my-1 me-2 "
+                                                    id_exam="{{$exam->id}}"
+                                                    data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse"
+                                                    data-bs-placement="bottom" title="Kết quả bài thi"
+                                            >
+                                                <i class="fa-solid fa-square-poll-horizontal"></i>
+                                            </button>
+                                        </a>
+                                    @endif
                                     <a href="{{route('teachers.exams.edit',$exam)}}">
                                         <button type="button"
                                                 class="btn btn-sm btn-warning btn-active-light-primary  me-2 my-1"
@@ -693,6 +706,45 @@
                 }
             });
 
+        })
+        $('.endExam').click(function(){
+            exam_id = $(this).attr('id_exam')
+            Swal.fire({
+                text:'Kết thúc bài thi ?',
+                icon: "warning",
+                buttonsStyling: false,
+                showCancelButton: true,
+                confirmButtonText: "Ok!",
+                cancelButtonText: 'Hủy',
+                customClass: {
+                    confirmButton: "btn btn-primary",
+                    cancelButton: 'btn btn-danger'
+                }
+            }).then(function (result) {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: "/teachers/exams/" + exam_id + "/isEnd",
+                        method: "GET",
+                        data: {
+                            exam_id: exam_id
+                        },
+                        success: function (res) {
+                            Swal.fire({
+                                text: "Thành công!",
+                                icon: "success",
+                                buttonsStyling: false,
+                                confirmButtonText: "Ok!",
+                                customClass: {
+                                    confirmButton: "btn btn-primary"
+                                }
+                            }).then(()=>{
+                                location.reload();
+                            });
+
+                        }
+                    })
+                }
+            });
         })
     </script>
 @endsection

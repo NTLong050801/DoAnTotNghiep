@@ -545,7 +545,7 @@
                         <table class="table border table-auto fs-2">
                             <thead>
                             <tr class="text-center fs-2x">
-                                <th colspan="2">Bài thi kt toan 1</th>
+                                <th colspan="2">Kết quả</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -576,13 +576,17 @@
             </div>
         </div>
         <input type="hidden" id="exam_id" exam_id="{{$exam->id}}">
+        <input type="hidden" id="user_id"  value="{{auth()->id()}}">
         <!--end::Content-->
     </div>
 @endsection
 @section('javascript')
     {{--    <script src="{{asset('assets/js/custom/pages-teachers-exams-show.js')}}"></script>--}}
+    <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
     <script>
-        var exam_id = $('#exam_id').attr('exam_id');
+         exam_id = $('#exam_id').attr('exam_id');
+         user_id = $('#user_id').val();
+
         myQuestion()
         StudentInClass()
         $(document).on('click', '.addMyQuestion', function () {
@@ -683,10 +687,7 @@
                 }
             })
         }
-
-        StudentInClass()
-
-        setInterval(StudentInClass, 10000);
+        // setInterval(StudentInClass, 10000);
         function StudentInClass(keyword) {
             $.ajax({
                 url: '/teachers/exams/' + exam_id + '/studentInClass/' + keyword,
@@ -876,6 +877,63 @@
                 }
             })
         })
+        $(document).on('click', '.endExam', function () {
+            user_id = $(this).parent().data('user_id')
+            nameStudent = $(this).parent().parent().children().first().html();
+            Swal.fire({
+                text: "Kết thúc bài thi của sinh viên "+nameStudent+ " ?",
+                icon: "warning",
+                buttonsStyling: false,
+                showCancelButton: true,
+                confirmButtonText: "Kêt thúc!",
+                cancelButtonText: 'Hủy',
+                customClass: {
+                    confirmButton: "btn btn-primary",
+                    cancelButton: 'btn btn-danger'
+                }
+            }).then(function (result) {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: "/teachers/exams/" + exam_id + "/endExam/" + user_id,
+                        method: "GET",
+                        data: {
+                            exam_id: exam_id,
+                            user_id: user_id,
+                        },
+                        success: function (res) {
+                            StudentInClass()
+                            Swal.fire({
+                                text: "Thành công!",
+                                icon: "success",
+                                buttonsStyling: false,
+                                confirmButtonText: "Ok !!",
+                                timer: 3000,
+                                customClass: {
+                                    confirmButton: "btn btn-primary"
+                                }
+                            })
+                        }
+                    })
+                }
+            });
+        })
+        // Enable pusher logging - don't include this in production
+        Pusher.logToConsole = true;
+
+        var pusher = new Pusher('db1f42fb9112815e4728', {
+            cluster: 'ap1'
+        });
+        // var channel = pusher.subscribe('StartExamEvent');
+        // channel.bind('App\\Events\\StartExamEvent', function(data) {
+        //     console.log('my get : '+exam_id + ','+user_id);
+        //     console.log('data get : '+data.exam_id + ','+data.user_id)
+        //     if(exam_id == data.exam_id && user_id == data.user_id){
+        //         console.log('ok')
+        //         StudentInClass()
+        //     }else{
+        //         console.log('faile')
+        //     }
+        // });
     </script>
 @endsection
 <script>

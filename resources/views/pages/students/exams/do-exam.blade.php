@@ -148,13 +148,16 @@
             <input type="hidden" name="tab" id="tab_warning" value="{{$examStudent->warning}}">
 
         </form>
+        <input type="hidden" value="{{auth()->id()}}" id="user_id" name="user_id">
     </div>
 @endsection
 @section('javascript')
+    <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
     <script>
         $(document).ready(function () {
             // Initialize variables
             var tabs = $('.link-questions[data-bs-toggle="tab"]');
+            user_id = $('#user_id').val()
             var activeTab = tabs.filter('.active');
             var activeTabIndex = tabs.index(activeTab);
             var numTabs = tabs.length;
@@ -382,6 +385,59 @@
                     $('#toggle-fullscreen').removeClass('d-none')
                 }
             }
+
+            // Enable pusher logging - don't include this in production
+            Pusher.logToConsole = true;
+
+            var pusher = new Pusher('db1f42fb9112815e4728', {
+                cluster: 'ap1'
+            });
+            var channel = pusher.subscribe('active');
+            channel.bind('App\\Events\\ActiveChanged', function(data) {
+                if (document.fullscreenElement) {
+                    if (document.fullscreenElement) {
+                        document.exitFullscreen();
+                    }
+                }
+                status_warning = 0;
+                Swal.fire({
+                    text: "Giảng viên đã kết thúc bài thi !!",
+                    icon: "info",
+                    buttonsStyling: false,
+                    confirmButtonText: "Đồng ý",
+                    timer:3000,
+                    customClass: {
+                        confirmButton: "btn fw-bold btn-danger",
+                    }
+                }).then(function (result) {
+                    submitExam()
+                })
+
+            });
+            var channel1 = pusher.subscribe('EndExamStudent');
+            channel1.bind('App\\Events\\EndExamStudent', function(data) {
+                if(user_id == data.user_id && exam_id == data.exam_id){
+                    if (document.fullscreenElement) {
+                        if (document.fullscreenElement) {
+                            document.exitFullscreen();
+                        }
+                    }
+                    status_warning = 0;
+                    Swal.fire({
+                        text: "Giảng viên đã kết thúc bài thi !!",
+                        icon: "info",
+                        buttonsStyling: false,
+                        confirmButtonText: "Đồng ý",
+                        timer:3000,
+                        customClass: {
+                            confirmButton: "btn fw-bold btn-danger",
+                        }
+                    }).then(()=>{
+                        submit = 1
+                        window.location.href = "/students/exams/" + exam_id + "/result";
+                    })
+                }
+            });
 
             // window.addEventListener('blur', function () {
             //     // The user switched to another tab or minimized the window

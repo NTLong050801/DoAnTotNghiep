@@ -4,10 +4,10 @@
         <td style="width: 15%">{{$student->name}}</td>
         <td style="width: 10%">{{$student->identifier}}</td>
         <!--begin::User=-->
-        <td style="width: 25%">
+        <td style="width: 20%">
             {{$student->email}}
         </td>
-        <td style="width: 10%">{{myExam($exam_id,$student->id)->timetime_started ? myExam($exam_id,$student->id)->timetime_started : '---' }}</td>
+        <td style="width: 10%">{{myExam($exam_id,$student->id)->time_started ? myExam($exam_id,$student->id)->time_started : '---' }}</td>
         <!--begin::Action=-->
         <td class="text-danger" style="width: 10%">{{myExam($exam_id,$student->id)->warning ? myExam($exam_id,$student->id)->warning : '---'}}</td>
         <td style="width: 15%">
@@ -22,6 +22,13 @@
             @endif
         </td>
         <td class="text-end" style="width: 15%" data-user_id="{{$student->id}}">
+            @if(myExam($exam_id,$student->id)->isActive == 1 && myExam($exam_id,$student->id)->result == '')
+                <button class="btn btn-sm btn-warning endExam" type="button"
+                        data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="bottom"
+                        title="Kết thúc bài thi">
+                    <i class="fa-solid fa-power-off"></i>
+                </button>
+            @endif
             <button class="btn btn-sm btn-info reset_exam" type="button"
                     data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="bottom"
                     title="Reset bài thi">

@@ -10,6 +10,7 @@ use App\Http\Controllers\Students\ResultsContrller;
 use App\Http\Controllers\Teachers\ExamController;
 use App\Http\Controllers\Teachers\ExamsQuestionsController;
 use App\Http\Controllers\Teachers\QuestionController;
+use App\Http\Controllers\Teachers\ResultsController;
 use App\Http\Controllers\WebhooksController;
 use App\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Support\Facades\Route;
@@ -92,8 +93,11 @@ Route::prefix('/teachers')->group(function () {
         Route::get('/{exam}/myQuestion', [ExamController::class, 'myQuestion'])->name('teachers.exams.myQuestion');
         Route::get('/{exam}/studentInClass/{keyword}', [ExamController::class, 'studentInClass'])->name('teachers.exams.studentInClass');
         Route::get('/{exam_id}/deleteStudent/{user_id}', [ExamController::class, 'deleteStudent'])->name('teachers.exams.deleteStudent');
+
         Route::get('/{exam_id}/resetExam/{user_id}', [ExamController::class, 'resetExam'])->name('teachers.exams.resetExam');
         Route::get('/{exam_id}/resultExam/{user_id}', [ExamController::class, 'resultExam'])->name('teachers.exams.resultExam');
+        Route::get('/{exam_id}/endExam/{user_id}', [ExamController::class, 'endExam'])->name('teachers.exams.endExam');
+        Route::get('/{exam_id}/isEnd', [ExamController::class, 'isEnd'])->name('teachers.exams.isEnd');
 
         Route::get('/{exam}/{status}/active',[ExamController::class,'active'])->name('teachers.exams.active');
         Route::get('/{exam_id}/{password}/newPassword',[ExamController::class,'newPassword'])->name('teachers.exams.newPassword');
@@ -101,6 +105,8 @@ Route::prefix('/teachers')->group(function () {
         Route::get('/{exam}/addClass/{class}', [ExamController::class, 'addClass'])->name('teachers.exams.addClass');
         Route::post('/{exam}/addStudent', [ExamController::class, 'addStudent'])->name('teachers.exams.addStudent');
 
+        Route::get('/{exam_id}/chart',[ExamController::class,'chart'])->name('chart');
+        Route::get('/{exam_id}/isSeeAnswers',[ExamController::class,'isSeeAnswers']);
     });
 
     Route::prefix('questions')->group(function () {
@@ -144,6 +150,10 @@ Route::prefix('/teachers')->group(function () {
         Route::get('/deleteStudent/{id_student}/{id_class}', [ClassesController::class, 'deleteStudent'])->name('teachers.classes.deleteStudent');
 
     });
+
+    Route::prefix('results')->group(function (){
+        Route::get('/{exam_id?}',[ResultsController::class,'index'])->name('teachers.results.index');
+    });
 });
 
 Route::prefix('/students')->group(function () {
@@ -158,10 +168,12 @@ Route::prefix('/students')->group(function () {
         Route::post('/checkResult', [ExamsController::class, 'checkResult'])->name('students.exams.checkResult');
         Route::post('/updateWarning', [ExamsController::class, 'updateWarning'])->name('students.exams.updateWarning');
         Route::get('/{exam_id}/result', [ExamsController::class, 'result'])->name('students.exams.result');
+        Route::get('/{exam_id}/updateAnswers/{index}/{answer}',[ExamsController::class,'updateAnswers'])->name('students.exams.updateAnswers');
     });
 
     Route::prefix('results')->group(function (){
        Route::get('/',[ResultsContrller::class,'index'])->name('students.results.index');
+       Route::get('/{exam_id}/answers',[ResultsContrller::class,'answers'])->name('students.results.answers');
     });
 });
 Route::webhooks('webhook-receiving-url');
@@ -175,6 +187,10 @@ Route::get('/full-screen', function () {
     return view('full-screen');
 });
 Route::get('/test', function () {
-    return view('test');
+    event(new \App\Events\ActiveChanged("Kich hoat"));
 });
+Route::get('/test1', function () {
+    return view('test1');
+});
+Route::post('test',[ExamsController::class,'test'])->name('test');
 require __DIR__ . '/auth.php';

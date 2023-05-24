@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Teachers;
 
+use App\Events\ActiveChanged;
+use App\Events\EndExamStudent;
 use App\Http\Controllers\Controller;
 use App\Models\Classes;
 use App\Models\ClassesStudents;
@@ -252,6 +254,15 @@ class ExamController extends Controller
         ]);
     }
 
+    public function endExam(Request $request){
+        $exam_id = $request->input('exam_id');
+        $user_id = $request->input('user_id');
+//        event(new EndExamStudent($user_id,$exam_id));
+        EndExamStudent::dispatch($user_id,$exam_id);
+        return 'success';
+
+    }
+
     public function resultExam(Request $request)
     {
         return myExam($request->input('exam_id'), $request->input('user_id'));
@@ -286,5 +297,14 @@ class ExamController extends Controller
         } else {
             echo 'fail';
         }
+    }
+
+    public function isEnd(Request $request){
+        $exam_id = $request->input('exam_id');
+        $myExam = Exam::find($exam_id);
+        $myExam->update([
+           'is_end' => !$myExam->is_end
+        ]);
+        event(new ActiveChanged('true'));
     }
 }
