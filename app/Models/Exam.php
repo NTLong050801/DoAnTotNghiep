@@ -25,4 +25,12 @@ class Exam extends Model
     public function user(){
         return $this->belongsToMany(User::class, 'exams_students', 'exam_id', 'id_user');
     }
+
+    public function examQuestions(){
+        return $this->hasMany(ExamsQuestions::class,'exam_id','id');
+    }
+
+    public function examStudents(){
+        return $this->hasMany(ExamsStudents::class,'exam_id','id');
+    }
 }

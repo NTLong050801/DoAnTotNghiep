@@ -51,6 +51,7 @@
                 </div>
                 <!--end::Filter-->
                 @if($examsStudents != null)
+                    <button ></button>
                     <!--begin::Export dropdown-->
                     <button type="button" class="btn btn-light-primary" data-kt-menu-trigger="click"
                             data-kt-menu-placement="bottom-end">
@@ -63,14 +64,10 @@
                     <div id="kt_ecommerce_report_customer_orders_export_menu"
                          class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-200px py-4"
                          data-kt-menu="true">
+
                         <!--begin::Menu item-->
                         <div class="menu-item px-3">
-                            <a href="#" class="menu-link px-3" data-kt-ecommerce-export="copy">Copy to clipboard</a>
-                        </div>
-                        <!--end::Menu item-->
-                        <!--begin::Menu item-->
-                        <div class="menu-item px-3">
-                            <a href="#" class="menu-link px-3" data-kt-ecommerce-export="excel">Export as Excel</a>
+                            <a href="{{route('teachers.results.exportExcel',request('exam_id'))}}" class="menu-link px-3" data-kt-ecommerce-export="excel">Export as Excel</a>
                         </div>
                         <!--end::Menu item-->
                         <!--begin::Menu item-->
@@ -80,7 +77,7 @@
                         <!--end::Menu item-->
                         <!--begin::Menu item-->
                         <div class="menu-item px-3">
-                            <a href="#" class="menu-link px-3" data-kt-ecommerce-export="pdf">Export as PDF</a>
+                            <a href="{{route('teachers.results.exportPDF',request('exam_id'))}}" class="menu-link px-3" data-kt-ecommerce-export="pdf">Export as PDF</a>
                         </div>
                         <!--end::Menu item-->
                     </div>
@@ -110,7 +107,6 @@
                                 <th>Email</th>
                                 <th>Thời gian bắt đầu</th>
                                 <th>Tổng số câu đúng</th>
-                                <th>Số câu không chọn</th>
                                 <th>Số cảnh bảo</th>
                                 <th>Tổng điểm</th>
                                 <th>Hành động</th>
@@ -119,76 +115,41 @@
                             </thead>
                             <!--end::Table head-->
                             <!--begin::Table body-->
-                            <tbody class="fw-semibold text-gray-600">
+                            <tbody class="fw-semibold text-gray-600 ">
                             @foreach($examsStudents as $examsStudent)
-
-                                <tr>
-                                    <td class="col-1">{{$loop->iteration}}</td>
+                                @if($examsStudent->questions == null)
+                                <tr  class="bg-danger text-white">
+                                    <td class="col-1 text-center">{{$loop->iteration}}</td>
                                     <td style="width: 15%">{{$examsStudent->user->name}}</td>
                                     <td style="width: 15%">{{$examsStudent->user->email}}</td>
-                                    <td style="width: 15%">{{$examsStudent->time_started ? $examsStudent->time_started : '--'}}</td>
-                                    <td style="width: 5%">
-                                        @if($examsStudent->questions != null && $examsStudent->result != null)
-                                            {{$examsStudent->result.'/'.count(json_decode($examsStudent->questions))}}
-                                        @else
-                                        --
-                                        @endif
-
-                                    </td>
+                                    <td style="width: 15%">--</td>
+                                    <td style="width: 5%">--</td>
+                                    <td style="width: 5%">--</td>
                                     <td style="width: 5%">0</td>
-                                    <td style="width: 5%">{{$examsStudent->warning}}</td>
-                                    <td style="width: 5%"></td>
                                     <td style="width: 5%">
-                                        <button class="btn btn-sm btn-info">View</button>
+                                        <button class="btn btn-dark btn-sm">Bỏ thi</button>
                                     </td>
                                 </tr>
+                                @else
+                                    <tr>
+                                        <td class="col-1">{{$loop->iteration}}</td>
+                                        <td style="width: 15%">{{$examsStudent->user->name}}</td>
+                                        <td style="width: 15%">{{$examsStudent->user->email}}</td>
+                                        <td style="width: 15%">{{$examsStudent->time_started ? $examsStudent->time_started : '--'}}</td>
+                                        <td style="width: 5%">
+                                            {{$examsStudent->result.'/'.count(json_decode($examsStudent->questions))}}
+                                        </td>
+                                        <td style="width: 5%">{{$examsStudent->warning}}</td>
+                                        <td style="width: 5%">{{$examsStudent->result*10/count(json_decode($examsStudent->questions))}}</td>
+                                        <td style="width: 5%">
+                                            <a href="{{route('teachers.results.answers',[request('exam_id'),$examsStudent->id_user])}}"  target="_blank"><button class="btn btn-sm btn-info">Xem</button></a>
+                                        </td>
+                                    </tr>
+                                @endif
                             @endforeach
                             </tbody>
                             <!--end::Table body-->
                         </table>
-                    </div>
-                    <div class="row">
-                        <div
-                            class="col-sm-12 col-md-5 d-flex align-items-center justify-content-center justify-content-md-start">
-                            <div class="dataTables_length" id="kt_ecommerce_report_customer_orders_table_length">
-                                <label><select name="kt_ecommerce_report_customer_orders_table_length"
-                                               aria-controls="kt_ecommerce_report_customer_orders_table"
-                                               class="form-select form-select-sm form-select-solid">
-                                        <option value="10">10</option>
-                                        <option value="25">25</option>
-                                        <option value="50">50</option>
-                                        <option value="100">100</option>
-                                    </select>
-                                </label>
-                            </div>
-                        </div>
-                        <div
-                            class="col-sm-12 col-md-7 d-flex align-items-center justify-content-center justify-content-md-end">
-                            <div class="dataTables_paginate paging_simple_numbers"
-                                 id="kt_ecommerce_report_customer_orders_table_paginate">
-                                <ul class="pagination">
-                                    <li class="paginate_button page-item previous disabled"
-                                        id="kt_ecommerce_report_customer_orders_table_previous">
-                                        <a href="#"
-                                           aria-controls="kt_ecommerce_report_customer_orders_table"
-                                           data-dt-idx="0"
-                                           tabindex="0"
-                                           class="page-link"><i
-                                                class="previous"></i></a></li>
-                                    <li class="paginate_button page-item active">
-                                        <a href="#"
-                                           aria-controls="kt_ecommerce_report_customer_orders_table"
-                                           data-dt-idx="1" tabindex="0"
-                                           class="page-link">1</a></li>
-                                    <li class="paginate_button page-item next disabled"
-                                        id="kt_ecommerce_report_customer_orders_table_next">
-                                        <a href="#"
-                                           aria-controls="kt_ecommerce_report_customer_orders_table"
-                                           data-dt-idx="2" tabindex="0"
-                                           class="page-link"><i class="next"></i></a></li>
-                                </ul>
-                            </div>
-                        </div>
                     </div>
                 </div>
             @else
@@ -204,7 +165,6 @@
             $('#select_exams').change(function () {
                 exam_id = $(this).val()
                 window.location.href = "/teachers/results/" + exam_id;
-
             })
         })
     </script>

@@ -28,6 +28,7 @@ class User extends Authenticatable
         'identifier',
         'role',
         'major_id',
+        'avatar',
     ];
 
     /**
@@ -58,7 +59,10 @@ class User extends Authenticatable
     {
         return Attribute::make(
             get: function () {
-                return (new \Laravolt\Avatar\Avatar)->create($this->name)->toBase64();
+                if (empty($this->avatar)) {
+                    return (new \Laravolt\Avatar\Avatar)->create($this->name)->toBase64();
+                }
+                return $this->attributes['avatar'];
             }
         );
     }

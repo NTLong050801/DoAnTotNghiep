@@ -153,7 +153,10 @@ Route::prefix('/teachers')->group(function () {
 
     Route::prefix('results')->group(function (){
         Route::get('/{exam_id?}',[ResultsController::class,'index'])->name('teachers.results.index');
+        Route::get('/{exam_id}/{user_id}',[ResultsController::class,'answers'])->name('teachers.results.answers');
     });
+    Route::get('/exportExcel/{exam_id}/',[ResultsController::class,'exportExcel'])->name('teachers.results.exportExcel');
+    Route::get('/exportPDF/{exam_id}/',[ResultsController::class,'exportPDF'])->name('teachers.results.exportPDF');
 });
 
 Route::prefix('/students')->group(function () {
@@ -189,8 +192,11 @@ Route::get('/full-screen', function () {
 Route::get('/test', function () {
     event(new \App\Events\ActiveChanged("Kich hoat"));
 });
-Route::get('/test1', function () {
-    return view('test1');
+Route::get('/sendMessage/{id}', function ($id) {
+    \App\Events\SendMessageEvent::dispatch($id);
+});
+Route::get('/getNumberMessages',function (){
+    return \App\Models\ChMessage::where('to_id',auth()->id())->where('seen',false)->count();
 });
 Route::post('test',[ExamsController::class,'test'])->name('test');
 require __DIR__ . '/auth.php';
