@@ -157,6 +157,7 @@ Route::prefix('/teachers')->group(function () {
     });
     Route::get('/exportExcel/{exam_id}/',[ResultsController::class,'exportExcel'])->name('teachers.results.exportExcel');
     Route::get('/exportPDF/{exam_id}/',[ResultsController::class,'exportPDF'])->name('teachers.results.exportPDF');
+    Route::get('/exportImg/{exam_id}/',[ResultsController::class,'exportImg'])->name('teachers.results.exportImg');
 });
 
 Route::prefix('/students')->group(function () {

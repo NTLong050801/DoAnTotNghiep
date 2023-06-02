@@ -54,7 +54,18 @@ class ResultsController extends Controller
             'examsStudents' => $examsStudents,
             'exam' => $exam,
         ]);
-        return $pdf->download('test.pdf');
+        return $pdf->download('Điểm thi '.$exam->name.'.pdf');
     }
 
+    public function exportImg(string $exam_id){
+        $examsStudents = ExamsStudents::where('exam_id',$exam_id)->get();
+        $exam = Exam::find($exam_id);
+        $html = view('pages.teachers.results.result-pdf',compact('examsStudents','exam'))->render();
+        $snappy = \App::make('snappy.image');
+        $imageContents = $snappy->getOutputFromHtml($html);
+        $nameImage = $exam->name.'.jpg';
+        return response($imageContents)
+            ->header('Content-Type', 'image/jpeg')
+            ->header('Content-Disposition', 'attachment; filename="'.$nameImage.'"');
+    }
 }
