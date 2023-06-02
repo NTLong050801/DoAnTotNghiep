@@ -15,14 +15,51 @@
     <!--begin::Global Stylesheets Bundle(mandatory for all pages)-->
     <link href="{{asset('assets/plugins/global/plugins.bundle.css')}}" rel="stylesheet" type="text/css">
     <link href="{{asset('assets/css/style.bundle.css')}}" rel="stylesheet" type="text/css">
-        <link href="{{asset('assets/css/custom.css')}}" rel="stylesheet" type="text/css">
+    <link href="{{asset('assets/css/custom.css')}}" rel="stylesheet" type="text/css">
+    <style>
+        .chat_icon {
+            display: flex;
+            position: fixed;
+            cursor: pointer;
+            z-index: 105;
+            justify-content: center;
+            align-items: center;
+            width: 50px;
+            height: 50px;
+            bottom: 100px;
+            right: 10px;
+            background-color: #0dcaf0;
+            box-shadow: var(--bs-scrolltop-box-shadow);
+            opacity: 1;
+            transition: color 0.2s ease;
+            border-radius: 0.475rem;
+        }
+
+        .numberChat {
+            display: flex;
+            position: fixed;
+            cursor: pointer;
+            z-index: 105;
+            justify-content: center;
+            align-items: center;
+            width: 20px;
+            height: 20px;
+            bottom: 140px;
+            right: 5px;
+            background-color: #0dcaf0;
+            box-shadow: var(--bs-scrolltop-box-shadow);
+            opacity: 1;
+            transition: color 0.2s ease;
+            border-radius: 0.475rem;
+        }
+    </style>
     <!--end::Global Stylesheets Bundle-->
 </head>
 <!--end::Head-->
 <!--begin::Body-->
 <body
     id="kt_app_body"
-    data-kt-app-layout="light-sidebar"
+    data-kt-app-layout="dark-sidebar"
     data-kt-app-header-fixed="true"
     data-kt-app-header-fixed-mobile="true"
     data-kt-app-sidebar-enabled="true"
@@ -59,7 +96,7 @@
             @if(auth()->user()->role==0)
                 @include('pages.students.sidebar')
             @endif
-{{--            @include('layouts.partials.main.sidebar')--}}
+            {{--            @include('layouts.partials.main.sidebar')--}}
             <!--end::Sidebar-->
             <!--begin::Main-->
             <div class="app-main flex-column flex-row-fluid" id="kt_app_main">
@@ -88,14 +125,30 @@
     <!--end::Page-->
 </div>
 <!--end::App-->
+@if(auth()->user()->role != 0)
+
+    <div id="" class="chat_icon ">
+        <!--begin::Svg Icon | path: icons/duotune/arrows/arr066.svg-->
+            <span class="bg-danger numberChat"></span>
+        <a href="/chatify/{{auth()->id()}}">
+    <span class="svg-icon">
+        <img src="{{asset('assets/media/icons/duotune/communication/com012.svg')}}" alt="">
+    </span>
+        </a>
+        <!--end::Svg Icon-->
+    </div>
+@endif
 <!--begin::ScrollTop-->
 <div id="kt_scrolltop" class="scrolltop" data-kt-scrolltop="true">
     <!--begin::Svg Icon | path: icons/duotune/arrows/arr066.svg-->
     <span class="svg-icon">
-           <img src="{{asset('assets/media/icons/duotune/arrows/arr066.svg')}}" alt="">
-        </span>
+        <img src="{{asset('assets/media/icons/duotune/arrows/arr066.svg')}}" alt="">
+    </span>
     <!--end::Svg Icon-->
 </div>
+<input type="hidden" id="user_id" value="{{auth()->id()}}">
+
+
 <!--end::ScrollTop-->
 <!--begin::Drawers-->
 @include('layouts.partials.main.drawers')
@@ -112,15 +165,45 @@
 <script src="{{asset('assets/js/scripts.bundle.js')}}"></script>
 <!--end::Global Javascript Bundle-->
 <!--begin::Vendors Javascript(used for this page only)-->
+<script src="https://js.pusher.com/7.2/pusher.min.js"></script>
 <script>
     // Add an event listener to each link
-    const currentUrl = window.location.href;
-    $('.menu-block .menu-item .menu-link').removeClass('active');
-    $('.menu-block .menu-item .menu-link').each(function (){
-        if($(this).attr('href') == currentUrl){
-            $(this).addClass('active')
+    user_id = $('#user_id').val()
+    // const currentUrl = window.location.href;
+    // $('.menu-block .menu-item .menu-link').removeClass('active');
+    // $('.menu-block .menu-item .menu-link').each(function () {
+    //     if ($(this).attr('href') == currentUrl) {
+    //         $(this).addClass('active')
+    //     }
+    // })
+
+    Pusher.logToConsole = true;
+
+    var pusher = new Pusher('db1f42fb9112815e4728', {
+        cluster: 'ap1'
+    });
+    var channel = pusher.subscribe('SendMessageEvent');
+    channel.bind('App\\Events\\SendMessageEvent', function (data) {
+        if(data.to_id == user_id){
+            loadNumberMessage()
+            toastr.info('Bạn có tin nhắn mới!', 'Thông báo',{timeOut: 3000})
         }
-    })
+    });
+    loadNumberMessage()
+    function loadNumberMessage() {
+        $.ajax({
+            url: '/getNumberMessages/',
+            method: 'get',
+            success:function (res) {
+                if(res == 0){
+                    $('.numberChat').addClass('d-none')
+                }else{
+                    $('.numberChat').removeClass('d-none')
+                }
+                $('.numberChat').html(res)
+            }
+        });
+    }
 </script>
 @yield('javascript')
 <!--end::Vendors Javascript-->

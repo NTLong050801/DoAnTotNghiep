@@ -16,9 +16,9 @@
                         <!--end::Separator-->
                     </span>
                 </span>
-                hồ sơ ứng viên.
+                câu hỏi.
                 <br>
-                <span class="fs-4">Truy cập ngay kho ứng viên để xem thông tin</span>
+                <span class="fs-4">Truy cập ngay kho câu hỏi để xem thông tin</span>
 
             </div>
             <!--end::Title-->

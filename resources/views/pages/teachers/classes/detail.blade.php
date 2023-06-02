@@ -2,7 +2,7 @@
 @section('content')
     <div class="row g-7">
         <!--begin::Contact groups-->
-        <div class="col-lg-6 col-xl-3">
+        <div class="col-3 ">
             <!--begin::Contact group wrapper-->
             <div class="card card-flush">
                 <!--begin::Card header-->
@@ -40,32 +40,39 @@
         </div>
         <!--end::Contact groups-->
         <!--begin::Search-->
-        <div class="col-lg-6 col-xl-4">
+        <div class="col-5 ">
             <!--begin::Contacts-->
             <div class="card card-flush" id="kt_contacts_list">
                 <!--begin::Card header-->
-                <div class="card-header row">
-                    <!--begin::Form-->
-                    <form class="d-flex align-items-center position-relative  m-0 col-8" autocomplete="off">
-                        <!--begin::Icon-->
-                        <!--begin::Svg Icon | path: icons/duotune/general/gen021.svg-->
-                        <span
-                            class="svg-icon svg-icon-3 svg-icon-gray-500 position-absolute top-50 ms-5 translate-middle-y">
+
+                    <div class="card-header row">
+                        <!--begin::Form-->
+                        <form class="d-flex align-items-center position-relative m-0 col-7" autocomplete="off">
+                            <!--begin::Icon-->
+                            <!--begin::Svg Icon | path: icons/duotune/general/gen021.svg-->
+                            <span
+                                class="svg-icon svg-icon-3 svg-icon-gray-500 position-absolute top-50 ms-5 translate-middle-y">
                                 <img src="{{asset('assets/media/icons/duotune/general/gen021.svg')}}" alt="">
                             </span>
-                        <!--end::Svg Icon-->
-                        <!--end::Icon-->
-                        <!--begin::Input-->
-                        <input type="text" class="form-control form-control-solid ps-13" name="keyword" value=""
-                               placeholder="Search contacts">
-                        <!--end::Input-->
-                    </form>
-                    <!--end::Form-->
-                    <button class="btn btn-success btn-sm col-2 align-self-center text-start " data-bs-toggle="modal"
-                            data-bs-target="#exampleModal"><i class="fa-solid fa-user-plus"></i></button>
-                    <button class="btn btn-primary btn-sm col-2 align-self-center text-end" data-bs-toggle="modal"
-                            data-bs-target="#class_student_import_modal"><i class="fa-solid fa-file-import"></i></button>
-                </div>
+                            <!--end::Svg Icon-->
+                            <!--end::Icon-->
+                            <!--begin::Input-->
+                            <input type="text" class="form-control form-control-solid ps-13" name="keyword" value=""
+                                   placeholder="Search contacts">
+                            <!--end::Input-->
+                        </form>
+                        <!--end::Form-->
+
+                        <button class="btn btn-success btn-sm col-2  align-self-center" data-bs-toggle="modal"
+                                data-bs-target="#exampleModal"><i class="fa-solid fa-user-plus"></i></button>
+
+
+                        <button class="btn btn-primary btn-sm col-2 align-self-center ms-5 " data-bs-toggle="modal"
+                                data-bs-target="#class_student_import_modal"><i class="fa-solid fa-file-import"></i>
+                        </button>
+
+                    </div>
+
                 <!--end::Card header-->
                 <!--begin::Card body-->
                 <div class="card-body pt-5">
@@ -93,7 +100,7 @@
         </div>
         <!--end::Search-->
         <!--begin::Content-->
-        <div class="col-xl-5" id="detail_student">
+        <div class="col-4 " id="detail_student">
 
         </div>
         <!--end::Content-->
@@ -112,7 +119,8 @@
                             <div id="error"></div>
                             <div class="mb-3">
                                 <label for="name" class="form-label required">Họ tên</label>
-                                <input type="text" name="name" required class="form-control" id="name" aria-describedby="name">
+                                <input type="text" name="name" required class="form-control" id="name"
+                                       aria-describedby="name">
                             </div>
                             <div class="mb-3">
                                 <label for="identifier" class="form-label required">Mã sinh viên</label>
@@ -121,11 +129,12 @@
                             </div>
                             <div class="mb-3">
                                 <label for="email" class="form-label required">Email</label>
-                                <input type="email" required name="email" class="form-control" id="email" aria-describedby="name">
+                                <input type="email" required name="email" class="form-control" id="email"
+                                       aria-describedby="name">
                             </div>
                             <div class="mb-3">
                                 <label for="email" class="form-label required">Khoa</label>
-                                <select  name="major" class="form-select" id="major" aria-describedby="name">
+                                <select name="major" class="form-select" id="major" aria-describedby="name">
                                     @foreach($majors as $major)
                                         <option value="{{$major->id}}">{{$major->name}}</option>
                                     @endforeach
@@ -134,7 +143,8 @@
                             <input type="hidden" name="class_id" id="class_id" value="{{$class->id}}">
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="close">Close</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="close">Đóng
+                            </button>
                             <button type="submit" class="btn btn-primary" id="btn_add">Thêm</button>
                         </div>
                     </form>
@@ -184,19 +194,20 @@
                     }
                 })
             }
+
             classes_students_data()
-            $('#btn_add').click(function(e){
+            $('#btn_add').click(function (e) {
                 e.preventDefault();
                 form = document.getElementById('add_student_form');
                 formData = new FormData(form);
                 $.ajax({
-                    url:'{{route('teachers.classes.createStudent')}}',
-                    type:'POST',
+                    url: '{{route('teachers.classes.createStudent')}}',
+                    type: 'POST',
                     data: formData,
                     dataType: 'json',
                     processData: false,
                     contentType: false,
-                    success:function(response){
+                    success: function (response) {
                         // Do something with the success value
                         Swal.fire({
                             text: "Thêm thành công !!",
@@ -209,28 +220,28 @@
                         }).then(function (result) {
                             if (result.isConfirmed) {
                                 classes_students_data()
-                                $('#exampleModal').hide()
+                                $('#exampleModal').modal('hide')
                             }
                         });
                     },
-                    error: function(response) {
+                    error: function (response) {
                         if (response.status == 422) {
                             var errors = response.responseJSON.errors;
                             // Loop through the error messages and display them
                             errorhtml = '<div class="alert alert-danger"><ul>'
-                            $.each(errors, function(key, value) {
-                                errorhtml+= '<li>'+value[0] + '</li>';
+                            $.each(errors, function (key, value) {
+                                errorhtml += '<li>' + value[0] + '</li>';
                             });
-                            errorhtml+=  '</ul> </div>'
+                            errorhtml += '</ul> </div>'
                             $('#error').html(errorhtml)
                         }
                     }
                 })
             })
-            $('#close').click(function(){
+            $('#close').click(function () {
                 $('#error').html('')
             })
-            $(document).on('click','.delete',function () {
+            $(document).on('click', '.delete', function () {
                 id_student = $(this).attr('id_student')
                 class_id = $('#class_id').val();
                 row = $(this).parent().parent();
@@ -248,32 +259,32 @@
                 }).then(function (result) {
                     if (result.isConfirmed) {
                         $.ajax({
-                            url:"/teachers/classes/deleteStudent/"+id_student+"/"+class_id,
-                            method:"get",
-                            data:{
-                                id_student : id_student,
-                                class_id : class_id,
+                            url: "/teachers/classes/deleteStudent/" + id_student + "/" + class_id,
+                            method: "get",
+                            data: {
+                                id_student: id_student,
+                                class_id: class_id,
                             },
-                            success:function(res){
+                            success: function (res) {
 
                                 classes_students_data()
                                 countStudent = $('#countStudent').text();
-                                $('#countStudent').html(countStudent-1)
+                                $('#countStudent').html(countStudent - 1)
                             }
                         })
 
                     }
                 });
             })
-            $(document).on('click','.detail_student',function(e){
+            $(document).on('click', '.detail_student', function (e) {
                 e.preventDefault()
                 id_student = $(this).attr('id_student')
                 $.ajax({
-                    url :"/teachers/classes/"+id_student+"/detail-student",
-                    method:"get",
-                    data:{
-                        id_student:id_student
-                    },success:function(res){
+                    url: "/teachers/classes/" + id_student + "/detail-student",
+                    method: "get",
+                    data: {
+                        id_student: id_student
+                    }, success: function (res) {
                         $('#detail_student').html(res)
                     }
                 })

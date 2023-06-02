@@ -8,11 +8,11 @@
             style="background-image:url('{{asset('assets/media/svg/shapes/top-green.png')}}')" data-bs-theme="light">
             <!--begin::Title-->
             <h3 class="card-title align-items-start flex-column text-white pt-15">
-                <span class="fw-bold fs-2x mb-3">Thống kê hồ sơ</span>
+                <span class="fw-bold fs-2x mb-3">Thống kê đề thi</span>
                 <div class="fs-4 text-white">
                     <span class="opacity-75">Bạn có</span>
                     <span class="position-relative d-inline-block">
-                        <a href="" class="link-white opacity-75-hover fw-bold d-block mb-1">4 hồ sơ</a>
+                        <a href="" class="link-white opacity-75-hover fw-bold d-block mb-1">4 đề thi</a>
                         <!--begin::Separator-->
                         <span
                             class="position-absolute opacity-50 bottom-0 start-0 border-2 border-body border-bottom w-100"></span>
@@ -54,7 +54,7 @@
                                 <span class="text-gray-700 fw-bolder d-block fs-2qx lh-1 ls-n1 mb-1">37</span>
                                 <!--end::Number-->
                                 <!--begin::Desc-->
-                                <span class="text-gray-500 fw-semibold fs-6">Đơn hàng</span>
+                                <span class="text-gray-500 fw-semibold fs-6">Đã kết thúc</span>
                                 <!--end::Desc-->
                             </div>
                             <!--end::Stats-->
@@ -83,7 +83,7 @@
                                 <span class="text-gray-700 fw-bolder d-block fs-2qx lh-1 ls-n1 mb-1">6</span>
                                 <!--end::Number-->
                                 <!--begin::Desc-->
-                                <span class="text-gray-500 fw-semibold fs-6">Hồ sơ</span>
+                                <span class="text-gray-500 fw-semibold fs-6">Đã kích hoạt</span>
                                 <!--end::Desc-->
                             </div>
                             <!--end::Stats-->
@@ -112,7 +112,7 @@
                                 <span class="text-gray-700 fw-bolder d-block fs-2qx lh-1 ls-n1 mb-1">4,7</span>
                                 <!--end::Number-->
                                 <!--begin::Desc-->
-                                <span class="text-gray-500 fw-semibold fs-6">Nhiệp đoàn</span>
+                                <span class="text-gray-500 fw-semibold fs-6">Chưa kích hoạt</span>
                                 <!--end::Desc-->
                             </div>
                             <!--end::Stats-->

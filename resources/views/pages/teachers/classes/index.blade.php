@@ -10,7 +10,7 @@
                     <form action="" method="get">
                         @csrf
                         <!--end::Svg Icon-->
-                        <div class="d-flex">
+                        <div class="d-flex input-group-sm">
                             <input type="text"
                                    class="form-control w-250px ps-14" name="keyword"
                                    placeholder="Tên lớp học">
@@ -28,7 +28,7 @@
                 <!--begin::Toolbar-->
                 <div class="d-flex justify-content-end" data-kt-subscription-table-toolbar="base">
                     <!--begin::Add subscription-->
-                    <a href="{{route('teachers.classes.create')}}" class="btn btn-primary">
+                    <a href="{{route('teachers.classes.create')}}" class="btn btn-sm btn-primary">
                         <!--begin::Svg Icon | path: icons/duotune/arrows/arr075.svg-->
                         <span class="svg-icon svg-icon-2">
                             <img src="{{asset('assets/media/icons/duotune/arrows/arr075.svg')}}" alt="">
@@ -76,7 +76,7 @@
                         </thead>
                         <!--end::Table head-->
                         <!--begin::Table body-->
-                        <tbody class="text-gray-600 fw-semibold">
+                        <tbody class="fw-semibold">
                         @foreach($classes as $class)
                             <tr class="odd">
                                 <!--begin::Checkbox-->

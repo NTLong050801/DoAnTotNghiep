@@ -21,6 +21,6 @@
     @include('layouts.partials.main.header.navbar-items.user-menu')
     <!--end::User menu-->
     <!--begin::Header menu toggle-->
-    @include('layouts.partials.main.header.navbar-items.header-menu-toggle')
+{{--    @include('layouts.partials.main.header.navbar-items.header-menu-toggle')--}}
     <!--end::Header menu toggle-->
 </div>

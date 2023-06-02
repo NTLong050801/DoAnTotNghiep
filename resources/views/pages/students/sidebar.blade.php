@@ -70,7 +70,7 @@
                     <!--begin:Menu item-->
                     <div class="menu-item  pulse pulse-success">
                         <!--begin:Menu link-->
-                        <a class="menu-link" href="{{route('students.exams.index')}}" >
+                        <a class="menu-link {{request()->routeIs('students.exams.*') ? 'active':''}}" href="{{route('students.exams.index')}}" >
                             <span class="menu-icon"><i class="fa-solid fa-broom-ball"></i></span>
                             <span class="menu-title">Kỳ thi</span>
                             <span class="pulse-ring border-2"></span>
@@ -80,7 +80,7 @@
                     <!--begin:Menu item-->
                     <div class="menu-item">
                         <!--begin:Menu link-->
-                        <a class="menu-link" href="{{route('students.results.index')}}">
+                        <a class="menu-link {{request()->routeIs('students.results.*') ? 'active':''}}" href="{{route('students.results.index')}}">
                             <span class="menu-icon"><i class="fa-solid fa-building-columns"></i></span>
                             <span class="menu-title">Kết quả</span>
                         </a>
@@ -94,9 +94,9 @@
     </div>
     <!--end::sidebar menu-->
     <!--begin::Footer-->
-    <div class="app-sidebar-footer flex-column-auto px-6 pt-2" id="kt_app_sidebar_footer">
+    <div class="app-sidebar-footer flex-column-auto  pt-2" id="kt_app_sidebar_footer">
         <a href="{{route('profile.edit')}}"
-           class="btn btn-flex btn-custom overflow-hidden text-nowrap px-0 w-100"
+           class="btn btn-flex btn-custom overflow-hidden text-nowrap px-6 px-0 w-100"
            data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss-="click"
            data-bs-original-title="200+ in-house components and 3rd-party plugins" data-kt-initialized="1"
         >

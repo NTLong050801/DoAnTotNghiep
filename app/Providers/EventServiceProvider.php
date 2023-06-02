@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Events\ActiveChanged;
 use App\Events\EndExamStudent;
+use App\Events\SendMessageEvent;
 use App\Listeners\EndExamStudentListener;
 use App\Listeners\HandleActiveChanged;
 use Illuminate\Auth\Events\Registered;
@@ -27,7 +28,10 @@ class EventServiceProvider extends ServiceProvider
         ],
         EndExamStudent::class=>[
             EndExamStudentListener::class,
-        ]
+        ],
+        SendMessageEvent::class=>[
+
+        ],
     ];
 
     /**

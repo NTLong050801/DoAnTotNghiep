@@ -1,7 +1,7 @@
 @extends('layouts.main')
 @section('content')
     <div class="row gy-5 g-xl-10">
-        @if(sizeof($examsStudents) > 0)
+        @if(sizeof($examsStudents) > 0 )
             @foreach($examsStudents as $examsStudent)
                 <div class="col-md-3 col-xl-3 mb-5 mb-xl-10 ">
                     <div class="card card-flush h-md-100 mb-lg-10 "
@@ -27,9 +27,17 @@
                         <div class="card-body d-flex flex-column justify-content-end ">
                             <div class="text-center">
                                 @if($examsStudent->exam->status == '1')
-                                    <button class="btn btn-sm btn-danger do-exam" exam_id="{{$examsStudent->exam_id}}">
-                                        Thi
-                                    </button>
+                                    @if($examsStudent->isActive)
+                                        <button class="btn btn-sm btn-danger continue"
+                                                exam_id="{{$examsStudent->exam_id}}">
+                                            Tiếp tục
+                                        </button>
+                                    @else
+                                        <button class="btn btn-sm btn-danger do-exam"
+                                                exam_id="{{$examsStudent->exam_id}}">
+                                            Thi
+                                        </button>
+                                    @endif
                                 @else
                                     <button class="btn btn-sm btn-danger disabled">
                                         Chưa mở
@@ -132,7 +140,7 @@
 
                 // Disable indicator after 3 seconds
                 setTimeout(function () {
-                   $('#submitPassword').attr("data-kt-indicator",'off');
+                    $('#submitPassword').attr("data-kt-indicator", 'off');
                     $.ajax({
                         url: "/students/exams/checkPassword",
                         method: "POST",
@@ -154,6 +162,10 @@
                     })
                 }, 3000);
 
+            })
+            $('.continue').click(function () {
+                exam_id = $(this).attr('exam_id')
+                window.location.href = "/students/exams/" + exam_id + "/doExam";
             })
         })
     </script>

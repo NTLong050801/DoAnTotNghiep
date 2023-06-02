@@ -6,26 +6,9 @@
         <div class="card-header pt-7">
             <!--begin::Title-->
             <h3 class="card-title align-items-start flex-column">
-                <span class="card-label fw-bold text-gray-800">Số lượng hồ sơ Active</span>
+                <span class="card-label fw-bold text-gray-800">Các lớp học của bạn</span>
             </h3>
             <!--end::Title-->
-            <!--begin::Toolbar-->
-            <div class="card-toolbar">
-                <!--begin::Daterangepicker(defined in src/js/layout/app.js)-->
-                <div data-kt-daterangepicker="true" data-kt-daterangepicker-opens="left"
-                     class="btn btn-sm btn-light d-flex align-items-center px-4">
-                    <!--begin::Display range-->
-                    <div class="text-gray-600 fw-bold">Loading date range...</div>
-                    <!--end::Display range-->
-                    <!--begin::Svg Icon | path: icons/duotune/general/gen014.svg-->
-                    <span class="svg-icon svg-icon-1 ms-2 me-0">
-                        <img src="{{asset('assets/media/icons/duotune/general/gen014.svg')}}" alt="">
-                    </span>
-                    <!--end::Svg Icon-->
-                </div>
-                <!--end::Daterangepicker-->
-            </div>
-            <!--end::Toolbar-->
         </div>
         <!--end::Header-->
         <!--begin::Body-->

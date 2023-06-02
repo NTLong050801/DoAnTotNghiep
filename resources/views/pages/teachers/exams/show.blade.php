@@ -6,12 +6,11 @@
             <form action="" id="kt_invoice_form">
                 <!--begin::Wrapper-->
                 <div class="d-flex flex-column align-items-start flex-xxl-row">
-
                     <!--begin::Input group-->
                     <div class="d-flex flex-center flex-equal fw-row text-nowrap order-1 order-xxl-2 me-4"
                          data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-original-title="Enter invoice number"
                          data-kt-initialized="1">
-                        <span class="fs-2x fw-bold text-gray-800">{{$exam->name}}</span>
+                        <span class="fs-2x fw-bold text-gray-800 text-center">Tên bài kiểm tra: {{$exam->name}}</span>
                     </div>
                     <!--end::Input group-->
                 </div>
@@ -24,13 +23,13 @@
                     <!--begin::Row-->
                     <div class="row gx-10 mb-5 ">
                         <!--begin::Col-->
-                        <div class="col-lg-6 text-center">
+                        <div class="col-lg-6 ">
                             <label class="form-label fs-3 fw-bold text-gray-700 mb-3 ">Thời gian <span
                                     class=" fs-4 text-danger">{{$exam->minute_time}} phút</span></label>
                         </div>
                         <!--end::Col-->
                         <!--begin::Col-->
-                        <div class="col-lg-6 text-center">
+                        <div class="col-lg-6 r">
                             <label class="form-label fs-3 fw-bold text-gray-700 mb-3">Số câu <span
                                     class=" fs-4 text-danger">{{$exam->number_question}}</span></label>
                         </div>
@@ -40,13 +39,13 @@
                     <!--begin::Row-->
                     <div class="row gx-10 mb-5">
                         <!--begin::Col-->
-                        <div class="col-lg-6 text-center">
+                        <div class="col-lg-6 r">
                             <label class="form-label fs-3 fw-bold text-gray-700 mb-3 ">Ngày bắt đầu <span
                                     class=" fs-4 text-danger">{{$exam->date_start}}</span></label>
                         </div>
                         <!--end::Col-->
                         <!--begin::Col-->
-                        <div class="col-lg-6 text-center">
+                        <div class="col-lg-6 ">
                             <label class="form-label fs-3 fw-bold text-gray-700 mb-3">Ngày kết thúc <span
                                     class=" fs-4 text-danger">{{$exam->date_end}}</span></label>
                         </div>
@@ -56,15 +55,16 @@
                     <!--begin::Row-->
                     <div class="row gx-10 mb-5">
                         <!--begin::Col-->
-                        <div class="col-lg-6 text-center">
+                        <div class="col-lg-6 r">
+{{--                            @dd($exam->examQuestions)--}}
                             <label class="form-label fs-3 fw-bold text-gray-700 mb-3 ">Tổng số câu hỏi <span
-                                    class=" fs-4 text-danger">50 phút</span></label>
+                                    class=" fs-4 text-danger">{{!($exam->examQuestions) ? '' : count($exam->examQuestions)}}</span></label>
                         </div>
                         <!--end::Col-->
                         <!--begin::Col-->
-                        <div class="col-lg-6 text-center">
+                        <div class="col-lg-6 ">
                             <label class="form-label fs-3 fw-bold text-gray-700 mb-3">Tổng số thí sinh <span
-                                    class=" fs-4 text-danger">50 phút</span></label>
+                                    class=" fs-4 text-danger">{{!($exam->examStudents) ? '' : count($exam->examStudents)}}</span></label>
                         </div>
                         <!--end::Col-->
                     </div>
@@ -72,13 +72,13 @@
                     <!--begin::Row-->
                     <div class="row gx-10 mb-5">
                         <!--begin::Col-->
-                        <div class="col-lg-6 text-center">
+                        <div class="col-lg-6 ">
                             <label class="form-label fs-3 fw-bold text-gray-700 mb-3 ">Trộn đề <span
                                     class=" fs-4 text-danger">{{$exam->random ? 'Có' : 'Không'}}</span></label>
                         </div>
                         <!--end::Col-->
                         <!--begin::Col-->
-                        <div class="col-lg-6 text-center">
+                        <div class="col-lg-6 ">
                             <label class="form-label fs-3 fw-bold text-gray-700 mb-3">Password <span
                                     class=" fs-4 text-danger">{{$exam->password}}</span></label>
                         </div>
@@ -231,11 +231,11 @@
                                                             <!--begin::Table body-->
                                                             <tbody class="fw-semibold text-gray-600">
                                                             @foreach($questions as $question)
-                                                                <tr class="odd" data-question_id="{{$question->id}}">
+                                                                <tr class="odd border-bottom border-danger" data-question_id="{{$question->id}}">
                                                                     <!--begin::Checkbox-->
                                                                     <td>
                                                                         <div
-                                                                            class="form-check form-check-sm form-check-custom form-check-solid ">
+                                                                            class="form-check">
                                                                             <input class="form-check-input bg-primary"
                                                                                    type="checkbox"
                                                                                    value="1">
@@ -244,17 +244,17 @@
                                                                     <!--end::Checkbox-->
                                                                     <!--begin::ID-->
                                                                     <td>
-                                                                        <b>{{$question->name}}</b>
-                                                                        <div class="row bg-dark mt-5 p-5">
+                                                                        <b>{{$loop->iteration.'.'.$question->name}}</b>
+                                                                        <div class="row mt-5 p-5">
                                                                             @foreach(json_decode($question->options) as $key=>$option)
                                                                                 <div class="form-check col-sm-6 mt-2">
-                                                                                    <input class="form-check-input"
-                                                                                           type="radio" disabled
+                                                                                    <input class="form-check-input fw-bolder"
+                                                                                           type="radio"
                                                                                            name="{{$question->id}}"
                                                                                            id="{{$question->id.$key}}"
                                                                                            value="{{$key}}"
                                                                                            @if($question->ans == $key) checked @endif>
-                                                                                    <label class="form-check-label"
+                                                                                    <label class="form-check-label fw-bolder"
                                                                                            for="{{$question->id.$key}}">
                                                                                         {{$option}}
                                                                                     </label>
@@ -308,17 +308,6 @@
                                         <thead>
                                         <!--begin::Table row-->
                                         <tr class="text-start text-muted fw-bold fs-7 text-uppercase gs-0">
-                                            <th class="w-10px pe-2 sorting_disabled" rowspan="1"
-                                                colspan="1" aria-label="
-																" style="width: 29.9px;">
-                                                <div
-                                                    class="form-check form-check-sm form-check-custom form-check-solid me-3">
-                                                    <input class="form-check-input" type="checkbox"
-                                                           data-kt-check="true"
-                                                           data-kt-check-target="#kt_myQuestion_view_table .form-check-input"
-                                                           value="1">
-                                                </div>
-                                            </th>
                                             <th class="min-w-600px sorting" tabindex="0"
                                                 aria-controls="kt_myQuestion_view_table"
                                                 rowspan="1" colspan="1"
@@ -327,7 +316,7 @@
                                             </th>
                                             <th class="text-end min-w-30px sorting_disabled"
                                                 rowspan="1" colspan="1"
-                                                aria-label="Actions" style="width: 136.175px;">Actions
+                                                aria-label="Actions" style="width: 136.175px;">Hành động
                                             </th>
                                         </tr>
                                         <!--end::Table row-->
@@ -687,7 +676,7 @@
                 }
             })
         }
-        // setInterval(StudentInClass, 10000);
+        setInterval(StudentInClass, 10000);
         function StudentInClass(keyword) {
             $.ajax({
                 url: '/teachers/exams/' + exam_id + '/studentInClass/' + keyword,
@@ -865,10 +854,12 @@
                     user_id: user_id,
                 },
                 success: function (res) {
-
                     var stringArray = res['questions'];
                     var array = JSON.parse(stringArray);
-                    var count = array.length;
+                    var count = 0;
+                    if(array != null){
+                         count = array.length;
+                    }
                     $('#check_result').html(res['result']+'/'+count)
                     $('#nameStudent').html(nameStudent)
                     $('#result_warning').html(res['warning'])

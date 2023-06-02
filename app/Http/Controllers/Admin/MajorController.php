@@ -38,7 +38,7 @@ class MajorController extends Controller
     {
         //
         $request->validate([
-            'name' => 'required|unique:majors|min:10',
+            'name' => 'required|unique:majors',
         ]);
         Major::create([
             'name'=> $request->name,
@@ -74,7 +74,7 @@ class MajorController extends Controller
     {
         //
         $request->validate([
-            'name' => 'required|unique:majors,name|min:10',
+            'name' => 'required|unique:majors,name',
         ]);
         Major::where('id',$id)->update([
             'name' => $request->name,

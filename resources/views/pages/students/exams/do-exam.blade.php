@@ -394,25 +394,26 @@
             });
             var channel = pusher.subscribe('active');
             channel.bind('App\\Events\\ActiveChanged', function(data) {
-                if (document.fullscreenElement) {
+                if (data.active == exam_id){
                     if (document.fullscreenElement) {
-                        document.exitFullscreen();
+                        if (document.fullscreenElement) {
+                            document.exitFullscreen();
+                        }
                     }
+                    status_warning = 0;
+                    Swal.fire({
+                        text: "Giảng viên đã kết thúc bài thi !!",
+                        icon: "info",
+                        buttonsStyling: false,
+                        confirmButtonText: "Đồng ý",
+                        timer:3000,
+                        customClass: {
+                            confirmButton: "btn fw-bold btn-danger",
+                        }
+                    }).then(function (result) {
+                        submitExam()
+                    })
                 }
-                status_warning = 0;
-                Swal.fire({
-                    text: "Giảng viên đã kết thúc bài thi !!",
-                    icon: "info",
-                    buttonsStyling: false,
-                    confirmButtonText: "Đồng ý",
-                    timer:3000,
-                    customClass: {
-                        confirmButton: "btn fw-bold btn-danger",
-                    }
-                }).then(function (result) {
-                    submitExam()
-                })
-
             });
             var channel1 = pusher.subscribe('EndExamStudent');
             channel1.bind('App\\Events\\EndExamStudent', function(data) {

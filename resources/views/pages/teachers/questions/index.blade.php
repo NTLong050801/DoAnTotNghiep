@@ -14,10 +14,12 @@
                         <img src="{{asset('assets/media/icons/duotune/general/gen021.svg')}}" alt="">
                     </span>
                         <!--end::Svg Icon-->
-                        <input type="text" data-kt-customer-table-filter="search"
-                               class="form-control form-control-solid w-350px ps-15 bg-secondary"
-                               placeholder="Nhập câu hỏi" name="search" value="{{request()->get('search')}}">
-                        <button type="submit" class="btn btn-sm btn-success s-15">Tìm kiếm</button>
+                        <div class="input-group-sm d-flex">
+                            <input type="text" data-kt-customer-table-filter="search"
+                                   class="form-control form-control-solid w-350px ps-15 bg-secondary"
+                                   placeholder="Nhập câu hỏi" name="search" value="{{request()->get('search')}}">
+                            <button type="submit" class="btn btn-sm btn-success s-15">Tìm kiếm</button>
+                        </div>
                     </div>
                 </form>
                 <!--end::Search-->
@@ -27,9 +29,11 @@
             <div class="card-toolbar">
                 <!--begin::Toolbar-->
                 <div id="toolbar" class="d-flex justify-content-end" data-kt-customer-table-toolbar="base">
-                    <a href="{{route('teachers.questions.review')}}"><button class="btn btn-danger btn-sm me-5">Tham khảo câu hỏi</button></a>
+                    <a href="{{route('teachers.questions.review')}}" class="align-self-center">
+                        <button class="btn btn-sm btn-danger me-5">Tham khảo câu hỏi</button>
+                    </a>
                     <!--begin::Export-->
-                    <button type="button" class="btn btn-light-primary me-3" data-bs-toggle="modal"
+                    <button type="button" class="btn btn-sm btn-light-primary me-3" data-bs-toggle="modal"
                             data-bs-target="#kt_questions_import_modal">
                         <!--begin::Svg Icon | path: icons/duotune/arrows/arr078.svg-->
                         <span class="svg-icon svg-icon-2">
@@ -38,40 +42,41 @@
                         <!--end::Svg Icon-->Import
                     </button>
                     <!--end::Export-->
-                    <!-- Modal -->
-                    <div class="modal fade" id="kt_questions_import_modal" tabindex="-1"
-                         aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <form action="{{route('teachers.questions.import')}}" method="post"
-                                      enctype="multipart/form-data">
-                                    @csrf
-                                    <div class="modal-header">
-                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Nhập file câu hỏi</h1>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <div class="mb-3">
-                                            <label for="file" class="form-label">Chọn file</label>
-                                            <input class="form-control" name="file" type="file" id="file">
-                                        </div>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng
-                                        </button>
-                                        <button type="submit" class="btn btn-primary">Nhập</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
+
 
                     <!--begin::Add customer-->
-                    <a href="{{route('teachers.questions.create')}}">
-                        <button type="button" class="btn btn-primary">Thêm mới</button>
+                    <a href="{{route('teachers.questions.create')}}" class="align-self-center">
+                        <button type="button" class="btn btn-sm btn-primary">Thêm mới</button>
                     </a>
                     <!--end::Add customer-->
+                </div>
+                <!-- Modal -->
+                <div class="modal fade" id="kt_questions_import_modal" tabindex="-1"
+                     aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <form action="{{route('teachers.questions.import')}}" method="post"
+                                  enctype="multipart/form-data">
+                                @csrf
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Nhập file câu hỏi</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body pt-0">
+                                    <div class="mb-3">
+                                        <label for="file" class="form-label">Chọn file</label>
+                                        <input class="form-control" name="file" type="file" id="file">
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng
+                                    </button>
+                                    <button type="submit" class="btn btn-primary">Nhập</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                 </div>
                 <!--end::Toolbar-->
                 <!--begin::Group actions-->
@@ -80,9 +85,8 @@
                     <div class="fw-bold me-5">
                         <span class="me-2" data-kt-customer-table-select="selected_count" id="selected_count">10</span>Selected
                     </div>
-                    <button type="button" class="btn btn-danger" id="delete_selected"
-                            data-kt-customer-table-select="delete_selected">Delete
-                        Selected
+                    <button type="button" class="btn btn-sm btn-danger" id="delete_selected"
+                            data-kt-customer-table-select="delete_selected">Xóa
                     </button>
                 </div>
                 <!--end::Group actions-->
@@ -103,14 +107,17 @@
                         <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
                             <th class="w-10px pe-2 sorting_disabled" aria-label="
             								" style="width: 29.9px;">
-                                <div class="form-check form-check-sm form-check-custom form-check-solid me-3">
-                                    <input class="form-check-input" type="checkbox" data-kt-check="true" id="checkboxAll"
+                                <div class="form-check form-check-sm me-3">
+                                    <input class="form-check-input" type="checkbox" data-kt-check="true"
+                                           id="checkboxAll"
                                            data-kt-check-target="#kt_customers_table .form-check-input" value="1">
                                 </div>
                             </th>
                             <th class="min-w-125px sorting" tabindex="0" aria-controls="kt_customers_table"
                                 aria-label="Name: activate to sort column ascending"
-                                style="width: 162.125px;">Câu hỏi @if($count > 0) <span class="text-danger">({{$count}})</span> @endif
+                                style="width: 162.125px;">Câu hỏi @if($count > 0)
+                                    <span class="text-danger">({{$count}})</span>
+                                @endif
                             </th>
                             <th class="min-w-125px sorting" tabindex="0" aria-controls="kt_customers_table"
                                 aria-label="Ans: activate to sort column ascending"
@@ -130,12 +137,12 @@
                         <!--begin::Table body-->
                         <tbody class="fw-semibold">
                         @foreach($questions as $question)
-                            <tr class="odd">
+                            <tr class="odd border-bottom border-danger">
                                 <!--begin::Checkbox-->
                                 <td>
                                     <div
-                                        class="form-check form-check-sm form-check-custom form-check-solid justify-items-center">
-                                        <input class="form-check-input bg-dark " type="checkbox"
+                                        class="form-check form-check-sm me-3 justify-items-center">
+                                        <input class="form-check-input" type="checkbox"
                                                value="{{$question->id}}">
                                     </div>
                                 </td>
@@ -143,21 +150,23 @@
                                 <!--begin::Name=-->
                                 <td>
                                     <a href="#"
-                                       class="text-gray-800 text-hover-primary mb-1">{{$question->name}}</a>
-                                   <div class="text-center mt-5">
-                                       <a target="_blank" href="{{asset('storage/'.$question->image)}}"><img
-                                               src="{{asset('storage/'.$question->image)}}" style="width: 100px"
-                                               alt=""></a>
-                                   </div>
+                                       class="text-gray-800 text-hover-primary mb-1"><span class="text-danger">{{$loop->iteration+($questions->currentPage()-1)*$questions->perPage()}}.</span> {{$question->name}}
+                                    </a>
+                                    <div class="text-center mt-5">
+                                        <a target="_blank" href="{{asset('storage/'.$question->image)}}"><img
+                                                src="{{asset('storage/'.$question->image)}}" style="width: 100px"
+                                                alt=""></a>
+                                    </div>
                                 </td>
-                                <td class="bg-dark">
+                                <td class="">
                                     @foreach(json_decode($question->options) as $key=>$option)
                                         <div class="form-check mt-5 ">
-                                            <input class="form-check-input" type="radio" disabled
+                                            <input class="form-check-input" type="radio"
                                                    name="{{$question->id}}"
                                                    id="{{$question->id.$key}}" value="{{$key}}"
                                                    @if($question->ans == $key) checked @endif>
-                                            <label class="form-check-label" for="{{$question->id.$key}}">
+                                            <label class="form-check-label text-black fw-bolder"
+                                                   for="{{$question->id.$key}}">
                                                 {{$option}}
                                             </label>
                                         </div>

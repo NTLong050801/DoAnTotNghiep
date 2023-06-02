@@ -11,14 +11,14 @@
                 {{Session::get('error')}}
             </div>
         @endif
-      <div class="d-flex">
-          <a href="{{route('major.create')}}"> <button class="btn btn-primary">Thêm mới khoa</button></a>
+      <div class="row">
+          <a href="{{route('major.create')}}" class="col"> <button class="btn btn-sm btn-primary">Thêm mới khoa</button></a>
 
-          <form action="" method="get" >
-              <div class="input-group mb-3">
-                  <input type="text" name="search" placeholder="search ...." class="form-control "
+          <form action="" method="get" class="col-auto" >
+              <div class="input-group input-group-sm mb-3 " >
+                  <input type="text" name="search" placeholder="Nhập ...." class="form-control"
                          value="{{request()->get('search')}}">
-                  <button class="btn btn-success me-15" type="submit">Search</button>
+                  <button class="btn btn-sm btn-success me-15" type="submit">Tìm kiếm</button>
               </div>
           </form>
       </div>

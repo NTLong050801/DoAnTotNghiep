@@ -1,7 +1,14 @@
 @extends('layouts.main')
 @section('content')
     <div class="card">
-        <div class="card-body">
+        <div class="card-header border-0 pt-6">
+            <!--begin::Card toolbar-->
+            <div class="card-toolbar">
+                <h3>Thêm bài thi</h3>
+            </div>
+            <!--end::Card toolbar-->
+        </div>
+        <div class="card-body pt-0">
             <form class="form" action="{{route('teachers.exams.store')}}" method="post">
                 @csrf<!--begin::Scroll-->
                 <div class="row">
@@ -13,7 +20,7 @@
                                 <span class="required fw-semibold fs-6 mb-2">Tên đề thi</span>
                             </label>
                             <input placeholder="Nhập tên đề thi ví dụ : 61HT_KT"
-                                   class="bg-secondary form-control form-control-solid"
+                                   class=" form-control "
                                    type="text" name="name" id="name" required>
                             <div
                                 class="fv-plugins-message-container invalid-feedback">@error('name'){{$message}}@enderror</div>
@@ -23,7 +30,7 @@
                                    for="date_start">
                                 <span class="fw-semibold fs-6 mb-2">Ngày bắt đầu</span>
                             </label>
-                            <input class="bg-secondary form-control form-control-solid"
+                            <input class=" form-control "
                                    type="date"
                                    name="date_start"
                                    id="date_start">
@@ -36,7 +43,7 @@
                                 <span class="fw-semibold fs-6 mb-2">Số câu</span>
                             </label>
                             <input placeholder="Nhập số câu mỗi đề" min="0"
-                                   class="bg-secondary form-control form-control-solid"
+                                   class=" form-control "
                                    type="number" name="number_question" id="number_question">
                             <div
                                 class="fv-plugins-message-container invalid-feedback">@error('number_question'){{$message}}@enderror</div>
@@ -62,7 +69,7 @@
                                    for="minute_time">
                                 <span class="required fw-semibold fs-6 mb-2">Thời gian làm bài (phút)</span>
                             </label>
-                            <input class="bg-secondary form-control form-control-solid" min="0" type="number"
+                            <input class=" form-control " min="0" type="number"
                                    name="minute_time"
                                    id="minute_time" placeholder="Nhập số phút làm bài" required>
                             <div
@@ -73,7 +80,7 @@
                                    for="date_end">
                                 <span class="fw-semibold fs-6 mb-2">Ngày kết thúc</span>
                             </label>
-                            <input class="bg-secondary form-control form-control-solid"
+                            <input class=" form-control "
                                    type="date"
                                    name="date_end"
                                    id="date_end">
@@ -86,7 +93,7 @@
                                 <span class="fw-semibold fs-6 mb-2">Tạo mật khẩu cho đề thi</span>
                             </label>
                             <input placeholder="Nhập mật khẩu để bắt đầu thi"
-                                   class="bg-secondary form-control form-control-solid" type="text" name="password"
+                                   class=" form-control " type="text" name="password"
                                    id="password">
                             <div
                                 class="fv-plugins-message-container invalid-feedback">@error('password'){{$message}}@enderror</div>
@@ -97,7 +104,7 @@
                                    for="note">
                                 <span class="fw-semibold fs-6 mb-2">Ghi chú</span>
                             </label>
-                            <input class="bg-secondary form-control form-control-solid"
+                            <input class=" form-control "
                                    type="text"
                                    name="note"
                                    id="note">
@@ -107,11 +114,11 @@
                     </div>
                 </div>
 
-                <div class="text-center pt-15">
+                <div class="d-flex justify-content-end pt-10">
                     <a href="{{route('teachers.exams.index')}}">
                         <button type="button" class="btn btn-light me-3">Hoàn tác</button>
                     </a>
-                    <button type="submit" class="btn btn-primary">
+                    <button type="submit" class="btn btn-primary ms-5">
                         <span class="indicator-label">Tạo</span>
                     </button>
                 </div>

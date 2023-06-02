@@ -5,6 +5,7 @@
         <div class="card-header border-0 pt-6">
             <!--begin::Card toolbar-->
             <div class="card-toolbar">
+                <h3>Thêm Câu Hỏi</h3>
             </div>
             <!--end::Card toolbar-->
         </div>
@@ -20,14 +21,14 @@
                      data-kt-scroll-dependencies="#kt_modal_add_role_header"
                      data-kt-scroll-wrappers="#kt_modal_add_role_scroll" data-kt-scroll-offset="300px">
                     <!--begin::Input group-->
-                    <div class="fv-row mb-10">
+                    <div class="fv-row mb-5">
                         <!--begin::Label-->
                         <label class="fs-5 fw-bold form-label mb-2" for="name">
                             <span class="required">Câu hỏi</span>
                         </label>
                         <!--end::Label-->
                         <!--begin::Input-->
-                        <input class="form-control form-control-solid bg-secondary" placeholder="Nhập câu hỏi"
+                        <input class="form-control" placeholder="Nhập câu hỏi"
                                name="name"
                                id="name" value=""/>
                         <!--end::Input-->
@@ -94,18 +95,18 @@
                     </label>
                     <!--end::Label-->
                     <!--begin::Input-->
-                    <input class="form-control form-control-solid bg-secondary" placeholder="Nhập ghi chú"
+                    <input class="form-control" placeholder="Nhập ghi chú"
                            name="note"
                            id="note" value=""/>
                     <!--end::Input-->
                 </div>
-                <div class="text-center mt-15">
+                <div class="d-flex mt-5 justify-content-end">
                     <a href="{{route('teachers.questions.index')}}">
                         <button type="button" class="btn btn-light me-3">
                             Trở về
                         </button>
                     </a>
-                    <button type="submit" class="btn btn-primary">
+                    <button type="submit" class="btn btn-primary ms-5">
                         <span class="indicator-label">Tạo</span>
                     </button>
                 </div>

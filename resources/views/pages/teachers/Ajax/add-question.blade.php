@@ -41,8 +41,8 @@
                     <!--begin::Checkbox-->
                     <td>
                         <div
-                            class="form-check form-check-sm form-check-custom form-check-solid ">
-                            <input class="form-check-input bg-primary"
+                            class="form-check form-check-sm ">
+                            <input class="form-check-input"
                                    type="checkbox"
                                    value="1">
                         </div>
@@ -60,7 +60,7 @@
                                            id="{{$question->id.$key}}"
                                            value="{{$key}}"
                                            @if($question->ans == $key) checked @endif>
-                                    <label class="form-check-label"
+                                    <label class="form-check-label fw-bolder"
                                            for="{{$question->id.$key}}">
                                         {{$option}}
                                     </label>

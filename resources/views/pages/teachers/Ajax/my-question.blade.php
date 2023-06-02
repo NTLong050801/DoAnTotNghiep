@@ -1,15 +1,5 @@
 @foreach($examsQuestions as $question)
-    <tr class="odd" data-question_id="{{$question->id}}">
-        <!--begin::Checkbox-->
-        <td>
-            <div
-                class="form-check form-check-sm form-check-custom form-check-solid ">
-                <input class="form-check-input bg-primary"
-                       type="checkbox"
-                       value="1">
-            </div>
-        </td>
-        <!--end::Checkbox-->
+    <tr class="odd border-bottom border-danger" data-question_id="{{$question->id}}">
         <!--begin::ID-->
         <td>
             <b>{{$loop->iteration}}.{{$question->name}}</b>
@@ -22,7 +12,7 @@
                                id="{{$question->id.$key}}"
                                value="{{$key}}"
                                @if($question->ans == $key) checked @endif>
-                        <label class="form-check-label"
+                        <label class="form-check-label fw-bold"
                                for="{{$question->id.$key}}">
                             {{$option}}
                         </label>

@@ -8,8 +8,8 @@
         <div class="card-header pt-5">
             <!--begin::Title-->
             <h4 class="card-title d-flex align-items-start flex-column">
-                <span class="card-label fw-bold text-gray-800">Hồ sơ</span>
-                <span class="text-gray-400 mt-1 fw-bold fs-7">hồ sơ trên hệ thống</span>
+                <span class="card-label fw-bold text-gray-800">Đề thi</span>
+                <span class="text-gray-400 mt-1 fw-bold fs-7">đề thi của bạn trên hệ thống</span>
             </h4>
             <!--end::Title-->
             <!--begin::Toolbar-->
@@ -51,7 +51,7 @@
                                             <img src="{{asset('assets/media/icons/duotune/general/gen057.svg')}}"
                                                  alt="">
                                         </span>
-                                        <!--end::Svg Icon-->3 chưa trúng tuyển</span>
+                                        <!--end::Svg Icon-->3 đã kết thúc</span>
                                     <!--end::Section-->
                                     <!--begin::Section-->
                                     <span class="d-flex align-items-center text-gray-400 fw-bold fs-7">
@@ -61,7 +61,7 @@
                                                  alt="">
 
                                         </span>
-                                        <!--end::Svg Icon-->1 đã trúng tuyển</span>
+                                        <!--end::Svg Icon-->1 đã kích hoạt</span>
                                     <!--end::Section-->
                                 </div>
                                 <!--end::Item-->
@@ -75,7 +75,7 @@
                                                  alt="">
 
                                         </span>
-                                        <!--end::Svg Icon-->50 đã xuất cảnh</span>
+                                        <!--end::Svg Icon-->50 chưa kích hoạt</span>
                                     <!--end::Section-->
                                     <!--begin::Section-->
                                     <span class="d-flex align-items-center text-gray-400 fw-bold fs-7">

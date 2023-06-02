@@ -130,7 +130,7 @@ class ClassesController extends Controller
         $class_id = $request->class_id;
         $this->excel->import(new ClassStudentsImport($class_id), $file);
         toastr('Nhập thành công');
-        return redirect()->back();
+        return redirect()->route('teachers.classes.show',$class_id);
     }
 
     public function deleteStudent(Request $request){

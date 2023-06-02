@@ -5,7 +5,7 @@
         <!--begin::Header-->
         <div class="card-header border-0 pt-5">
             <h3 class="card-title align-items-start flex-column">
-                <span class="card-label fw-bold text-dark">Các đơn hàng gần đây</span>
+                <span class="card-label fw-bold text-dark">Kết quả bài thi gần đây</span>
             </h3>
             <!--begin::Toolbar-->
             <div class="card-toolbar">

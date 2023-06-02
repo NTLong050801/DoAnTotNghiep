@@ -60,7 +60,7 @@
                 <div class="menu-block">
                     <div class="menu-item">
                         <!--begin:Menu link-->
-                        <a class="menu-link" href="#">
+                        <a class="menu-link " href="#">
                             <span class="menu-icon"><i class="bi bi-grid-1x2-fill"></i></span>
                             <span class="menu-title">Tổng quan</span>
                         </a>
@@ -69,7 +69,7 @@
                     <!--begin:Menu item-->
                     <div class="menu-item">
                         <!--begin:Menu link-->
-                        <a class="menu-link" href="{{route('teachers.classes.index')}}">
+                        <a class="menu-link {{request()->routeIs('teachers.classes.*') ? 'active':''}}" href="{{route('teachers.classes.index')}}">
                             <span class="menu-icon"><i class="fa-solid fa-people-group"></i></span>
                             <span class="menu-title">Quản lý lớp học</span>
                         </a>
@@ -78,7 +78,7 @@
                     <!--end:Menu item-->
                     <div class="menu-item">
                         <!--begin:Menu link-->
-                        <a class="menu-link" href="{{route('teachers.questions.index')}}">
+                        <a class="menu-link {{request()->routeIs('teachers.questions.*') ? 'active':''}}" href="{{route('teachers.questions.index')}}">
                             <span class="menu-icon"><i class="fa-solid fa-building-columns"></i></span>
                             <span class="menu-title">Ngân hàng câu hỏi</span>
                         </a>
@@ -87,7 +87,7 @@
                     <!--begin:Menu item-->
                     <div class="menu-item">
                         <!--begin:Menu link-->
-                        <a class="menu-link" href="{{route('teachers.exams.index')}}">
+                        <a class="menu-link {{request()->routeIs('teachers.exams.*') ? 'active':''}}" href="{{route('teachers.exams.index')}}">
                             <span class="menu-icon"><i class="fa-solid fa-address-book"></i></span>
                             <span class="menu-title">Quản lý đề thi</span>
                         </a>
@@ -95,7 +95,7 @@
                     </div>
                     <div class="menu-item">
                         <!--begin:Menu link-->
-                        <a class="menu-link" href="{{route('teachers.results.index')}}">
+                        <a class="menu-link {{request()->routeIs('teachers.results.*') ? 'active':''}}" href="{{route('teachers.results.index')}}">
                             <span class="menu-icon"><i class="fa-solid fa-square-poll-horizontal"></i></span>
                             <span class="menu-title">Kết quả</span>
                         </a>
@@ -124,9 +124,9 @@
     </div>
     <!--end::sidebar menu-->
     <!--begin::Footer-->
-    <div class="app-sidebar-footer flex-column-auto px-6 pt-2" id="kt_app_sidebar_footer">
+    <div class="app-sidebar-footer flex-column-auto  pt-2" id="kt_app_sidebar_footer">
         <a href="{{route('profile.edit')}}"
-           class="btn btn-flex btn-custom overflow-hidden text-nowrap px-0 w-100"
+           class="btn btn-flex btn-custom overflow-hidden text-nowrap px-0 w-100 px-6"
            data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss-="click"
            data-bs-original-title="200+ in-house components and 3rd-party plugins" data-kt-initialized="1"
         >

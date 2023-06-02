@@ -6,7 +6,7 @@
             <!--begin::Card title-->
             <div class="card-title">
                 <!--begin::Search-->
-                <div class="d-flex align-items-center position-relative my-1">
+                <div class="d-flex align-items-center justify-content-end position-relative my-1">
                     <!--begin::Svg Icon | path: icons/duotune/general/gen021.svg-->
                     <span class="svg-icon svg-icon-1 position-absolute ms-6">
                         <img src="{{asset('assets/media/icons/duotune/general/gen021.svg')}}" alt="">
@@ -74,11 +74,6 @@
                                                    class="menu-link px-3">Đáp án</a>
                                             </div>
                                         @endif
-                                        <!--end::Menu item-->
-                                        <!--begin::Menu item-->
-                                        <div class="menu-item px-3">
-                                            <a href="#" class="menu-link px-3" data-kt-customer-table-filter="delete_row">Delete</a>
-                                        </div>
                                         <!--end::Menu item-->
                                     </div>
                                     <!--end::Menu-->

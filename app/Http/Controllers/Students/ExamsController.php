@@ -18,7 +18,7 @@ class ExamsController extends Controller
     public function index()
     {
         $examsStudents = ExamsStudents::where('id_user', auth()->id())
-            ->where('isActive', false)
+            ->where('result', null )
             ->get();
         return view('pages.students.exams.index', compact('examsStudents'));
     }
@@ -185,12 +185,4 @@ class ExamsController extends Controller
         return  false;
     }
 
-    public function test(Request $request){
-            // Xử lý cập nhật active
-            $active = $request->input('active');
-
-            event(new ActiveChanged(true));
-
-            return response()->json(['success' => true]);
-    }
 }

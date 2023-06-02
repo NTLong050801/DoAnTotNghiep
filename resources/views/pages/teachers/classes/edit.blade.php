@@ -18,7 +18,7 @@
                     <label class="fs-5 form-label mb-2 required" for="name">
                         Tên lớp học
                     </label>
-                    <div class="col-sm-11 row align-self-center ">
+                    <div class="row align-self-center ">
                         <input type="text" name="name" id="name"
                                class="form-control mb-3 mb-lg-0 @error('name') is-invalid @enderror"
                                placeholder="VD: 61HT" required value="{{$class->name}}">
@@ -27,8 +27,14 @@
                         @enderror
                     </div>
                 </div>
+                <div class="d-flex justify-content-end mt-5">
+                    <a href="{{route('teachers.classes.index')}}">
+                        <button type="button" class="btn btn-sm btn-secondary">Trở về</button>
+                    </a>
+                    <button type="submit" class="btn  btn-sm btn-primary ms-5">Tạo</button>
+                </div>
                 <div class="text-center">
-                    <button type="submit" class="btn btn-primary text-center mt-5">Tạo</button>
+
                 </div>
             </form>
         </div>

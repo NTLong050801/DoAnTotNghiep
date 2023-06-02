@@ -15,9 +15,9 @@
                     </span>
                         <!--end::Svg Icon-->
                         <input type="text" data-kt-customer-table-filter="search"
-                               class="form-control form-control-solid w-350px ps-15 bg-secondary"
+                               class="form-control-sm w-350px ps-15 "
                                placeholder="Nhập câu hỏi" name="search" value="{{request()->get('search')}}">
-                        <button type="submit" class="btn btn-sm btn-success s-15">Tìm kiếm</button>
+                        <button type="submit" class="btn btn-sm btn-success ms-2">Tìm kiếm</button>
                     </div>
                 </form>
                 <!--end::Search-->
@@ -30,9 +30,9 @@
                 <div id="select" class="d-flex justify-content-end align-items-center d-none"
                      data-kt-customer-table-toolbar="selected">
                     <div class="fw-bold me-5">
-                        <span class="me-2" data-kt-customer-table-select="selected_count" id="selected_count">10</span>Selected
+                        <span class="me-2" data-kt-customer-table-select="selected_count" id="selected_count">10</span> đã chọn
                     </div>
-                    <button type="button" class="btn btn-danger" id="delete_selected"
+                    <button type="button" class="btn btn-sm btn-danger" id="delete_selected"
                             data-kt-customer-table-select="delete_selected">Thêm tất cả
                     </button>
                 </div>
@@ -62,7 +62,9 @@
                             </th>
                             <th class="min-w-125px sorting" tabindex="0" aria-controls="kt_customers_table"
                                 aria-label="Name: activate to sort column ascending"
-                                style="width: 162.125px;">Câu hỏi @if(sizeof($listQuestions) >0) <span id="count" count="{{sizeof($listQuestions)}}" class="text-danger">({{sizeof($listQuestions)}})</span> @endif
+                                style="width: 162.125px;">Câu hỏi @if(sizeof($listQuestions) >0)
+                                    <span id="count" count="{{sizeof($listQuestions)}}" class="text-danger">({{sizeof($listQuestions)}})</span>
+                                @endif
                             </th>
                             <th class="min-w-125px sorting" tabindex="0" aria-controls="kt_customers_table"
                                 aria-label="Ans: activate to sort column ascending"
@@ -78,47 +80,51 @@
                         <!--begin::Table body-->
                         <tbody class="fw-semibold">
                         @foreach($listQuestions as $question)
-                                <tr class="odd">
-                                    <!--begin::Checkbox-->
-                                    <td>
-                                        <div
-                                            class="form-check form-check-sm form-check-custom form-check-solid justify-items-center">
-                                            <input class="form-check-input bg-dark " type="checkbox"
-                                                   value="{{$question->id}}">
+                            <tr class="odd border-bottom border-danger">
+                                <!--begin::Checkbox-->
+                                <td>
+                                    <div
+                                        class="form-check form-check-sm me-3 justify-items-center">
+                                        <input class="form-check-input" type="checkbox"
+                                               value="{{$question->id}}">
+                                    </div>
+                                </td>
+                                <!--end::Checkbox-->
+                                <!--begin::Name=-->
+                                <td>
+                                    <a href="#"
+                                       class="text-gray-800 text-hover-primary mb-1">{{$question->name}}</a>
+                                    <a target="_blank" href="{{asset('storage/'.$question->image)}}"><img
+                                            src="{{asset('storage/'.$question->image)}}" style="width: 100px"
+                                            alt=""></a>
+                                </td>
+                                <td class="">
+                                    @foreach(json_decode($question->options) as $key=>$option)
+                                        <div class="form-check mt-5 ">
+                                            <input class="form-check-input" type="radio"
+                                                   name="{{$question->id}}"
+                                                   id="{{$question->id.$key}}" value="{{$key}}"
+                                                   @if($question->ans == $key) checked @endif>
+                                            <label class="form-check-label text-black fw-bolder" for="{{$question->id.$key}}">
+                                                {{$option}}
+                                            </label>
                                         </div>
-                                    </td>
-                                    <!--end::Checkbox-->
-                                    <!--begin::Name=-->
-                                    <td>
-                                        <a href="#"
-                                           class="text-gray-800 text-hover-primary mb-1">{{$question->name}}</a>
-                                        <a target="_blank" href="{{asset('storage/'.$question->image)}}"><img
-                                                src="{{asset('storage/'.$question->image)}}" style="width: 100px"
-                                                alt=""></a>
-                                    </td>
-                                    <td class="bg-dark">
-                                        @foreach(json_decode($question->options) as $key=>$option)
-                                            <div class="form-check mt-5 ">
-                                                <input class="form-check-input" type="radio" disabled
-                                                       name="{{$question->id}}"
-                                                       id="{{$question->id.$key}}" value="{{$key}}"
-                                                       @if($question->ans == $key) checked @endif>
-                                                <label class="form-check-label" for="{{$question->id.$key}}">
-                                                    {{$option}}
-                                                </label>
-                                            </div>
-                                        @endforeach
-                                    </td>
-                                    <!--end::Name=-->
-                                    <!--begin::Action=-->
-                                    <td class="text-end">
-                                        <a href="{{route('teachers.questions.add',$question)}}" class="btn btn-sm btn-danger btn-active-light-primary"
-                                           data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Thêm vào kho câu hỏi
-                                        </a>
-                                    </td>
-                                    <!--end::Action=-->
-                                </tr>
-                            @endforeach
+                                    @endforeach
+                                </td>
+                                <!--end::Name=-->
+                                <!--begin::Action=-->
+                                <td class="text-end">
+                                    <a href="{{route('teachers.questions.add',$question)}}"
+                                       class="btn btn-sm btn-danger btn-active-light-primary"
+                                       data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end"
+                                       data-bs-toggle="tooltip" data-bs-placement="bottom" title="Thêm vào ngân hàng câu hỏi"
+                                    ><i class="fa-solid fa-plus"></i>
+                                    </a>
+                                </td>
+                                <!--end::Action=-->
+                            </tr>
+
+                        @endforeach
                         </tbody>
                         <!--end::Table body-->
                     </table>

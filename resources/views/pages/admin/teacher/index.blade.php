@@ -1,12 +1,19 @@
 @extends('layouts.main')
 @section('content')
     @include('pages.admin.alert')
-    <div class="d-flex">
-        <a href="{{route('teachers.create')}}" class="justify-content-start">
-            <button class="btn btn-primary">Thêm giảng viên</button>
-        </a>
+    <div class="d-flex justify-content-end">
+
+
+        <form method="get" action="" class="col-auto">
+            <div class="input-group input-group-sm mb-3 ">
+                <input class="form-control" name="keyword" type="search"
+                       placeholder="Nhập tên giảng viên hoặc email" aria-label="Search"
+                       value="{{request()->get('keyword')}}">
+                <button class="btn btn-sm btn-success me-15" type="submit">Search</button>
+            </div>
+        </form>
         <div class="dropdown ms-5">
-            <a class="btn btn-success dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+            <a class="btn btn-sm btn-success dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                aria-expanded="false">
                 Xuất
             </a>
@@ -17,41 +24,41 @@
             </ul>
         </div>
         <!-- Button trigger modal -->
-        <button type="button" class="btn btn-info ms-5" data-bs-toggle="modal" data-bs-target="#exampleModal">
-            Nhập Excel
-        </button>
-
-        <!-- Modal -->
-        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <form action="{{route('teachers.import')}}" method="post" enctype="multipart/form-data">
-                        @csrf
-                        <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="exampleModalLabel">Nhập file giảng viên</h1>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <div class="ms-5">
+            <button type="button" class="btn btn-sm btn-info " data-bs-toggle="modal"
+                    data-bs-target="#exampleModal">
+                Nhập Excel
+            </button>
+        </div>
+        <a href="{{route('teachers.create')}}" class="ms-5">
+            <button class="btn btn-sm btn-primary">Thêm giảng viên</button>
+        </a>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form action="{{route('teachers.import')}}" method="post" enctype="multipart/form-data">
+                    @csrf
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Nhập file giảng viên</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="file" class="form-label">Chọn file</label>
+                            <input class="form-control" name="file" type="file" id="file">
                         </div>
-                        <div class="modal-body">
-                            <div class="mb-3">
-                                <label for="file" class="form-label">Chọn file</label>
-                                <input class="form-control" name="file" type="file" id="file">
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                            <button type="submit" class="btn btn-primary">Nhập</button>
-                        </div>
-                    </form>
-                </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                        <button type="submit" class="btn btn-sm btn-primary">Nhập</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
-    <form class="row m-3 justify-content-center" method="get" action="">
-        <input class="form-control mr-sm-2 col-10 me-5" name="keyword" type="search" style="width: 50%"
-               placeholder="Nhập tên giảng viên hoặc email" aria-label="Search"
-               value="{{request()->get('keyword')}}">
-        <button class="btn btn-outline-success my-2 my-sm-0 col-1 bg-success" type="submit">Search</button>
-    </form>
+
     <table class="table table-striped">
         <thead>
         <tr>
@@ -73,10 +80,10 @@
                 <td class="col-2">{{$teacher->updated_at}}</td>
                 <td class="col-2">
                     <a href="{{route('teachers.edit',$teacher)}}">
-                        <button class="btn btn-sm btn-warning"><i class="fa-solid fa-pen-to-square"></i></button>
+                        <button class="btn btn-sm btn-sm btn-warning"><i class="fa-solid fa-pen-to-square"></i></button>
                     </a>
                     <a href="{{route('teachers.destroy',$teacher)}}">
-                        <button class="btn btn-sm btn-danger"><i class="fa-solid fa-trash"></i></button>
+                        <button class="btn btn-sm btn-sm btn-danger"><i class="fa-solid fa-trash"></i></button>
                     </a>
                 </td>
             </tr>

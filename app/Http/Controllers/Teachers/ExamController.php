@@ -246,7 +246,7 @@ class ExamController extends Controller
         $idQuestions = $listQuestions->pluck('question_id')->toArray();
         myExam($exam_id, $request->input('user_id'))->update([
             'isActive' => false,
-            'questions' => $idQuestions,
+            'questions' => null,
             'time_started' => null,
             'answers' => null,
             'result' => null,
@@ -257,7 +257,7 @@ class ExamController extends Controller
     public function endExam(Request $request){
         $exam_id = $request->input('exam_id');
         $user_id = $request->input('user_id');
-//        event(new EndExamStudent($user_id,$exam_id));
+       event(new EndExamStudent($user_id,$exam_id));
         EndExamStudent::dispatch($user_id,$exam_id);
         return 'success';
 
@@ -305,6 +305,30 @@ class ExamController extends Controller
         $myExam->update([
            'is_end' => !$myExam->is_end
         ]);
-        event(new ActiveChanged('true'));
+        $exam_students =ExamsStudents::where('exam_id',$exam_id)->get();
+        //dd($exam_students);
+        foreach ($exam_students as $exam_student){
+            if ($exam_student->questions != null){
+                $questions = json_decode($exam_student->questions);
+                $answers = json_decode($exam_student->answers);
+                $dem = 0;
+                foreach ($questions as $key=>$question){
+                    if (Question::find($question)->ans == $answers[$key]){
+                        $dem+=1;
+                    }
+                }
+                $exam_student->update([
+                    'result' => $dem,
+                ]);
+            }
+
+            if($exam_student->questions == null){
+                $exam_student->update([
+                    'result' => 0,
+                    'isActive' => true
+                ]);
+            }
+        }
+        event(new ActiveChanged($exam_id));
     }
 }

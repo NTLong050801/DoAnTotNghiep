@@ -60,7 +60,7 @@
                 <div class="menu-block">
                     <div class="menu-item">
                         <!--begin:Menu link-->
-                        <a class="menu-link" href="{{route('admin.index')}}">
+                        <a class="menu-link " href="{{route('admin.index')}}">
                             <span class="menu-icon"><i class="bi bi-grid-1x2-fill"></i></span>
                             <span class="menu-title">Tổng quan</span>
                         </a>
@@ -70,7 +70,7 @@
                     <!--begin:Menu item-->
                     <div class="menu-item">
                         <!--begin:Menu link-->
-                        <a class="menu-link" href="{{route('major.index')}}">
+                        <a class="menu-link {{request()->routeIs('major.*') ? 'active':''}}" href="{{route('major.index')}}">
                             <span class="menu-icon"><i class="fa-solid fa-address-book"></i></span>
                             <span class="menu-title">Quản lý khoa</span>
                         </a>
@@ -82,7 +82,7 @@
                     <!--begin:Menu item-->
                     <div class="menu-item">
                         <!--begin:Menu link-->
-                        <a class="menu-link" href="{{route('teachers.index')}}">
+                        <a class="menu-link {{request()->routeIs('teachers.*') ? 'active':''}}" href="{{route('teachers.index')}}">
                             <span class="menu-icon"><i class="fa-sharp fa-regular fa-people-roof"></i></span>
                             <span class="menu-title">Quản lý giảng viên</span>
                         </a>
@@ -119,9 +119,9 @@
     </div>
     <!--end::sidebar menu-->
     <!--begin::Footer-->
-    <div class="app-sidebar-footer flex-column-auto px-6 pt-2" id="kt_app_sidebar_footer">
+    <div class="app-sidebar-footer flex-column-auto  pt-2" id="kt_app_sidebar_footer">
         <a href="{{route('profile.edit')}}"
-           class="btn btn-flex btn-custom overflow-hidden text-nowrap px-0 w-100"
+           class="btn btn-flex btn-custom overflow-hidden text-nowrap px-0 w-100 px-6"
            data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss-="click"
            data-bs-original-title="200+ in-house components and 3rd-party plugins" data-kt-initialized="1"
         >
