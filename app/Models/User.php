@@ -79,6 +79,10 @@ class User extends Authenticatable
     {
         return $this->hasMany(Exam::class);
     }
+    public function major()
+    {
+        return $this->belongsTo(Major::class,'major_id');
+    }
 
     public function questions(): HasMany
     {

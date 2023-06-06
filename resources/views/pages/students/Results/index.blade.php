@@ -40,7 +40,7 @@
                                 aria-label="Actions" style="width: 128.625px;">Hành động
                             </th>
                         </tr>
-                        <!--end::Table row-->
+                        <!--end::Table   row-->
                         </thead>
                         <!--end::Table head-->
                         <!--begin::Table body-->

@@ -1,6 +1,11 @@
 @extends('layouts.main')
 @section('content')
     <div class="card">
+        <div class="card-header border-0 pt-6">
+            <div class="card-toolbar">
+                <h2>Đổi Mật Khẩu</h2>
+            </div>
+        </div>
         <div class="card-body">
             @if(session('success'))
                 <div class="alert alert-success">{{session('success')}}</div>
@@ -16,7 +21,7 @@
                     <!--end::Label-->
                     <!--begin::Input-->
                     <input type="password" name="current_password" id="current_password"
-                           class="form-control form-control-solid mb-3 mb-lg-0" required>
+                           class="form-control  mb-3 mb-lg-0" required>
                     <!--end::Input-->
                     <div
                         class="fv-plugins-message-container invalid-feedback">@error('current_password') {{$message}} @enderror</div>
@@ -29,7 +34,7 @@
                     <!--end::Label-->
                     <!--begin::Input-->
                     <input type="password" name="password" id="password"
-                           class="form-control form-control-solid mb-3 mb-lg-0" required>
+                           class="form-control  mb-3 mb-lg-0" required>
                     <!--end::Input-->
                     <div
                         class="fv-plugins-message-container invalid-feedback">@error('password') {{$message}} @enderror</div>
@@ -42,7 +47,7 @@
                     <!--end::Label-->
                     <!--begin::Input-->
                     <input type="password" name="password_confirmation" id="password_confirmation"
-                           class="form-control form-control-solid mb-3 mb-lg-0" required>
+                           class="form-control  mb-3 mb-lg-0" required>
                     <!--end::Input-->
                     <div
                         class="fv-plugins-message-container invalid-feedback">@error('password_confirmation') {{$message}} @enderror</div>

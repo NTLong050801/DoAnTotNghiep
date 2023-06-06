@@ -71,7 +71,7 @@
                                        <img src="{{asset('assets/media/icons/duotune/electronics/elc003.svg')}}" alt="">
                                     </span>
                     <!--end::Svg Icon-->
-                    <a href="#" class="text-muted text-hover-primary">+6141 234 567</a>
+                    <a href="#" class="text-muted text-hover-primary">MSV: {{$user->identifier}}</a>
                 </div>
                 <!--end::Phone-->
             </div>
@@ -100,22 +100,11 @@
                 <div class="d-flex flex-column gap-5 mt-7">
                     <!--begin::Company name-->
                     <div class="d-flex flex-column gap-1">
-                        <div class="fw-bold text-muted">Company Name</div>
-                        <div class="fw-bold fs-5">Keenthemes Inc</div>
+                        <div class="fw-bold text-muted">Khoa</div>
+                        <div class="fw-bold fs-5">{{$user->major->name}}</div>
                     </div>
                     <!--end::Company name-->
-                    <!--begin::City-->
-                    <div class="d-flex flex-column gap-1">
-                        <div class="fw-bold text-muted">City</div>
-                        <div class="fw-bold fs-5">Melbourne</div>
-                    </div>
-                    <!--end::City-->
-                    <!--begin::Country-->
-                    <div class="d-flex flex-column gap-1">
-                        <div class="fw-bold text-muted">Country</div>
-                        <div class="fw-bold fs-5">Australia</div>
-                    </div>
-                    <!--end::Country-->
+
                 </div>
                 <!--end::Additional details-->
             </div>

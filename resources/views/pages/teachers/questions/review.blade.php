@@ -2,9 +2,10 @@
 @section('content')
     <div class="card">
         <!--begin::Card header-->
-        <div class="card-header border-0 pt-6">
+        <div class="card-header border-0 pt-6 justify-content-end">
+            <h3 class="col align-self-center">Danh Sách Câu Hỏi Tham Khảo</h3>
             <!--begin::Card title-->
-            <div class="card-title">
+            <div class="card-title d-flex col-auto">
                 <!--begin::Search-->
                 <form action="" method="GET">
                     @csrf
@@ -15,7 +16,7 @@
                     </span>
                         <!--end::Svg Icon-->
                         <input type="text" data-kt-customer-table-filter="search"
-                               class="form-control-sm w-350px ps-15 "
+                               class="form-control w-350px ps-15 "
                                placeholder="Nhập câu hỏi" name="search" value="{{request()->get('search')}}">
                         <button type="submit" class="btn btn-sm btn-success ms-2">Tìm kiếm</button>
                     </div>

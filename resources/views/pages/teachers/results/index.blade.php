@@ -53,7 +53,7 @@
                 @if($examsStudents != null)
                     <button class="btn btn-sm btn-primary
                                 btn-sm btn-active-light-primary my-1 me-2 chartExams"
-                            id_exam="{{$exam->id}}" name_exam="{{$exam->name}}"
+                            id_exam="{{request('exam_id')}}" name_exam="{{ \App\Models\Exam::find(request('exam_id'))->name }}"
                             data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse"
                             data-bs-placement="bottom" title="Thống kê"
                     >
@@ -229,6 +229,7 @@
                     exam_id: exam_id
                 },
                 success: function (res) {
+                    console.log(res)
                     $('#title_chart').html(name_exam)
                     $('#modal_chart').modal('show')
 

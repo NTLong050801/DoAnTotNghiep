@@ -239,26 +239,21 @@
                             <h5 class="modal-title">Modal title</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <div class="modal-body">
-                            <div class="card card-bordered">
-                                <div class="card-body">
-                                    <!--begin::Input group-->
-                                    <div class="input-group">
-                                        <!--begin::Input-->
-                                        <input id="new_password_random" readonly type="text" class="form-control"
-                                               placeholder="name@example.com" value="name@example.com"/>
-                                        <!--end::Input-->
-
-                                        <!--begin::Button-->
-                                        <button class="btn btn-light-primary" id="copyButton">
-                                            Copy
-                                        </button>
-                                    </div>
-                                </div>
+                        <div class="modal-body pt-0 pb-0">
+                            <label class="fw-bold">Mật khẩu đề thi:</label><br>
+                            <div class="input-group">
+                                <!--begin::Input-->
+                                <input id="new_password_random" readonly type="text" class="form-control"
+                                       placeholder="name@example.com" value="name@example.com"/>
+                                <!--end::Input-->
+                                <!--begin::Button-->
+                                <button class="btn btn-light-primary" id="copyButton">
+                                    Copy
+                                </button>
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Đóng</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
                         </div>
                     </div>
                 </div>

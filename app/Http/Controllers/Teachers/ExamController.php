@@ -271,16 +271,17 @@ class ExamController extends Controller
     public function chart(Request $request)
     {
         $exam_id = $request->exam_id;
-        $arrdiem = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.0];
+        $arrdiem = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
         $students = ExamsStudents::where('exam_id', $exam_id)->get();
+
         foreach ($students as $student) {
-            if ($student->questions != null){
-                $countQuestion = count(json_decode($student->questions));
+            if (!$student->questions){
+                $value = 0;
             }else{
-                $countQuestion = 1;
+                $countQuestion = count(json_decode($student->questions));
+                $value = round($student->result * 10 / $countQuestion);
             }
-            $value = round($student->result * 10 / $countQuestion);
-            $arrdiem[$value] += 1;
+            $arrdiem[$value] = $arrdiem[$value] + 1;
         }
         return $arrdiem;
     }

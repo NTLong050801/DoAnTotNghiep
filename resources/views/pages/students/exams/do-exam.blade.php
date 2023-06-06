@@ -496,6 +496,8 @@
 
             });
             document.addEventListener("fullscreenchange", fullscreenchanged);
+
+            // fullScreenElement.requestFullscreen();
             document.getElementById("toggle-fullscreen").addEventListener("click", () => {
                 fullScreenElement.requestFullscreen();
             });
