@@ -54,13 +54,16 @@ Route::prefix('/admin')->group(function () {
     });
 
     Route::prefix('student')->group(function () {
-        Route::get('index', [StudentController::class, 'index'])->name('student.index');
-        Route::get('search', [StudentController::class, 'search'])->name('student.search');
-        Route::get('create', [StudentController::class, 'create'])->name('student.create');
-        Route::post('store', [StudentController::class, 'store'])->name('student.store');
-        Route::get('{id}/edit', [StudentController::class, 'edit'])->name('student.edit');
-        Route::post('{id}/update', [StudentController::class, 'update'])->name('student.update');
-        Route::get('{id}/destroy', [StudentController::class, 'destroy'])->name('student.destroy');
+        Route::get('index', [StudentController::class, 'index'])->name('admin.student.index');
+        Route::get('search', [StudentController::class, 'search'])->name('admin.student.search');
+        Route::get('create', [StudentController::class, 'create'])->name('admin.student.create');
+        Route::post('store', [StudentController::class, 'store'])->name('admin.student.store');
+        Route::get('{student}/edit', [StudentController::class, 'edit'])->name('admin.student.edit');
+        Route::post('{student}/update', [StudentController::class, 'update'])->name('admin.student.update');
+        Route::get('{student}/destroy', [StudentController::class, 'destroy'])->name('admin.student.destroy');
+        Route::get('export/{type}', [StudentController::class, 'export'])->name('admin.student.export');
+        Route::post('import', [StudentController::class, 'import'])->name('admin.student.import');
+
     });
 
     Route::prefix('teachers')->group(function () {

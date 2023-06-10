@@ -7,25 +7,19 @@ use App\Models\Major;
 use App\Models\User;
 use App\Repositories\Admin\UsersRepositoryEloquent;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 
 class StudentController extends Controller
 {
-    protected $repository;
 
-    public function __construct(UsersRepositoryEloquent $repository){
-        $this->repository = $repository;
-    }
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function index(Request $request)
     {
-        //
-        $majors= Major::all();
-        $students = User::with('majors')->where("role",0)->paginate(1);
-        $title = "Danh sách sinh viên";
-        return view('admin.student.index',compact('title','majors','students'));
+        $students = User::with('majors')->where("role", 0)->orderBy('id', 'desc')->paginate();
+        if (request('keyword')) {
+            $students = User::search($request->keyword)->within('majors')->where('role', 0)->orderBy('id', 'desc')->paginate()->withQueryString();
+        }
+        return view('pages.admin.student.index',compact('students'));
     }
 
     /**
@@ -35,8 +29,7 @@ class StudentController extends Controller
     {
         //
         $majors= Major::all();
-        $title = "Thêm mới sinh viên";
-        return view('admin.student.create',compact('title','majors'));
+        return view('pages.admin.student.create',compact('majors'));
     }
 
     /**
@@ -49,17 +42,17 @@ class StudentController extends Controller
            'name' => 'required|min:10',
             'identifier'=> 'required|unique:users',
             'email' => 'required|unique:users',
-            'password' => 'required',
         ]);
         User::create([
             'name' => $request->name,
             'email' => $request->email,
             'identifier' => $request->identifier,
-            'password' => bcrypt($request->password),
+            'password' => Hash::make($request->input('email')),
+            'role' => '0',
             'major_id' => $request->major_id,
         ]);
-        Session::flash('success',"Thêm sinh viên thành công");
-        return redirect()->route('student.index');
+        toastr('Tạo sinh viên thành công');
+        return redirect()->route('admin.student.index');
     }
 
     /**
@@ -71,54 +64,40 @@ class StudentController extends Controller
 
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function search(Request $request){
-        $majors= Major::all();
-       $students =  $this->repository->findByField('identifier',$request->search);
-        $title = "Danh sách sinh viên";
-        return view('admin.student.index',compact('title','majors','students'));
-    }
-
-    public function edit(string $id)
+    public function edit(User $student)
     {
-        //
         $majors = Major::all();
-        $title = "Sửa sinh viên";
-        $student = User::find($id);
-        return view('admin.student.edit',compact('title','student','majors'));
+        return view('pages.admin.student.edit',compact('student','majors'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, User $student)
     {
-        //
+
         $request->validate([
             'name' => 'required|min:10',
             'identifier'=> 'required|unique:users',
-            'email' => 'required|unique:users',
+            'email' => 'required|unique:users,email,'.$student->id,
         ]);
-        User::where('id',$id)->update([
+
+        $student->update([
             'name' => $request->name,
             'email' => $request->email,
             'identifier' => $request->identifier,
             'major_id' => $request->major_id,
         ]);
-        Session::flash("success","Update thành công");
-        return redirect()->route('student.index');
+        toastr('Sửa sinh viên thành công');
+        return redirect()->route('admin.student.index');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(User $student)
     {
-        //
-        User::destroy($id);
-        Session::flash("success","Xóa sinh viên thành công");
-        return redirect()->route('student.index');
+       $student->delete();
+       return  redirect()->route('admin.student.index');
     }
 }

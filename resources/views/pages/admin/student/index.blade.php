@@ -1,13 +1,19 @@
 @extends('layouts.main')
 @section('content')
     @include('pages.admin.alert')
-    <form class="row m-3" method="get" action="{{route('student.search')}}">
-        @csrf
-        <input class="form-control mr-sm-2 col-10 me-5" name="search" type="search" style="width: 50%"
-               placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success my-2 my-sm-0 col-1 bg-success" type="submit">Search</button>
-    </form>
-
+    <div class="d-flex justify-content-end">
+        <form method="get" action="" class="col-auto">
+            <div class="input-group input-group-sm mb-3 ">
+                <input class="form-control" name="keyword" type="search"
+                       placeholder="Nhập tên sinh viên hoặc email" aria-label="Search"
+                       value="{{request()->get('keyword')}}">
+                <button class="btn btn-sm btn-success me-15" type="submit">Tìm kiếm</button>
+            </div>
+        </form>
+        <a href="{{route('admin.student.create')}}" class="ms-5">
+            <button class="btn btn-sm btn-primary">Thêm sinh viên</button>
+        </a>
+    </div>
     <table class="table table-striped">
         <thead>
         <tr>
@@ -20,18 +26,18 @@
         </tr>
         </thead>
         <tbody>
-        @foreach($students as $key=>$student)
+        @foreach($students as $student)
             <tr>
-                <td class="col-1">{{$key+1}}</td>
+                <td class="col-1">{{$loop->iteration}}</td>
                 <td class="col-3">{{$student->name}}</td>
                 <td class="col-2">{{$student->identifier}}</td>
                 <td class="col-2">{{$student->email}}</td>
-                <td class="col-2">{{$student->majors[0]->name}}</td>
+                <td class="col-2">@if(isset($student->major->name)){{$student->major->name}} @endif</td>
                 <td class="col-2">
-                    <a href="{{route('student.edit',$student->id)}}">
+                    <a href="{{route('admin.student.edit',$student)}}">
                         <button class="btn btn-sm btn-warning"><i class="fa-solid fa-pen-to-square"></i></button>
                     </a>
-                    <a href="{{route('student.destroy',$student->id)}}">
+                    <a href="{{route('admin.student.destroy',$student)}}">
                         <button class="btn btn-sm btn-danger"><i class="fa-solid fa-trash"></i></button>
                     </a>
                 </td>

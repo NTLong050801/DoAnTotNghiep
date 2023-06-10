@@ -2,8 +2,6 @@
 @section('content')
     @include('pages.admin.alert')
     <div class="d-flex justify-content-end">
-
-
         <form method="get" action="" class="col-auto">
             <div class="input-group input-group-sm mb-3 ">
                 <input class="form-control" name="keyword" type="search"

@@ -94,7 +94,7 @@
                     <!--begin:Menu item-->
                     <div class="menu-item">
                         <!--begin:Menu link-->
-                        <a class="menu-link" href="#">
+                        <a class="menu-link {{request()->routeIs('admin.student.*') ? 'active':''}}" href="{{route('admin.student.index')}}">
                             <span class="menu-icon"><i class="fa-solid fa-users-gear"></i></span>
                             <span class="menu-title">Quản lý sinh viên</span>
                         </a>
