@@ -129,12 +129,14 @@
                             <h2 class="mb-0">Câu hỏi</h2>
 
                         </div>
-                        <div class="float-end card-title">
-                            <button class="btn btn-sm btn-success " data-bs-toggle="modal"
-                                    data-bs-target="#listQuestion">
-                                Thêm
-                            </button>
-                        </div>
+                        @if($exam->status == 0)
+                            <div class="float-end card-title">
+                                <button class="btn btn-sm btn-success " data-bs-toggle="modal"
+                                        data-bs-target="#listQuestion">
+                                    Thêm
+                                </button>
+                            </div>
+                        @endif
                         <!-- Modal -->
                         <div class="modal fade" id="listQuestion" tabindex="-1" aria-labelledby="listQuestion"
                              aria-hidden="true">
@@ -351,9 +353,11 @@
                         <!--end::Card title-->
                         <!--begin::Card toolbar-->
                         <div class="card-toolbar">
+                            @if($exam->status == 0)
                             <button class="btn btn-sm btn-success col-4" data-bs-toggle="modal"
                                     data-bs-target="#modal_add_student">Thêm thí sinh
                             </button>
+                            @endif
                             <!--begin::Search-->
                             <div class="d-flex align-items-center position-relative my-1 col-8"
                                  data-kt-view-roles-table-toolbar="base">

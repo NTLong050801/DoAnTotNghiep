@@ -60,7 +60,7 @@
                 <div class="menu-block">
                     <div class="menu-item">
                         <!--begin:Menu link-->
-                        <a class="menu-link " href="#">
+                        <a class="menu-link " href="{{route('teachers.dashboard')}}">
                             <span class="menu-icon"><i class="bi bi-grid-1x2-fill"></i></span>
                             <span class="menu-title">Tổng quan</span>
                         </a>
@@ -105,18 +105,18 @@
                 <div class="menu-block">
 
                 </div>
-                <div class="menu-block">
-                    <!--begin:Menu item-->
-                    <div class="menu-item">
-                        <!--begin:Menu link-->
-                        <a class="menu-link" href="#">
-                            <span class="menu-icon"><i class="fa-solid fa-users-gear"></i></span>
-                            <span class="menu-title">Quản lý sinh viên</span>
-                        </a>
-                        <!--end:Menu link-->
-                    </div>
-                    <!--end:Menu item-->
-                </div>
+{{--                <div class="menu-block">--}}
+{{--                    <!--begin:Menu item-->--}}
+{{--                    <div class="menu-item">--}}
+{{--                        <!--begin:Menu link-->--}}
+{{--                        <a class="menu-link" href="#">--}}
+{{--                            <span class="menu-icon"><i class="fa-solid fa-users-gear"></i></span>--}}
+{{--                            <span class="menu-title">Quản lý sinh viên</span>--}}
+{{--                        </a>--}}
+{{--                        <!--end:Menu link-->--}}
+{{--                    </div>--}}
+{{--                    <!--end:Menu item-->--}}
+{{--                </div>--}}
             </div>
             <!--end::Menu-->
         </div>

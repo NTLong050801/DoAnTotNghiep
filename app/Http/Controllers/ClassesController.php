@@ -29,7 +29,7 @@ class ClassesController extends Controller
         if (request('keyword')) {
             $query->where('name', 'Like', '%' . request('keyword') . '%');
         }
-        $classes = $query->paginate('10');
+        $classes = $query->orderBy('id','desc')->paginate('10');
         return view('pages.teachers.classes.index', compact('classes'));
     }
 

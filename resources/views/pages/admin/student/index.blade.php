@@ -28,7 +28,7 @@
         <tbody>
         @foreach($students as $student)
             <tr>
-                <td class="col-1">{{$loop->iteration}}</td>
+                <td class="col-1">{{$loop->iteration+($students->currentPage()-1)*$students->perPage()}}</td>
                 <td class="col-3">{{$student->name}}</td>
                 <td class="col-2">{{$student->identifier}}</td>
                 <td class="col-2">{{$student->email}}</td>

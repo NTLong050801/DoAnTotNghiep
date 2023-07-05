@@ -42,7 +42,7 @@
                                             <!--begin::Body-->
                                             <div class="card-body">
                                                 @if($question->image)
-                                                    <img src="{{asset($question->image)}}"
+                                                    <img src="{{asset('storage/'.$question->image)}}"
                                                          class="rounded-3 mb-4 w-350px h-250px w-xxl-200px h-xxl-250px"
                                                          alt="">
                                                 @endif

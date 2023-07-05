@@ -71,7 +71,7 @@
         <tbody>
         @foreach($teachers as $key=>$teacher)
             <tr>
-                <td class="col-1">{{$key+1}}</td>
+                <td class="col-1">{{$loop->iteration+($teachers->currentPage()-1)*$teachers->perPage()}}</td>
                 <td class="col-3">{{$teacher->name}}</td>
                 <td class="col-2">{{$teacher->email}}</td>
                 <td class="col-2">{{$teacher->majors[0]->name ?? ''}}</td>

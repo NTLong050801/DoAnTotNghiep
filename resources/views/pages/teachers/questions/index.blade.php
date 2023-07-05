@@ -115,8 +115,8 @@
                             </th>
                             <th class="min-w-125px sorting" tabindex="0" aria-controls="kt_customers_table"
                                 aria-label="Name: activate to sort column ascending"
-                                style="width: 162.125px;">Câu hỏi @if($count > 0)
-                                    <span class="text-danger">({{$count}})</span>
+                                style="width: 162.125px;">Câu hỏi @if($questions->total()> 0)
+                                    <span class="text-danger">({{$questions->total()}})</span>
                                 @endif
                             </th>
                             <th class="min-w-125px sorting" tabindex="0" aria-controls="kt_customers_table"

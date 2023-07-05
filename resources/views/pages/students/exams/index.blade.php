@@ -79,10 +79,10 @@
                         <button type="button" class="btn btn-light" data-bs-dismiss="modal">Đóng</button>
                         <button type="button" class="btn btn-primary" id="submitPassword">
                              <span class="indicator-label">
-                                Submit
+                                Nhập
                             </span>
                             <span class="indicator-progress">
-                                Please wait... <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                                Vui lòng đợi... <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
                             </span>
                         </button>
 

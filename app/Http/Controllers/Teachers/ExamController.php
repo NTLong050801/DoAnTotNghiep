@@ -51,8 +51,8 @@ class ExamController extends Controller
             'name' => ['string', 'required', 'max:255'],
             'minute_time' => 'integer|min:0|required',
             'number_question' => 'integer|nullable',
-            'date_start' => 'date|nullable',
-            'date_end' => 'date|nullable',
+            'date_start' => 'date|nullable|after_or_equal:today',
+            'date_end' => 'date|nullable|after_or_equal:today|after:start_date',
             'note' => 'string|nullable',
             'password' => 'string|nullable',
         ]);
@@ -125,7 +125,7 @@ class ExamController extends Controller
         $questions = Question::where('user_id', auth()->id())
             ->whereNotIn('id', $examsQuestions)
             ->where('name', 'LIKE', '%' . $request->search . '%')
-            ->get();
+            ->orderBy('id','asc')->get();
         return view('pages.teachers.ajax.add-question', compact('questions'));
     }
 
@@ -254,11 +254,12 @@ class ExamController extends Controller
         ]);
     }
 
-    public function endExam(Request $request){
+    public function endExam(Request $request)
+    {
         $exam_id = $request->input('exam_id');
         $user_id = $request->input('user_id');
-       event(new EndExamStudent($user_id,$exam_id));
-        EndExamStudent::dispatch($user_id,$exam_id);
+        event(new EndExamStudent($user_id, $exam_id));
+        EndExamStudent::dispatch($user_id, $exam_id);
         return 'success';
 
     }
@@ -275,9 +276,9 @@ class ExamController extends Controller
         $students = ExamsStudents::where('exam_id', $exam_id)->get();
 
         foreach ($students as $student) {
-            if (!$student->questions){
+            if (!$student->questions) {
                 $value = 0;
-            }else{
+            } else {
                 $countQuestion = count(json_decode($student->questions));
                 $value = round($student->result * 10 / $countQuestion);
             }
@@ -300,22 +301,23 @@ class ExamController extends Controller
         }
     }
 
-    public function isEnd(Request $request){
+    public function isEnd(Request $request)
+    {
         $exam_id = $request->input('exam_id');
         $myExam = Exam::find($exam_id);
         $myExam->update([
-           'is_end' => !$myExam->is_end
+            'is_end' => !$myExam->is_end
         ]);
-        $exam_students =ExamsStudents::where('exam_id',$exam_id)->get();
+        $exam_students = ExamsStudents::where('exam_id', $exam_id)->get();
         //dd($exam_students);
-        foreach ($exam_students as $exam_student){
-            if ($exam_student->questions != null){
+        foreach ($exam_students as $exam_student) {
+            if ($exam_student->questions != null) {
                 $questions = json_decode($exam_student->questions);
                 $answers = json_decode($exam_student->answers);
                 $dem = 0;
-                foreach ($questions as $key=>$question){
-                    if (Question::find($question)->ans == $answers[$key]){
-                        $dem+=1;
+                foreach ($questions as $key => $question) {
+                    if (Question::find($question)->ans == $answers[$key]) {
+                        $dem += 1;
                     }
                 }
                 $exam_student->update([
@@ -323,7 +325,7 @@ class ExamController extends Controller
                 ]);
             }
 
-            if($exam_student->questions == null){
+            if ($exam_student->questions == null) {
                 $exam_student->update([
                     'result' => 0,
                     'isActive' => true
@@ -331,5 +333,30 @@ class ExamController extends Controller
             }
         }
         event(new ActiveChanged($exam_id));
+    }
+
+    public function copy(Exam $exam)
+    {
+        $examNew = Exam::create([
+            'name' => $exam->name.'-Copy',
+            'minute_time' => $exam->minute_time,
+            'number_question' => $exam->number_question,
+            'date_start' => $exam->date_start,
+            'date_end' => $exam->date_end,
+            'note' => $exam->note,
+            'password' => $exam->password,
+            'random' => $exam->random,
+            'user_id' => $exam->user_id,
+            'is_see_answers' => $exam->is_see_answers,
+        ]);
+        foreach ($exam->examQuestions->pluck('id') as $question) {
+            ExamsQuestions::create([
+                'exam_id' => $examNew->id,
+                'question_id' => $question,
+            ]);
+        }
+        $exam = $examNew;
+        toastr('Tạo đề thi thành công!!');
+        return redirect()->route('teachers.exams.edit',compact('exam'));
     }
 }

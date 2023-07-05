@@ -77,15 +77,21 @@
                 @foreach($exams as $exam)
                     <!--begin::Col-->
                     <div class="col-md-6 col-xxl-4 ">
-                        <div class="card card-flush h-md-100" @if($exam->is_end) style="background-color: #e9bbc7" @endif>
+                        <div class="card card-flush h-md-100"
+                             @if($exam->is_end) style="background-color: #e9bbc7" @endif>
                             <!--begin::Card header-->
-                            <div class="card-header " >
-                                <!--begin::Card title-->
-                                <div class="card-title">
-                                    <h2>{{$exam->name}}</h2>
+                            <!--begin::Card title-->
+                            <div class="row p-5">
+                                <h2 class="col-9">{{$exam->name}}</h2>
+                                <div class="col-3 d-flex justify-content-end">
+                                    <a class="btn btn-sm btn-success text-end copyExam"
+                                       href="{{route('teachers.exams.copy',$exam)}}"
+                                       data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse"
+                                       data-bs-placement="bottom" title="Sao chép đề thi"
+                                    ><i class="fa-solid fa-circle-plus"></i></a>
                                 </div>
-                                <!--end::Card title-->
                             </div>
+                            <!--end::Card title-->
                             <!--end::Card header-->
                             <!--begin::Card body-->
                             <div class="card-body pt-1">
@@ -105,7 +111,7 @@
                                     </div>
                                     <div class="d-flex align-items-center py-2">
                                         <span class="bullet bg-primary me-3"></span>Ngày bắt đầu
-                                        thi: {{\Carbon\Carbon::parse($exam->date_start)->format('d/m/Y')}}
+                                        thi: {{ empty($exam->date_start) ? 'không có' : \Carbon\Carbon::parse($exam->date_start)->format('d/m/Y')}}
                                     </div>
                                     <div class="d-flex align-items-center py-2">
                                         <span class="bullet bg-primary me-3"></span>Mật khẩu: &nbsp <b
@@ -118,7 +124,8 @@
                                         án: <b class="text-danger"> &nbsp {{$exam->is_see_answers ? "Có" : "Không"}}</b>
                                     </div>
                                     <div class="d-flex align-items-center py-2">
-                                        <span class="bullet bg-primary me-3"></span>Trạng thái: &nbsp <b class="text-danger">
+                                        <span class="bullet bg-primary me-3"></span>Trạng thái: &nbsp <b
+                                            class="text-danger">
                                             @if($exam->status == '1')
                                                 Đã kích hoạt
                                             @else
@@ -138,34 +145,37 @@
                                        data-bs-placement="bottom" title="Chi tiết">
                                         <i class="fa-sharp fa-solid fa-circle-info"></i>
                                     </a>
-                                    @if($exam->status == '0')
-                                        <a href="{{route('teachers.exams.active',[$exam,1])}}">
-                                            <button exam_id="{{$exam->id}}"
-                                                    class="btn btn-sm btn-success my-1 me-2 activeStatus"
-                                                    data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse"
-                                                    data-bs-placement="bottom" title="Kích hoạt bài thi"
-                                            >
-                                                <i class="fa-solid fa-lock"></i>
-                                            </button>
-                                        </a>
-                                    @else
-                                        <a href="{{route('teachers.exams.active',[$exam,0])}}">
-                                            <button class="btn btn-sm btn-success my-1 me-2 cancelStatus"
+                                    @if(!$exam->is_end)
+                                        @if($exam->status == '0')
+                                            <a href="{{route('teachers.exams.active',[$exam,1])}}">
+                                                <button exam_id="{{$exam->id}}"
+                                                        class="btn btn-sm btn-success my-1 me-2 activeStatus "
+                                                        data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse"
+                                                        data-bs-placement="bottom" title="Kích hoạt bài thi"
+                                                >
+                                                    <i class="fa-solid fa-lock"></i>
+                                                </button>
+                                            </a>
+                                        @else
+                                            <a href="{{route('teachers.exams.active',[$exam,0])}}">
+                                                <button
+                                                    class="btn btn-sm btn-success my-1 me-2 cancelStatus activeStatus"
                                                     data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse"
                                                     data-bs-placement="bottom" title="Hủy kích hoạt"
-                                            >
-                                                <i class="fa-solid fa-lock-open"></i>
-                                            </button>
-                                        </a>
-                                    @endif
-                                    <button class="btn btn-sm btn-danger
+                                                >
+                                                    <i class="fa-solid fa-lock-open"></i>
+                                                </button>
+                                            </a>
+                                        @endif
+                                        <button class="btn btn-sm btn-danger
                                 btn-sm btn-active-light-primary my-1 me-2 newPassword" name_exam="{{$exam->name}}"
-                                            id_exam="{{$exam->id}}"
-                                            data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse"
-                                            data-bs-placement="bottom" title="Tạo mật khẩu ngẫu nhiên"
-                                    >
-                                        <i class="fa-solid fa-key"></i>
-                                    </button>
+                                                id_exam="{{$exam->id}}"
+                                                data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse"
+                                                data-bs-placement="bottom" title="Tạo mật khẩu ngẫu nhiên"
+                                        >
+                                            <i class="fa-solid fa-key"></i>
+                                        </button>
+                                    @endif
                                     <a href="#" exam_id="{{$exam->id}}"
                                        class="btn btn-sm  btn-active-success my-1 me-2 is_see_answers"
                                        data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse"
@@ -209,24 +219,25 @@
                                             </button>
                                         </a>
                                     @endif
-                                    <a href="{{route('teachers.exams.edit',$exam)}}">
-                                        <button type="button"
-                                                class="btn btn-sm btn-warning btn-active-light-primary  me-2 my-1"
-                                                data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse"
-                                                data-bs-placement="right" title="Sửa bài thi"
-                                        >
-                                            <i class="fa-solid fa-pen-to-square"></i>
-                                        </button>
-                                    </a>
-                                    <a href="{{route('teachers.exams.destroy',$exam)}}"
-                                       class="btn btn-sm btn-dark btn-active-primary my-1 me-2"
-                                       data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse"
-                                       data-bs-placement="right" title="Xóa bài thi"
-                                    ><i class="fa-sharp fa-solid fa-trash"></i></a>
+                                    @if(!$exam->is_end)
+                                        <a href="{{route('teachers.exams.edit',$exam)}}">
+                                            <button type="button"
+                                                    class="btn btn-sm btn-warning btn-active-light-primary  me-2 my-1"
+                                                    data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse"
+                                                    data-bs-placement="right" title="Sửa bài thi"
+                                            >
+                                                <i class="fa-solid fa-pen-to-square"></i>
+                                            </button>
+                                        </a>
+                                        <a href="{{route('teachers.exams.destroy',$exam)}}"
+                                           class="btn btn-sm btn-dark btn-active-primary my-1 me-2"
+                                           data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse"
+                                           data-bs-placement="right" title="Xóa bài thi"
+                                        ><i class="fa-sharp fa-solid fa-trash"></i></a>
+                                    @endif
                                 </div>
                             </div>
                             <!--end::Card footer-->
-
                         </div>
                     </div>
                     <!--end::Col-->
@@ -325,7 +336,31 @@
                 $('#copyButton').html('Copy')
             }, 3000)
         });
-
+        $('.activeStatus').click(function (e) {
+            e.preventDefault();
+            href = $(this).parent().attr('href')
+            if ($(this).hasClass('cancelStatus')) {
+                text = "Bạn muốn hủy kích hoạt?"
+            } else {
+                text = "Bạn kích hoạt bài thi?"
+            }
+            Swal.fire({
+                text: text,
+                icon: "warning",
+                buttonsStyling: false,
+                showCancelButton: true,
+                confirmButtonText: "Ok!",
+                cancelButtonText: 'Hủy',
+                customClass: {
+                    confirmButton: "btn btn-primary",
+                    cancelButton: 'btn btn-danger'
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = href
+                }
+            });
+        })
         $(".btn_copy").click(function () {
             var textToCopy = $(this).prev().text();
             var bElement = $(this).prev("b");
@@ -465,14 +500,14 @@
                         },
                         success: function (res) {
                             Swal.fire({
-                                text: title+ " thành công!",
+                                text: title + " thành công!",
                                 icon: "success",
                                 buttonsStyling: false,
                                 confirmButtonText: "Ok!",
                                 customClass: {
                                     confirmButton: "btn btn-primary"
                                 }
-                            }).then(()=>{
+                            }).then(() => {
                                 location.reload();
                             });
 
@@ -482,10 +517,10 @@
             });
 
         })
-        $('.endExam').click(function(){
+        $('.endExam').click(function () {
             exam_id = $(this).attr('id_exam')
             Swal.fire({
-                text:'Kết thúc bài thi ?',
+                text: 'Kết thúc bài thi ?',
                 icon: "warning",
                 buttonsStyling: false,
                 showCancelButton: true,
@@ -512,12 +547,32 @@
                                 customClass: {
                                     confirmButton: "btn btn-primary"
                                 }
-                            }).then(()=>{
+                            }).then(() => {
                                 location.reload();
                             });
 
                         }
                     })
+                }
+            });
+        })
+        $('.copyExam').click(function (e) {
+            e.preventDefault();
+            var href = $(this).attr('href')
+            Swal.fire({
+                text: 'Sao chép và tạo từ bài thi này?',
+                icon: "warning",
+                buttonsStyling: false,
+                showCancelButton: true,
+                confirmButtonText: "Ok!",
+                cancelButtonText: 'Hủy',
+                customClass: {
+                    confirmButton: "btn btn-primary",
+                    cancelButton: 'btn btn-danger'
+                }
+            }).then(function (result) {
+                if (result.isConfirmed) {
+                    window.location.href = href
                 }
             });
         })

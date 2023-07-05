@@ -75,6 +75,10 @@
                                 <a href="#" class="text-gray-600 text-hover-primary">{{auth()->user()->email}}</a>
                             </div>
                             <!--begin::Details item-->
+                            <div class="fw-bold mt-5">Khoa</div>
+                            <div class="text-gray-600">
+                                <a href="#" class="text-gray-600 text-hover-primary">{{auth()->user()->major->name}}</a>
+                            </div>
                         </div>
                     </div>
                     <!--end::Details content-->

@@ -110,6 +110,8 @@ Route::prefix('/teachers')->group(function () {
 
         Route::get('/{exam_id}/chart',[ExamController::class,'chart'])->name('chart');
         Route::get('/{exam_id}/isSeeAnswers',[ExamController::class,'isSeeAnswers']);
+
+        Route::get('/{exam}/copy',[ExamController::class,'copy'])->name('teachers.exams.copy');
     });
 
     Route::prefix('questions')->group(function () {

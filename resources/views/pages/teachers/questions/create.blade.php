@@ -91,7 +91,7 @@
                 <div class="fv-row mb-10">
                     <!--begin::Label-->
                     <label class="fs-5 fw-bold form-label mb-2" for="note">
-                        <span class="required">Ghi chú</span>
+                        <span class="">Ghi chú</span>
                     </label>
                     <!--end::Label-->
                     <!--begin::Input-->

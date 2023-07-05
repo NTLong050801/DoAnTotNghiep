@@ -1,4 +1,4 @@
 @extends('layouts.main')
 @section('content')
-    @include('pages.dashboard.index')
+    <h1 class="text-success text-center">Hệ thống thi trắc nghiệm Học Viện Nông Nghiệp Việt Nam</h1>
 @endsection

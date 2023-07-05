@@ -120,6 +120,7 @@ class QuestionController extends Controller
                 }
             }
         }
+        $listQuestions = array_reverse($listQuestions);
         return view('pages.teachers.questions.review', compact('listQuestions'));
     }
 
