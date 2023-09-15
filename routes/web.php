@@ -14,6 +14,7 @@ use App\Http\Controllers\Teachers\ResultsController;
 use App\Http\Controllers\WebhooksController;
 use App\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 
 /*
 |--------------------------------------------------------------------------
@@ -203,6 +204,11 @@ Route::get('/sendMessage/{id}', function ($id) {
 });
 Route::get('/getNumberMessages',function (){
     return \App\Models\ChMessage::where('to_id',auth()->id())->where('seen',false)->count();
+});
+
+Route::get('/demo',function (){
+    Storage::disk('google')->put('test.txt',"hello word");
+//    Storage::disk('google')->put($request->input('name'), $file->get());
 });
 Route::post('test',[ExamsController::class,'test'])->name('test');
 require __DIR__ . '/auth.php';

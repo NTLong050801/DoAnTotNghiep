@@ -196,7 +196,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
         Barryvdh\Snappy\ServiceProvider::class,
-
+        App\Providers\GoogleDriveServiceProvider::class,
     ],
 
     /*

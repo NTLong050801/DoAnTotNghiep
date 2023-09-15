@@ -2,18 +2,32 @@
 
 @section('content')
     <!--begin::Form-->
-    <form class="form w-100" method="post" action="{{route('login.store')}}">
+    <form class="form w-100" method="post" action="{{route('register.store')}}">
         @csrf
         <!--begin::Heading-->
         <div class="text-center mb-11">
             <!--begin::Title-->
-            <h1 class="text-dark fw-bolder mb-3">Đăng nhập</h1>
+            <h1 class="text-dark fw-bolder mb-3">Đăng ký</h1>
             <!--end::Title-->
         </div>
         <!--end::Heading-->
-        @error('email')
-        <div class="alert alert-danger">{{ $message }}</div>
-        @enderror
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+        <!--begin::Input group=-->
+        <div class="fv-row mb-8">
+            <!--begin::email-->
+            <input type="text" placeholder="Họ tên" name="name" autocomplete="off"
+                   class="form-control bg-transparent" required/>
+            <!--end::email-->
+        </div>
+        <!--end::Input group=-->
         <!--begin::Input group=-->
         <div class="fv-row mb-8">
             <!--begin::email-->
@@ -30,20 +44,19 @@
             <!--end::Password-->
         </div>
         <!--end::Input group=-->
-        <!--begin::Wrapper-->
-        <div class="d-flex flex-stack flex-wrap gap-3 fs-base fw-semibold mb-8">
-
-            <a href="{{route('register')}}" class="link-primary">Đăng ký ?</a>
-            <!--begin::Link-->
-            <a href="{{route('password.request')}}" class="link-danger">Quên mật khẩu ?</a>
-            <!--end::Link-->
+        <!--begin::Input group=-->
+        <div class="fv-row mb-3">
+            <!--begin::Password-->
+            <input type="password" placeholder="Xác nhận mật khẩu" name="password_confirmation" autocomplete="off"
+                   class="form-control bg-transparent" required/>
+            <!--end::Password-->
         </div>
-        <!--end::Wrapper-->
+        <!--end::Input group=-->
         <!--begin::Submit button-->
         <div class="d-grid mb-10">
             <button type="submit" id="kt_sign_in_submit" class="btn btn-danger">
                 <!--begin::Indicator label-->
-                <span class="indicator-label">Đăng nhập</span>
+                <span class="indicator-label">Đăng ký</span>
                 <!--end::Indicator label-->
             </button>
         </div>
@@ -51,4 +64,3 @@
     </form>
     <!--end::Form-->
 @endsection
-

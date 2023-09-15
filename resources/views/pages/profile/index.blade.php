@@ -77,7 +77,7 @@
                             <!--begin::Details item-->
                             <div class="fw-bold mt-5">Khoa</div>
                             <div class="text-gray-600">
-                                <a href="#" class="text-gray-600 text-hover-primary">{{auth()->user()->major->name}}</a>
+                                <a href="#" class="text-gray-600 text-hover-primary">{{auth()->user()?->major?->name}}</a>
                             </div>
                         </div>
                     </div>
