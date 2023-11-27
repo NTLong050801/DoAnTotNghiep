@@ -5,8 +5,10 @@ namespace App\Providers;
 use App\Events\ActiveChanged;
 use App\Events\EndExamStudent;
 use App\Events\SendMessageEvent;
+use App\Events\SendResultEvent;
 use App\Listeners\EndExamStudentListener;
 use App\Listeners\HandleActiveChanged;
+use App\Listeners\SendMailListener;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -32,6 +34,9 @@ class EventServiceProvider extends ServiceProvider
         SendMessageEvent::class=>[
 
         ],
+        SendResultEvent::class => [
+            SendMailListener::class,
+        ]
     ];
 
     /**

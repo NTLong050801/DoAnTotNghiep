@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers\Students;
 
+use App\Events\SendResultEvent;
 use App\Http\Controllers\Controller;
+use App\Models\Exam;
 use App\Models\ExamsStudents;
 use App\Models\Question;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ResultsContrller extends Controller
 {
@@ -40,5 +44,20 @@ class ResultsContrller extends Controller
         $myAnswers = json_decode($examStudents->answers);
 
         return view('pages.students.results.answers', compact('listQuestion', 'myAnswers', 'name'));
+    }
+
+    public function sendMail(Request $request){
+        $examsStudents = ExamsStudents::where('exam_id', $request->exam_id)->get();
+        $exam = Exam::find($request->exam_id);
+        $pdf = Pdf::loadView('pages.teachers.results.result-pdf', [
+            'examsStudents' => $examsStudents,
+            'exam' => $exam,
+        ]);
+        $nameFile = uniqid() . '.pdf';
+        $pdfPath = storage_path($nameFile);
+        $pdf->save($pdfPath);
+        SendResultEvent::dispatch($request->input('email'),$pdfPath);
+        unlink($pdfPath);
+        return redirect()->back();
     }
 }

@@ -34,6 +34,39 @@
                     </div>
                 </div>
                 <!--end::Export buttons-->
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#kt_modal_1">
+                    Mail
+                </button>
+                <div class="modal fade" tabindex="-1" id="kt_modal_1">
+                    <div class="modal-dialog">
+                        <form action="{{route('teachers.results.sendMail',request('exam_id'))}}" method="post">
+                            @method('POST')
+                            @csrf
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h3 class="modal-title">Gửi bảng điểm tới Mail</h3>
+
+                                    <!--begin::Close-->
+                                    <div class="btn btn-icon btn-sm btn-active-light-primary ms-2"
+                                         data-bs-dismiss="modal"
+                                         aria-label="Close">
+                                        <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span
+                                                class="path2"></span></i>
+                                    </div>
+                                    <!--end::Close-->
+                                </div>
+                                <div class="modal-body">
+                                    <label for=email">Nhập email</label>
+                                    <input type="email" class="form-control" id="email" name="email" required>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Đóng</button>
+                                    <button type="submit" class="btn btn-primary">Gửi</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
             <!--end::Card title-->
             <!--begin::Card toolbar-->
@@ -53,7 +86,8 @@
                 @if($examsStudents != null)
                     <button class="btn btn-sm btn-primary
                                 btn-sm btn-active-light-primary my-1 me-2 chartExams"
-                            id_exam="{{request('exam_id')}}" name_exam="{{ \App\Models\Exam::find(request('exam_id'))->name }}"
+                            id_exam="{{request('exam_id')}}"
+                            name_exam="{{ \App\Models\Exam::find(request('exam_id'))->name }}"
                             data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse"
                             data-bs-placement="bottom" title="Thống kê"
                     >
