@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e029d5146f5a6fee1598e4e995d081bf",
+    "content-hash": "c2c99845890cbc636a2632062549f741",
     "packages": [
         {
             "name": "barryvdh/laravel-dompdf",
@@ -3704,6 +3704,46 @@
                 "source": "https://github.com/nikic/PHP-Parser/tree/v4.15.4"
             },
             "time": "2023-03-05T19:49:14+00:00"
+        },
+        {
+            "name": "ntlong050801/file-manager",
+            "version": "v0.15",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/NTLong050801/file-manager-package.git",
+                "reference": "c753864e01a841d83c8dff07c9b3a2b7fc70d42a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/NTLong050801/file-manager-package/zipball/c753864e01a841d83c8dff07c9b3a2b7fc70d42a",
+                "reference": "c753864e01a841d83c8dff07c9b3a2b7fc70d42a",
+                "shasum": ""
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Ntlong050801\\FileManager\\FileManagerServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Ntlong050801\\FileManager\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "Nguyen Thanh Long"
+                }
+            ],
+            "description": "crud, upload, move, rename file - folder",
+            "support": {
+                "issues": "https://github.com/NTLong050801/file-manager-package/issues",
+                "source": "https://github.com/NTLong050801/file-manager-package/tree/v0.15"
+            },
+            "time": "2023-11-27T07:52:31+00:00"
         },
         {
             "name": "nunomaduro/termwind",
